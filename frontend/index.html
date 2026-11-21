@@ -281,21 +281,20 @@
   <!-- ======================================================================= -->
   <!-- SECTION 2: HIGH-DETAIL 3D SATELLITE & BATHYMETRIC FLOOD SIMULATOR       -->
   <!-- ======================================================================= -->
-  <section id="simulator" class="bg-[#080B0F] py-12 sm:py-16">
-    <div class="mx-auto max-w-[1560px] w-full px-4 sm:px-8 lg:px-12 px-3 sm:px-6">
+  <section id="simulator" class="bg-[#080B0F] py-4 sm:py-6 lg:py-7">
+    <div class="mx-auto max-w-[1560px] w-full px-4 sm:px-8 lg:px-12">
       <!-- Concise Section Heading -->
-      <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+      <div class="mb-3 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
         <div>
-          <div class="font-mono text-[11px] uppercase tracking-[0.14em] text-neutral-400">
-            Interactive Terrain &amp; Signal Workbench
+          <div class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-neutral-400">
+            Interactive Terrain &amp; Signal Workbench · ISRO EOS-04 SAR &amp; Cartosat-1 DEM
           </div>
-          <h2 class="font-editorial mt-1 text-[30px] leading-tight text-white sm:text-[38px]">
-            Inspect water depth, rescue paths, and NavIC recovery live.
+          <h2 class="font-editorial text-[22px] leading-tight text-white sm:text-[28px]">
+            Inspect water depth, rescue corridors, and NavIC recovery live.
           </h2>
         </div>
-        <div class="text-[13px] text-neutral-400 sm:text-right">
-          Hover anywhere on the map for exact water depth.<br class="hidden sm:inline" />
-          Click any white <span class="text-white">Dry Ridge</span> pin to relocate the drone.
+        <div class="text-[12px] text-neutral-400 sm:text-right font-mono">
+          Hover map for water depth · Click dry ridge to deploy drone
         </div>
       </div>
 
@@ -361,7 +360,7 @@
           <!-- LEFT COLUMN: 3D Map Stage & Satellite Strip -->
           <div class="flex flex-col lg:col-span-8 border-b lg:border-b-0 lg:border-r border-white/10">
             <!-- Map Viewport -->
-            <div id="map-stage" class="relative h-[560px] sm:h-[640px] xl:h-[720px] w-full select-none bg-[#0A0E14]">
+            <div id="map-stage" class="relative h-[430px] sm:h-[480px] lg:h-[520px] xl:h-[550px] w-full select-none bg-[#0A0E14]">
               <!-- 3D WebGL Canvas Mount -->
               <div id="three-mount" class="h-full w-full"></div>
 
@@ -370,7 +369,7 @@
 
               <!-- 2D High-Res Orthophoto Canvas (Shown in 2D Mode) -->
               <div id="map2d-mount" class="hidden h-full w-full items-center justify-center p-4 sm:p-6">
-                <div class="relative aspect-square h-full max-h-[640px] max-w-full overflow-hidden rounded-xl border border-white/15 bg-[#0A0E14] shadow-2xl">
+                <div class="relative aspect-square h-full max-h-[500px] max-w-full overflow-hidden rounded-xl border border-white/15 bg-[#0A0E14] shadow-2xl">
                   <canvas id="canvas-2d" width="640" height="640" class="h-full w-full cursor-crosshair"></canvas>
                   <div id="map2d-ridges" class="pointer-events-none absolute inset-0"></div>
                 </div>
@@ -488,9 +487,9 @@
           </div>
 
           <!-- RIGHT COLUMN: Unified Telemetry, Controls & Navigation Cockpit -->
-          <div class="flex flex-col justify-between bg-[#0F141B] p-4 sm:p-5 lg:col-span-4 h-full lg:max-h-[790px] overflow-y-auto space-y-4">
+          <div class="flex flex-col justify-between bg-[#0F141B] p-3 sm:p-3.5 lg:col-span-4 h-full lg:max-h-[595px] xl:lg:max-h-[625px] overflow-y-auto space-y-2.5">
             <!-- 1. Live Navigation Impact (Before vs After Drone) -->
-            <div class="rounded-xl border border-white/10 bg-[#121820] p-4 shadow-sm">
+            <div class="rounded-xl border border-white/10 bg-[#121820] p-3 shadow-sm">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <div class="font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-400">
@@ -546,7 +545,7 @@
             </div>
 
             <!-- 2. Candidate Dry Ridges Found (Ranked List) -->
-            <div class="rounded-xl border border-white/10 bg-[#121820] p-4 shadow-sm">
+            <div class="rounded-xl border border-white/10 bg-[#121820] p-3 shadow-sm">
               <div class="flex items-center justify-between">
                 <div>
                   <div class="font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-400">
@@ -564,7 +563,7 @@
             </div>
 
             <!-- 3. Real-Time Sliders: Drone Tether & Range Error -->
-            <div class="rounded-xl border border-white/10 bg-[#121820] p-4 shadow-sm space-y-3">
+            <div class="rounded-xl border border-white/10 bg-[#121820] p-3 shadow-sm space-y-2">
               <div>
                 <div class="mb-1 flex justify-between text-[11.5px]">
                   <span class="text-neutral-300 font-medium">Drone Tether Altitude ($h_p$)</span>
@@ -583,7 +582,7 @@
             </div>
 
             <!-- 4. DOP Telemetry Matrix & Corridor Fix Bar -->
-            <div class="rounded-xl border border-white/10 bg-[#121820] p-4 shadow-sm">
+            <div class="rounded-xl border border-white/10 bg-[#121820] p-3 shadow-sm">
               <div class="mb-2 flex items-baseline justify-between text-[11.5px]">
                 <span class="font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-400">Corridor Precision</span>
                 <span id="drawer-avg-err" class="font-mono font-semibold text-white">NO FIX</span>
@@ -621,7 +620,7 @@
             </div>
 
             <!-- 5. 24-Hour Diurnal Error Curve -->
-            <div class="rounded-xl border border-white/10 bg-[#121820] p-4 shadow-sm">
+            <div class="rounded-xl border border-white/10 bg-[#121820] p-3 shadow-sm">
               <div class="mb-1.5 flex items-center justify-between text-[11px]">
                 <span class="font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-400">24h Diurnal Error (m)</span>
                 <div class="flex gap-2 text-[10px]">
