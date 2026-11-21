@@ -98,6 +98,58 @@
       height: 100%;
       touch-action: none;
     }
+
+    /* Archival Document Sleeves & Slide-out Dossiers */
+    .dossier-sleeve-jacket {
+      background: linear-gradient(180deg, #161D27 0%, #0C1017 100%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      position: relative;
+      padding: 10px 10px 14px 10px;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.25);
+    }
+    .dossier-sleeve-lip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 38px;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+      background: #111721;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .dossier-doc {
+      background: #FFFFFF;
+      color: #0B0F14;
+      border-radius: 8px;
+      border: 1px solid #D1D5DB;
+      position: relative;
+      z-index: 1;
+      margin-top: 26px;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    }
+    .dossier-doc.is-extracted {
+      transform: translateY(-10px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      border-color: #9CA3AF;
+    }
+    .dossier-body {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+    }
+    .dossier-doc.is-extracted .dossier-body {
+      max-height: 1100px;
+      opacity: 1;
+    }
   </style>
 </head>
 
@@ -119,6 +171,7 @@
       <nav class="hidden items-center gap-8 text-[12px] font-medium uppercase tracking-[0.09em] text-[#525B66] md:flex">
         <a href="#simulator" class="transition-colors hover:text-[#0B0F14]">3D Simulator</a>
         <a href="#method" class="transition-colors hover:text-[#0B0F14]">Field Method</a>
+        <a href="#prior-art" class="transition-colors hover:text-[#0B0F14]">Prior Art</a>
         <a href="#validation" class="transition-colors hover:text-[#0B0F14]">Validation</a>
       </nav>
 
@@ -201,13 +254,13 @@
               <g>
                 <!-- Blocked low-angle satellite -->
                 <rect x="34" y="34" width="22" height="10" rx="2" fill="#0B0F14" />
-                <rect x="22" y="37" width="10" height="4" fill="#64748B" />
-                <rect x="58" y="37" width="10" height="4" fill="#64748B" />
-                <text x="45" y="25" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#64748B">NVS-01 (24°)</text>
-                <!-- Blocked ray hitting west cliff -->
-                <line x1="48" y1="45" x2="118" y2="148" stroke="#64748B" stroke-width="1.6" stroke-dasharray="4 3" />
-                <circle cx="118" cy="148" r="4" fill="#64748B" />
-                <text x="128" y="144" font-family="IBM Plex Mono" font-size="9" fill="#64748B">MASKED BY RIDGE</text>
+                <rect x="22" y="37" width="10" height="4" fill="#DC2626" />
+                <rect x="58" y="37" width="10" height="4" fill="#DC2626" />
+                <text x="45" y="25" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#DC2626">NVS-01 (24°)</text>
+                <!-- Blocked red ray hitting west cliff -->
+                <line x1="48" y1="45" x2="118" y2="148" stroke="#DC2626" stroke-width="1.6" stroke-dasharray="4 3" />
+                <circle cx="118" cy="148" r="4" fill="#DC2626" />
+                <text x="128" y="144" font-family="IBM Plex Mono" font-size="9" fill="#DC2626">MASKED BY RIDGE</text>
 
                 <!-- Clear high-angle satellites -->
                 <rect x="234" y="22" width="22" height="10" rx="2" fill="#0B0F14" />
@@ -254,13 +307,13 @@
                 <circle cx="-18" cy="0" r="3.5" fill="#FFFFFF" stroke="#0B0F14" stroke-width="1.4" />
                 <circle cx="18" cy="0" r="3.5" fill="#FFFFFF" stroke="#0B0F14" stroke-width="1.4" />
                 <rect x="-7" y="-5" width="14" height="10" rx="2.5" fill="#0B0F14" />
-                <circle cx="0" cy="0" r="2.2" fill="#FFFFFF" />
+                <circle cx="0" cy="0" r="2.2" fill="#16A34A" />
               </g>
-              <text x="437" y="57" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" font-weight="600" fill="#0B0F14">DRONE RELAY · 55m</text>
+              <text x="437" y="57" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" font-weight="600" fill="#16A34A">DRONE RELAY · 55m</text>
 
               <!-- Restored 4th Vector Beam from Drone into Flooded Valley -->
-              <line x1="428" y1="78" x2="266" y2="232" stroke="#0B0F14" stroke-width="2" />
-              <circle cx="262" cy="234" r="5" fill="#0B0F14" stroke="#FFFFFF" stroke-width="2" />
+              <line x1="428" y1="78" x2="266" y2="232" stroke="#16A34A" stroke-width="2" />
+              <circle cx="262" cy="234" r="5" fill="#16A34A" stroke="#FFFFFF" stroke-width="2" />
               <rect x="210" y="242" width="104" height="20" rx="4" fill="#0B0F14" />
               <text x="262" y="255" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" font-weight="600" fill="#FFFFFF">RESCUE FIX ±3.2m</text>
             </svg>
@@ -353,36 +406,36 @@
             </div>
           </div>
 
-          <!-- Center: 1-Click Judge Demo Storyboard (Muted Aerospace Blueprint) -->
+          <!-- Center: 1-Click Judge Demo Storyboard (Semantic Aerospace Milestones) -->
           <div class="hidden xl:flex items-center gap-1.5 rounded border border-white/10 bg-[#06080C] px-2 py-0.5 font-mono text-[10px]">
             <span class="text-[9px] uppercase tracking-wider text-neutral-400 mr-0.5">FLIGHT PLAN:</span>
             <button
               id="btn-story-outage"
               type="button"
-              class="flex items-center gap-1.5 rounded border border-white/10 bg-[#10151E] px-2.5 py-1 text-neutral-300 transition-colors hover:border-white/30 hover:text-white"
+              class="flex items-center gap-1.5 rounded border border-rose-500/30 bg-rose-950/20 px-2.5 py-1 text-rose-200 transition-colors hover:border-rose-400 hover:text-white"
               title="Step 1: Simulate 3-Sat Canyon Outage"
             >
-              <span class="text-neutral-400 font-semibold">[01]</span>
+              <span class="text-rose-400 font-semibold">[01]</span>
               <span>CANYON OUTAGE</span>
             </button>
-            <span class="text-neutral-600 text-[10px]">→</span>
+            <span class="text-neutral-500 text-[10px]">→</span>
             <button
               id="btn-story-radar"
               type="button"
-              class="flex items-center gap-1.5 rounded border border-white/10 bg-[#10151E] px-2.5 py-1 text-neutral-300 transition-colors hover:border-white/30 hover:text-white"
+              class="flex items-center gap-1.5 rounded border border-sky-500/30 bg-sky-950/20 px-2.5 py-1 text-sky-200 transition-colors hover:border-sky-400 hover:text-white"
               title="Step 2: Inspect SAR Radar Flood & Dry Ridges"
             >
-              <span class="text-neutral-400 font-semibold">[02]</span>
+              <span class="text-sky-400 font-semibold">[02]</span>
               <span>SAR RADAR</span>
             </button>
-            <span class="text-neutral-600 text-[10px]">→</span>
+            <span class="text-neutral-500 text-[10px]">→</span>
             <button
               id="btn-story-drone"
               type="button"
-              class="flex items-center gap-1.5 rounded border border-white/20 bg-[#16202E] px-2.5 py-1 text-white font-medium transition-colors hover:border-white/40"
+              class="flex items-center gap-1.5 rounded border border-emerald-500/40 bg-emerald-950/30 px-2.5 py-1 text-emerald-200 font-medium transition-colors hover:border-emerald-400 hover:text-white"
               title="Step 3: Deploy Tethered Pseudolite on Dhak Crest"
             >
-              <span class="text-[#F5A623] font-semibold">[03]</span>
+              <span class="text-emerald-400 font-semibold">[03]</span>
               <span>DRONE LOCK</span>
             </button>
           </div>
@@ -478,13 +531,13 @@
                 </button>
               </div>
 
-              <!-- Bottom-Left: Technical Map Legend -->
-              <div class="absolute bottom-3.5 left-3.5 z-20 rounded border border-white/15 bg-[#0C1017]/95 px-3 py-2 text-[10.5px] text-neutral-200 backdrop-blur-sm font-mono">
+              <!-- Bottom-Left: Technical Map Legend (Semantic Emergency Response) -->
+              <div class="absolute bottom-3.5 left-3.5 z-20 rounded border border-white/15 bg-[#0C1017]/95 px-3 py-2 text-[10.5px] text-neutral-200 backdrop-blur-sm font-mono shadow-xl">
                 <div id="legend-rescue" class="space-y-1.5">
                   <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-white"></span>AMBULANCE (&lt;0.35m)</span>
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#4A7C9D]"></span>BOAT CHANNEL (&gt;0.5m)</span>
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full border border-white/40 bg-[#0D1218]"></span>DRY RIDGE (0.0m)</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#16A34A] shadow-[0_0_6px_rgba(22,163,74,0.6)]"></span>AMBULANCE (&lt;0.35m)</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#0284C7] shadow-[0_0_6px_rgba(2,132,199,0.6)]"></span>BOAT CHANNEL (&gt;0.5m)</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full border border-white/60 bg-[#F5A623]"></span>DRY RIDGE (0.0m)</span>
                   </div>
                   <div class="flex items-center gap-2 pt-0.5 text-[9.5px] text-neutral-400">
                     <span>SHALLOW 0.2m</span>
@@ -495,9 +548,9 @@
                 <div id="legend-dop" class="hidden space-y-1">
                   <div class="text-[9.5px] uppercase tracking-wider text-neutral-400">POSITIONING ERROR SPECTRUM</div>
                   <div class="flex items-center gap-3">
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-white"></span>SUB-5m FIX</span>
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#F5A623]"></span>5–15m DEGRADED</span>
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full border border-neutral-600 bg-neutral-800"></span>NO FIX (&gt;15m)</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#16A34A] shadow-[0_0_6px_rgba(22,163,74,0.6)]"></span>SUB-5m FIX</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#D97706] shadow-[0_0_6px_rgba(217,119,6,0.6)]"></span>5–15m DEGRADED</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#DC2626] shadow-[0_0_6px_rgba(220,38,38,0.6)]"></span>NO FIX (&gt;15m)</span>
                   </div>
                 </div>
               </div>
@@ -567,24 +620,24 @@
                 Mountain walls mask low-elevation NavIC satellites. Rank deficient G-matrix drops receiver into blackout (&gt;15m error).
               </p>
 
-              <!-- Comparison Bays -->
+              <!-- Comparison Bays (Outage vs Augmented Solution) -->
               <div class="grid grid-cols-2 gap-2 font-mono">
-                <div id="card-before" class="rounded border border-white/10 bg-[#080C12] p-2.5 transition-colors">
-                  <div class="flex items-center justify-between text-[9px] uppercase tracking-wider text-neutral-400">
+                <div id="card-before" class="rounded border border-rose-500/30 bg-[#160B0E] p-2.5 transition-colors shadow-sm">
+                  <div class="flex items-center justify-between text-[9px] uppercase tracking-wider text-rose-300">
                     <span>SATELLITES ONLY</span>
-                    <span id="before-pill" class="rounded border border-white/10 bg-white/5 px-1.5 py-0.2 text-[8px] text-neutral-400">RAW</span>
+                    <span id="before-pill" class="rounded border border-rose-500/40 bg-rose-500/15 px-1.5 py-0.2 text-[8px] font-semibold text-rose-300">OUTAGE</span>
                   </div>
-                  <div id="before-error" class="mt-1.5 text-[15px] font-semibold text-neutral-300">NO FIX [LOST]</div>
-                  <div id="before-cov" class="mt-0.5 text-[10px] text-neutral-500">Sub-5m Fix: 0%</div>
+                  <div id="before-error" class="mt-1.5 text-[15px] font-bold text-rose-400">NO FIX [LOST]</div>
+                  <div id="before-cov" class="mt-0.5 text-[10px] text-rose-300/80">Sub-5m Fix: 0%</div>
                 </div>
 
-                <div id="card-after" class="rounded border border-white/25 bg-[#121824] p-2.5 transition-colors">
-                  <div class="flex items-center justify-between text-[9px] uppercase tracking-wider text-neutral-300">
+                <div id="card-after" class="rounded border border-emerald-500/35 bg-[#081810] p-2.5 transition-colors shadow-sm">
+                  <div class="flex items-center justify-between text-[9px] uppercase tracking-wider text-emerald-300">
                     <span>WITH PSEUDOLITE</span>
-                    <span id="after-pill" class="rounded border border-white/30 bg-white/10 px-1.5 py-0.2 text-[8px] text-white font-medium">AUGMENTED</span>
+                    <span id="after-pill" class="rounded border border-emerald-500/50 bg-emerald-500/20 px-1.5 py-0.2 text-[8px] text-emerald-300 font-semibold">AUGMENTED</span>
                   </div>
-                  <div id="after-error" class="mt-1.5 text-[15px] font-bold text-white">±3.2 m</div>
-                  <div id="after-cov" class="mt-0.5 text-[10px] text-neutral-300">Sub-5m Fix: 92%</div>
+                  <div id="after-error" class="mt-1.5 text-[15px] font-bold text-emerald-400">±3.2 m</div>
+                  <div id="after-cov" class="mt-0.5 text-[10px] text-emerald-300/90 font-medium">Sub-5m Fix: 92%</div>
                 </div>
               </div>
 
@@ -662,15 +715,15 @@
                 <span class="text-[9.5px] uppercase tracking-[0.14em] text-neutral-400">BAY 04 // CORRIDOR FIX DISTRIBUTION</span>
                 <span id="drawer-avg-err" class="font-semibold text-white">NO FIX</span>
               </div>
-              <div class="flex h-1.5 w-full overflow-hidden rounded-sm bg-neutral-900 border border-white/10">
-                <div id="bar-sub5" class="bg-white transition-all duration-300" style="width: 0%"></div>
-                <div id="bar-deg" class="bg-neutral-500 transition-all duration-300" style="width: 0%"></div>
-                <div id="bar-nofix" class="bg-neutral-800 transition-all duration-300" style="width: 100%"></div>
+              <div class="flex h-2 w-full overflow-hidden rounded-sm bg-neutral-950 border border-white/15">
+                <div id="bar-sub5" class="bg-[#16A34A] transition-all duration-300" style="width: 0%"></div>
+                <div id="bar-deg" class="bg-[#D97706] transition-all duration-300" style="width: 0%"></div>
+                <div id="bar-nofix" class="bg-[#DC2626] transition-all duration-300" style="width: 100%"></div>
               </div>
-              <div class="flex justify-between text-[9px] text-neutral-400">
-                <span id="pct-sub5">SUB-5m: 0%</span>
-                <span id="pct-deg">5-15m: 0%</span>
-                <span id="pct-nofix">NO FIX: 100%</span>
+              <div class="flex justify-between text-[9px] font-semibold">
+                <span id="pct-sub5" class="text-emerald-400">SUB-5m: 0%</span>
+                <span id="pct-deg" class="text-amber-400">5-15m: 0%</span>
+                <span id="pct-nofix" class="text-rose-400">NO FIX: 100%</span>
               </div>
 
               <!-- Covariance Matrix Strip -->
@@ -709,10 +762,10 @@
             <div class="p-3 sm:p-3.5 space-y-1.5 font-mono">
               <div class="flex items-center justify-between text-[10.5px]">
                 <span class="text-[9.5px] uppercase tracking-[0.14em] text-neutral-400">BAY 05 // 24H DIURNAL GEOMETRY (m)</span>
-                <div class="flex gap-2.5 text-[8.5px]">
-                  <span class="text-neutral-400">┄ BASELINE</span>
-                  <span class="text-neutral-300">┈ DEM CLAMP</span>
-                  <span class="text-white font-semibold">━ DRONE TARGET</span>
+                <div class="flex gap-2.5 text-[8.5px] font-medium">
+                  <span class="text-rose-400">┄ BASELINE</span>
+                  <span class="text-amber-400">┈ DEM CLAMP</span>
+                  <span class="text-emerald-400 font-bold">━ DRONE TARGET</span>
                 </div>
               </div>
               <div class="rounded border border-white/10 bg-[#05070A] p-2">
@@ -964,7 +1017,7 @@
               <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-[#6E7784]">
                 Geometry Matrix G (4×4)
               </span>
-              <span id="rank-badge" class="rounded border border-[#0B0F14] bg-[#0B0F14] px-2 py-0.5 font-mono text-[11px] font-semibold text-white">
+              <span id="rank-badge" class="rounded border border-emerald-500/40 bg-emerald-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-emerald-800">
                 RANK 4 · INVERTIBLE · ±3.2 m
               </span>
             </div>
@@ -999,9 +1052,9 @@
                 <span>Row 3 · IRNSS-1E</span>
                 <span class="text-[#525B66]">[ -0.48, -0.05, +0.88, 1 ]</span>
               </div>
-              <div id="rank-row-4" class="flex items-center justify-between rounded border border-neutral-300 bg-neutral-100 px-3 py-1.5 transition-all text-[#0B0F14]">
-                <span class="font-semibold">Row 4 · DRONE RELAY</span>
-                <span class="font-semibold text-neutral-600">[ +0.71, +0.64, +0.29, 1 ]</span>
+              <div id="rank-row-4" class="flex items-center justify-between rounded border border-emerald-300 bg-emerald-50/80 px-3 py-1.5 transition-all text-emerald-900">
+                <span class="font-semibold text-emerald-800">Row 4 · DRONE RELAY</span>
+                <span class="font-semibold text-emerald-700">[ +0.71, +0.64, +0.29, 1 ]</span>
               </div>
             </div>
 
@@ -1015,7 +1068,303 @@
   </section>
 
   <!-- ======================================================================= -->
-  <!-- SECTION 4: ORIGINAL VALIDATION LEDGER (Clean Typographic Split)         -->
+  <!-- SECTION 4: SCIENTIFIC PROVENANCE & PEER-REVIEWED PRIOR ART              -->
+  <!-- ======================================================================= -->
+  <section id="prior-art" class="border-t border-neutral-200 bg-[#F4F5F7] py-20 relative overflow-hidden">
+    <div class="mx-auto max-w-[1560px] w-full px-4 sm:px-8 lg:px-12">
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-dashed border-neutral-300 pb-8">
+        <div class="max-w-3xl">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-[#F5A623]"></span>
+            <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-[#6E7784]">
+              SECTION 04 // SCIENTIFIC PROVENANCE & PEER-REVIEWED PRIOR ART
+            </span>
+          </div>
+          <h2 class="font-editorial mt-3 text-[34px] leading-[1.08] text-[#0B0F14] sm:text-[42px]">
+            Standing on peer-reviewed shoulders—and fixing where they broke.
+          </h2>
+          <p class="mt-3.5 text-[14.5px] leading-relaxed text-[#525B66]">
+            NavIC-Restore does not claim to invent navigation physics from thin air. We systematically audited the fatal real-world failure points in landmark IEEE, Stanford, and Remote Sensing literature—and engineered the missing hardware and mathematical bridges for mountain flash floods.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2.5 shrink-0 font-mono text-[11px]">
+          <button
+            id="btn-dossier-toggle-all"
+            type="button"
+            class="flex items-center gap-2 rounded-md border border-neutral-300 bg-white px-4 py-2 font-semibold text-[#0B0F14] shadow-sm transition-all hover:bg-neutral-50 active:scale-[0.98]"
+          >
+            <span id="lbl-dossier-toggle-icon">↗</span>
+            <span id="lbl-dossier-toggle-text">EXTRACT ALL 3 DOSSIERS</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3 Archival Dossier Sleeves Grid -->
+      <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+        
+        <!-- SLEEVE 01: Airborne Pseudolites -->
+        <div class="dossier-sleeve-jacket">
+          <div class="dossier-sleeve-lip">
+            <span class="font-mono text-[9px] uppercase tracking-wider text-neutral-400">ISRO-NDRF ARCHIVAL SLEEVE 01</span>
+            <span class="rounded bg-white/10 px-1.5 py-0.2 font-mono text-[8px] text-neutral-300">DOC 01 / PSEUDOLITE</span>
+          </div>
+
+          <!-- Document Sheet (Peeking out) -->
+          <div class="dossier-doc cursor-pointer p-4 sm:p-5 shadow-lg" data-dossier="1">
+            <!-- Peeking Header -->
+            <div class="dossier-peek-header">
+              <div class="flex items-center justify-between gap-2">
+                <span class="rounded bg-[#0B0F14] px-2 py-0.5 font-mono text-[10px] font-semibold text-white">
+                  REF 01 · UAV PSEUDOLITE
+                </span>
+                <span class="font-mono text-[10.5px] text-[#525B66]">IEEE (2006) · Stanford (1997)</span>
+              </div>
+              <h3 class="font-editorial mt-2.5 text-[20px] font-semibold leading-tight text-[#0B0F14]">
+                Airborne Pseudolite for Disaster Recovery Positioning
+              </h3>
+              <p class="mt-1 font-mono text-[11.5px] text-[#525B66]">
+                T. Tsujii, M. Harigae (JAXA) · H. S. Cobb (Stanford Univ.)
+              </p>
+
+              <!-- Limitation Teaser Tag -->
+              <div class="mt-3.5 flex items-center justify-between border-t border-dashed border-neutral-200 pt-3">
+                <span class="rounded border border-rose-300 bg-rose-50 px-2 py-0.5 font-mono text-[9.5px] font-semibold text-rose-700">
+                  LIMITATION: 20-MIN BATTERY SHUTDOWN
+                </span>
+                <button type="button" class="dossier-toggle-btn flex items-center gap-1 font-mono text-[10.5px] font-semibold text-[#0B0F14] hover:text-[#D97706]">
+                  <span class="btn-state-text">SLIDE OUT</span>
+                  <span class="btn-arrow text-[12px]">↗</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Expandable Full Dossier Body -->
+            <div class="dossier-body">
+              <div class="border-t border-neutral-200 pt-4 mt-3 space-y-3.5 text-[12.5px] leading-relaxed text-[#525B66]">
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-wider text-[#7A8491]">Landmark Research Publication</div>
+                  <div class="mt-0.5 font-mono text-[11px] text-[#0B0F14]">
+                    <em>IEEE Aerospace Conference (2006)</em> / <em>Stanford Ph.D. Dissertation (1997)</em>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-wider text-[#7A8491]">Pioneering Contribution</div>
+                  <p class="mt-0.5">
+                    Demonstrated that airborne transmitters (pseudolites) mounted on free-flying aircraft can broadcast synthetic GNSS ranging signals into GPS shadow zones.
+                  </p>
+                </div>
+
+                <!-- Fatal Limitation Box -->
+                <div class="rounded-md border border-rose-200 bg-rose-50/70 p-3 text-[11.5px] text-rose-950 font-mono">
+                  <div class="flex items-center gap-1.5 font-semibold text-rose-700">
+                    <span>⚠</span>
+                    <span>THE FATAL MOUNTAIN LIMITATION WE FIXED:</span>
+                  </div>
+                  <p class="mt-1 leading-normal text-rose-900">
+                    Free-flying multicopters exhaust batteries in 20–25 minutes—rendering them useless for 72-hour disaster relief. Furthermore, unanchored free flight introduces severe transmitter position uncertainty (±3–5m) and oscillator clock bias drift (Δt_p), which directly pollutes user pseudo-range calculations on the ground.
+                  </p>
+                </div>
+
+                <!-- NavIC-Restore Engineering Fix -->
+                <div class="rounded-md border border-emerald-300 bg-emerald-50/80 p-3.5 text-[11.5px] text-emerald-950 font-mono">
+                  <div class="flex items-center gap-1.5 font-semibold text-emerald-800">
+                    <span>✓</span>
+                    <span>NAVIC-RESTORE ARCHITECTURAL INNOVATION:</span>
+                  </div>
+                  <p class="mt-1 leading-normal text-emerald-900">
+                    <strong>Tethered Crest Pseudolite (TCP) with Ground OCXO Discipline:</strong> We replaced free flight with a micro-filament tether anchored to a SAR-verified ridge (55–150m AGL). Continuous ground power delivers <strong>unlimited 72+ hour mission endurance</strong>. High-frequency micro-coax hardwires transmitter synchronization directly to a ground-station Rubidium/OCXO reference clock (drift &lt;1.2 ns), eliminating clock bias errors and locking geometric antenna coordinates.
+                  </p>
+                </div>
+
+                <div class="pt-2 text-right">
+                  <button type="button" class="dossier-retract-btn font-mono text-[10.5px] font-semibold text-[#525B66] hover:text-[#0B0F14]">
+                    [ RETRACT DOSSIER ↙ ]
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLEEVE 02: Spaceborne SAR Flood Radar -->
+        <div class="dossier-sleeve-jacket">
+          <div class="dossier-sleeve-lip">
+            <span class="font-mono text-[9px] uppercase tracking-wider text-neutral-400">ISRO-NDRF ARCHIVAL SLEEVE 02</span>
+            <span class="rounded bg-white/10 px-1.5 py-0.2 font-mono text-[8px] text-neutral-300">DOC 02 / SAR RADAR</span>
+          </div>
+
+          <!-- Document Sheet (Peeking out) -->
+          <div class="dossier-doc cursor-pointer p-4 sm:p-5 shadow-lg" data-dossier="2">
+            <!-- Peeking Header -->
+            <div class="dossier-peek-header">
+              <div class="flex items-center justify-between gap-2">
+                <span class="rounded bg-[#0B0F14] px-2 py-0.5 font-mono text-[10px] font-semibold text-white">
+                  REF 02 · SAR RADAR
+                </span>
+                <span class="font-mono text-[10.5px] text-[#525B66]">Remote Sensing (2007) · IEEE (2015)</span>
+              </div>
+              <h3 class="font-editorial mt-2.5 text-[20px] font-semibold leading-tight text-[#0B0F14]">
+                High-Resolution SAR Flood Inundation Mapping in Basins
+              </h3>
+              <p class="mt-1 font-mono text-[11.5px] text-[#525B66]">
+                G. Schumann et al. (RSE) · S. Martinis et al. (DLR / IEEE JSTARS)
+              </p>
+
+              <!-- Limitation Teaser Tag -->
+              <div class="mt-3.5 flex items-center justify-between border-t border-dashed border-neutral-200 pt-3">
+                <span class="rounded border border-rose-300 bg-rose-50 px-2 py-0.5 font-mono text-[9.5px] font-semibold text-rose-700">
+                  FATAL LIMITATION: PASSIVE DISCONNECTED GIS MAP
+                </span>
+                <button type="button" class="dossier-toggle-btn flex items-center gap-1 font-mono text-[10.5px] font-semibold text-[#0B0F14] hover:text-[#D97706]">
+                  <span class="btn-state-text">SLIDE OUT</span>
+                  <span class="btn-arrow text-[12px]">↗</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Expandable Full Dossier Body -->
+            <div class="dossier-body">
+              <div class="border-t border-neutral-200 pt-4 mt-3 space-y-3.5 text-[12.5px] leading-relaxed text-[#525B66]">
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-wider text-[#7A8491]">Landmark Research Publication</div>
+                  <div class="mt-0.5 font-mono text-[11px] text-[#0B0F14]">
+                    <em>Remote Sensing of Environment (2007)</em> / <em>IEEE JSTARS (2015)</em>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-wider text-[#7A8491]">Pioneering Contribution</div>
+                  <p class="mt-0.5">
+                    Developed automatic radiometric thresholding of satellite SAR backscatter (σ^0) to delineate standing floodwaters through dense clouds and heavy monsoon rain.
+                  </p>
+                </div>
+
+                <!-- Fatal Limitation Box -->
+                <div class="rounded-md border border-rose-200 bg-rose-50/70 p-3 text-[11.5px] text-rose-950 font-mono">
+                  <div class="flex items-center gap-1.5 font-semibold text-rose-700">
+                    <span>⚠</span>
+                    <span>THE FATAL MOUNTAIN LIMITATION WE FIXED:</span>
+                  </div>
+                  <p class="mt-1 leading-normal text-rose-900">
+                    SAR radar was historically confined to passive, post-event GIS photography—showing where water flooded hours after the disaster. It was completely disconnected from real-time positioning systems, offering zero guidance on where rescue beacons should deploy.
+                  </p>
+                </div>
+
+                <!-- NavIC-Restore Engineering Fix -->
+                <div class="rounded-md border border-emerald-300 bg-emerald-50/80 p-3.5 text-[11.5px] text-emerald-950 font-mono">
+                  <div class="flex items-center gap-1.5 font-semibold text-emerald-800">
+                    <span>✓</span>
+                    <span>NAVIC-RESTORE ARCHITECTURAL INNOVATION:</span>
+                  </div>
+                  <p class="mt-1 leading-normal text-emerald-900">
+                    <strong>In-the-Loop SAR-to-Geometry Autonomous Solver:</strong> NavIC-Restore transforms ISRO EOS-04 C-band SAR backscatter (σ^0 &lt; -18 dB specular reflection for water vs. dry rock) into a real-time constraint solver. The system filters candidate ridges for verified dry ground (0.00m water) and <strong>autonomously maximizes det(G_augᵀ G_aug)</strong>. This guarantees the tethered relay deploys onto the mathematically optimal crest minimizing corridor GDOP before takeoff.
+                  </p>
+                </div>
+
+                <div class="pt-2 text-right">
+                  <button type="button" class="dossier-retract-btn font-mono text-[10.5px] font-semibold text-[#525B66] hover:text-[#0B0F14]">
+                    [ RETRACT DOSSIER ↙ ]
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLEEVE 03: Barometric & DEM Altimeter Aiding -->
+        <div class="dossier-sleeve-jacket">
+          <div class="dossier-sleeve-lip">
+            <span class="font-mono text-[9px] uppercase tracking-wider text-neutral-400">ISRO-NDRF ARCHIVAL SLEEVE 03</span>
+            <span class="rounded bg-white/10 px-1.5 py-0.2 font-mono text-[8px] text-neutral-300">DOC 03 / BARO-DEM</span>
+          </div>
+
+          <!-- Document Sheet (Peeking out) -->
+          <div class="dossier-doc cursor-pointer p-4 sm:p-5 shadow-lg" data-dossier="3">
+            <!-- Peeking Header -->
+            <div class="dossier-peek-header">
+              <div class="flex items-center justify-between gap-2">
+                <span class="rounded bg-[#0B0F14] px-2 py-0.5 font-mono text-[10px] font-semibold text-white">
+                  REF 03 · BARO-DEM AIDING
+                </span>
+                <span class="font-mono text-[10.5px] text-[#525B66]">IEEE PLANS (1993) · Artech House (2013)</span>
+              </div>
+              <h3 class="font-editorial mt-2.5 text-[20px] font-semibold leading-tight text-[#0B0F14]">
+                GPS RAIM with Barometric Altimeter Aiding
+              </h3>
+              <p class="mt-1 font-mono text-[11.5px] text-[#525B66]">
+                R. G. Brown (IEEE PLANS) · P. D. Groves (Univ. College London)
+              </p>
+
+              <!-- Limitation Teaser Tag -->
+              <div class="mt-3.5 flex items-center justify-between border-t border-dashed border-neutral-200 pt-3">
+                <span class="rounded border border-rose-300 bg-rose-50 px-2 py-0.5 font-mono text-[9.5px] font-semibold text-rose-700">
+                  LIMITATION: STORM DEPRESSION &gt;150m ERROR
+                </span>
+                <button type="button" class="dossier-toggle-btn flex items-center gap-1 font-mono text-[10.5px] font-semibold text-[#0B0F14] hover:text-[#D97706]">
+                  <span class="btn-state-text">SLIDE OUT</span>
+                  <span class="btn-arrow text-[12px]">↗</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Expandable Full Dossier Body -->
+            <div class="dossier-body">
+              <div class="border-t border-neutral-200 pt-4 mt-3 space-y-3.5 text-[12.5px] leading-relaxed text-[#525B66]">
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-wider text-[#7A8491]">Landmark Research Publication</div>
+                  <div class="mt-0.5 font-mono text-[11px] text-[#0B0F14]">
+                    <em>IEEE PLANS Conference Record (1993)</em> / <em>Principles of GNSS (Artech House, 2013)</em>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-wider text-[#7A8491]">Pioneering Contribution</div>
+                  <p class="mt-0.5">
+                    Formulated the mathematical integration of barometric altimeters into the GNSS least-squares equation, replacing an occluded fourth satellite along the vertical z-axis.
+                  </p>
+                </div>
+
+                <!-- Fatal Limitation Box -->
+                <div class="rounded-md border border-rose-200 bg-rose-50/70 p-3 text-[11.5px] text-rose-950 font-mono">
+                  <div class="flex items-center gap-1.5 font-semibold text-rose-700">
+                    <span>⚠</span>
+                    <span>THE FATAL MOUNTAIN LIMITATION WE FIXED:</span>
+                  </div>
+                  <p class="mt-1 leading-normal text-rose-900">
+                    Standard barometric aiding assumes a static standard sea-level atmosphere (1013.25 hPa). In Himalayan cloudbursts or monsoonal flash floods, local barometric depressions of 15–25 hPa cause standard baro-altimeters to overestimate altitude by over 150 meters, corrupting receiver position fixes.
+                  </p>
+                </div>
+
+                <!-- NavIC-Restore Engineering Fix -->
+                <div class="rounded-md border border-emerald-300 bg-emerald-50/80 p-3.5 text-[11.5px] text-emerald-950 font-mono">
+                  <div class="flex items-center gap-1.5 font-semibold text-emerald-800">
+                    <span>✓</span>
+                    <span>NAVIC-RESTORE ARCHITECTURAL INNOVATION:</span>
+                  </div>
+                  <p class="mt-1 leading-normal text-emerald-900">
+                    <strong>Dual-Constraint Baro-DEM Riverbed Surface Clamp (Mode 03):</strong> When extreme canyon overhangs block even the drone relay, NavIC-Restore fuses receiver differential pressure (ΔP) with <strong>Cartosat-1 30m stereo DEM terrain surface contours</strong>. By projecting receiver altitude onto the known physical canyon riverbed floor, the system clamps the vertical axis and preserves 2D horizontal accuracy (±4.8m) even under severe 3-satellite blackout.
+                  </p>
+                </div>
+
+                <div class="pt-2 text-right">
+                  <button type="button" class="dossier-retract-btn font-mono text-[10.5px] font-semibold text-[#525B66] hover:text-[#0B0F14]">
+                    [ RETRACT DOSSIER ↙ ]
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- SECTION 5: ORIGINAL VALIDATION LEDGER (Clean Typographic Split)         -->
   <!-- ======================================================================= -->
   <section id="validation" class="border-t border-neutral-200 bg-[#F8F9FA] py-20">
     <div class="mx-auto max-w-[1560px] w-full px-4 sm:px-8 lg:px-12 px-4 sm:px-6">
@@ -1826,10 +2175,10 @@
             if (overlayMode === 'rescue') {
               const d = depths[idx];
               if (d >= 0.03 && d <= 0.35) {
-                // Subtle high-contrast alpine silver evacuation corridor
-                r = r * 0.65 + 220 * 0.35;
-                g = g * 0.65 + 235 * 0.35;
-                b = b * 0.65 + 245 * 0.35;
+                // Passable shallow ambulance corridor: calm emerald wash
+                r = r * 0.62 + 34 * 0.38;
+                g = g * 0.62 + 180 * 0.38;
+                b = b * 0.62 + 90 * 0.38;
               }
             } else if (overlayMode === 'dop') {
               const fx = (px / (TEX_SIZE - 1)) * (N - 1);
@@ -1845,14 +2194,14 @@
 
               let hr, hg, hb;
               if (err < 5.0) {
-                // Sub-5m nominal lock: illuminated clean white/silver
-                hr = 245; hg = 248; hb = 252;
+                // Sub-5m nominal lock: emerald green
+                hr = 22; hg = 163; hb = 74;
               } else if (err <= 15.0) {
-                // 5-15m degraded geometry: signature warm amber
-                hr = 220; hg = 150; hb = 45;
+                // 5-15m degraded geometry: solar amber
+                hr = 217; hg = 119; hb = 6;
               } else {
-                // >15m blackout / unfixable: deep shadowed mountain slate
-                hr = 25; hg = 35; hb = 48;
+                // >15m blackout / unfixable: deep signal red
+                hr = 220; hg = 38; hb = 38;
               }
               r = r * 0.60 + hr * 0.40;
               g = g * 0.60 + hg * 0.40;
@@ -1963,16 +2312,16 @@
         const barEl = document.getElementById('tt-depth-bar');
         if (info.passable_type === 'dry') {
           passEl.textContent = 'DRY GROUND';
-          passEl.className = 'rounded border border-white/20 px-1.5 py-0.5 text-[9px] font-semibold uppercase bg-white/10 text-neutral-200';
-          barEl.className = 'h-full rounded-full bg-neutral-600 transition-all duration-75';
+          passEl.className = 'rounded border border-amber-500/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase bg-amber-500/15 text-amber-300';
+          barEl.className = 'h-full rounded-full bg-amber-500/40 transition-all duration-75';
         } else if (info.passable_type === 'ambulance_passable') {
           passEl.textContent = 'AMBULANCE OK';
-          passEl.className = 'rounded border border-white/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase bg-white/15 text-white';
-          barEl.className = 'h-full rounded-full bg-white transition-all duration-75';
+          passEl.className = 'rounded border border-emerald-500/40 px-1.5 py-0.5 text-[9px] font-semibold uppercase bg-emerald-500/20 text-emerald-300';
+          barEl.className = 'h-full rounded-full bg-[#16A34A] transition-all duration-75';
         } else {
           passEl.textContent = 'BOAT ONLY';
-          passEl.className = 'rounded border border-white/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase bg-white/5 text-neutral-300';
-          barEl.className = 'h-full rounded-full bg-neutral-400 transition-all duration-75';
+          passEl.className = 'rounded border border-sky-500/40 px-1.5 py-0.5 text-[9px] font-semibold uppercase bg-sky-500/20 text-sky-300';
+          barEl.className = 'h-full rounded-full bg-[#0284C7] transition-all duration-75';
         }
         barEl.style.width = `${clamp((depth / 3.2) * 100, depth > 0.03 ? 8 : 0, 100)}%`;
 
@@ -1980,13 +2329,13 @@
         const dop = info.dop || { status: 'NO_FIX', error_m: 36 };
         if (dop.status === 'SUB_5M') {
           fixEl.textContent = `±${dop.error_m.toFixed(1)} m`;
-          fixEl.className = 'font-mono font-semibold text-white';
+          fixEl.className = 'font-mono font-bold text-emerald-400';
         } else if (dop.status === 'DEGRADED') {
           fixEl.textContent = `±${dop.error_m.toFixed(1)} m`;
-          fixEl.className = 'font-mono font-medium text-neutral-300';
+          fixEl.className = 'font-mono font-semibold text-amber-400';
         } else {
           fixEl.textContent = 'NO FIX [LOST]';
-          fixEl.className = 'font-mono font-medium text-neutral-400';
+          fixEl.className = 'font-mono font-bold text-rose-400';
         }
 
         document.getElementById('tt-note').textContent = `${info.lat.toFixed(3)}°N, ${info.lon.toFixed(3)}°E`;
@@ -2129,7 +2478,7 @@
               if (!started) { ctx.moveTo(sp.x, sp.y); started = true; }
               else ctx.lineTo(sp.x, sp.y);
             }
-            ctx.strokeStyle = ch.type === 'ambulance' ? '#F8FAFC' : '#4A7C9D';
+            ctx.strokeStyle = ch.type === 'ambulance' ? '#16A34A' : '#0284C7';
             ctx.lineWidth = 4;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
@@ -2144,7 +2493,7 @@
           const isDeployed = state.mode === 'pseudolite' && state.beacon && state.beacon.id === ridge.id;
           ctx.beginPath();
           ctx.arc(sp.x, sp.y, isDeployed ? 7 : 5, 0, Math.PI * 2);
-          ctx.fillStyle = isDeployed ? '#FFFFFF' : '#94A3B8';
+          ctx.fillStyle = isDeployed ? '#16A34A' : '#94A3B8';
           ctx.fill();
           ctx.strokeStyle = '#0A0E14';
           ctx.lineWidth = 2;
@@ -2163,7 +2512,7 @@
 
               ctx.beginPath();
               ctx.arc(dp.x, dp.y, 6, 0, Math.PI * 2);
-              ctx.fillStyle = '#FFFFFF';
+              ctx.fillStyle = '#F5A623';
               ctx.fill();
               ctx.strokeStyle = '#0A0E14';
               ctx.lineWidth = 2;
@@ -2192,7 +2541,7 @@
               ctx.beginPath();
               ctx.moveTo(satSp.x, satSp.y);
               ctx.lineTo(endX, endY);
-              ctx.strokeStyle = blocked ? 'rgba(100,116,139,0.35)' : 'rgba(255,255,255,0.6)';
+              ctx.strokeStyle = blocked ? 'rgba(220,38,38,0.7)' : 'rgba(22,163,74,0.6)';
               ctx.lineWidth = 1.6;
               ctx.stroke();
             }
@@ -2712,9 +3061,9 @@
             const tube = new THREE.Mesh(
               new THREE.TubeGeometry(curve, 48, 0.13, 8, false),
               new THREE.MeshStandardMaterial({
-                color: isAmb ? '#E2E8F0' : '#4A7C9D',
-                emissive: isAmb ? '#334155' : '#1E293B',
-                emissiveIntensity: 0.35,
+                color: isAmb ? '#16A34A' : '#0284C7',
+                emissive: isAmb ? '#0B3A1C' : '#082F49',
+                emissiveIntensity: 0.4,
                 roughness: 0.4,
               })
             );
@@ -2732,7 +3081,7 @@
 
           const disk = new THREE.Mesh(
             new THREE.CylinderGeometry(0.42, 0.5, 0.12, 24),
-            new THREE.MeshStandardMaterial({ color: isDeployed ? '#FFFFFF' : '#64748B', roughness: 0.4 })
+            new THREE.MeshStandardMaterial({ color: isDeployed ? '#16A34A' : '#64748B', roughness: 0.4 })
           );
           padGroup.add(disk);
 
@@ -2741,9 +3090,9 @@
           const halo = new THREE.Mesh(
             haloGeo,
             new THREE.MeshBasicMaterial({
-              color: isDeployed ? '#FFFFFF' : isBest ? '#F5A623' : '#64748B',
+              color: isDeployed ? '#16A34A' : isBest ? '#F5A623' : '#64748B',
               transparent: true,
-              opacity: isDeployed ? 0.9 : isBest ? 0.7 : 0.35,
+              opacity: isDeployed ? 0.9 : isBest ? 0.8 : 0.4,
               side: THREE.DoubleSide,
             })
           );
@@ -2804,7 +3153,7 @@
 
           const beaconLed = new THREE.Mesh(
             new THREE.SphereGeometry(0.11, 10, 10),
-            new THREE.MeshBasicMaterial({ color: '#FFFFFF' })
+            new THREE.MeshBasicMaterial({ color: '#F5A623' })
           );
           beaconLed.position.y = 0.11;
           drone.add(beaconLed);
@@ -2814,7 +3163,7 @@
           covGeo.rotateX(-Math.PI / 2);
           const covRing = new THREE.Mesh(
             covGeo,
-            new THREE.MeshBasicMaterial({ color: '#FFFFFF', transparent: true, opacity: 0.25, side: THREE.DoubleSide })
+            new THREE.MeshBasicMaterial({ color: '#F5A623', transparent: true, opacity: 0.35, side: THREE.DoubleSide })
           );
           covRing.position.set(p.x, p.y + 0.2, p.z);
           threeCtx.dynamicGroup.add(covRing);
@@ -2840,15 +3189,15 @@
               new THREE.Line(
                 rayGeo,
                 new THREE.LineBasicMaterial({
-                  color: blocked ? '#64748B' : '#FFFFFF',
+                  color: blocked ? '#DC2626' : '#16A34A',
                   transparent: true,
-                  opacity: blocked ? 0.25 : 0.65,
+                  opacity: blocked ? 0.70 : 0.55,
                 })
               )
             );
             const satOrb = new THREE.Mesh(
               new THREE.SphereGeometry(0.28, 12, 12),
-              new THREE.MeshBasicMaterial({ color: blocked ? '#64748B' : '#FFFFFF' })
+              new THREE.MeshBasicMaterial({ color: blocked ? '#DC2626' : '#22C55E' })
             );
             satOrb.position.copy(satPos);
             threeCtx.dynamicGroup.add(satOrb);
@@ -2879,7 +3228,7 @@
               if (idx === 0) ctx.moveTo(px, py);
               else ctx.lineTo(px, py);
             });
-            ctx.strokeStyle = ch.type === 'ambulance' ? '#F8FAFC' : '#4A7C9D';
+            ctx.strokeStyle = ch.type === 'ambulance' ? '#16A34A' : '#0284C7';
             ctx.lineWidth = 4.5;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
@@ -2900,7 +3249,7 @@
           btn.style.top = `${top}%`;
           btn.className = `pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold shadow-md transition-transform hover:scale-105 ${
             isDeployed
-              ? 'border-white bg-[#141C28]/95 text-white shadow-sm ring-1 ring-white/20'
+              ? 'border-emerald-500 bg-[#081810] text-emerald-300 shadow-md ring-1 ring-emerald-500/40'
               : 'border-white/20 bg-[#0F141F]/80 text-neutral-300 hover:text-white'
           }`;
           btn.textContent = isDeployed ? `● ${ridge.name}` : ridge.name;
@@ -2943,9 +3292,9 @@
         svg.innerHTML = `
           <line x1="${padL}" y1="${padT + plotH * 0.5}" x2="${w - padR}" y2="${padT + plotH * 0.5}" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3 3" />
           <line x1="${padL}" y1="${padT + plotH}" x2="${w - padR}" y2="${padT + plotH}" stroke="rgba(255,255,255,0.12)" />
-          <polyline fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="1.2" stroke-dasharray="3 3" points="${basePts.join(' ')}" />
-          <polyline fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4" stroke-dasharray="1 2" points="${clampPts.join(' ')}" />
-          <polyline fill="none" stroke="#FFFFFF" stroke-width="2" points="${dronePts.join(' ')}" />
+          <polyline fill="none" stroke="rgba(239,68,68,0.7)" stroke-width="1.2" stroke-dasharray="3 3" points="${basePts.join(' ')}" />
+          <polyline fill="none" stroke="rgba(245,166,35,0.85)" stroke-width="1.4" stroke-dasharray="1 2" points="${clampPts.join(' ')}" />
+          <polyline fill="none" stroke="#16A34A" stroke-width="2" points="${dronePts.join(' ')}" />
           <text x="${padL}" y="${h - 2}" fill="#7A8491" font-family="IBM Plex Mono" font-size="8">00h</text>
           <text x="${w / 2 - 8}" y="${h - 2}" fill="#7A8491" font-family="IBM Plex Mono" font-size="8">12h</text>
           <text x="${w - padR - 14}" y="${h - 2}" fill="#7A8491" font-family="IBM Plex Mono" font-size="8">23h</text>
@@ -3019,17 +3368,23 @@
         const lbl = document.getElementById('status-label');
         const err = document.getElementById('status-error');
         if (pSub5 >= 60 && avgErr !== null) {
-          dot.className = 'h-1.5 w-1.5 rounded-full bg-white';
+          dot.className = 'h-2 w-2 rounded-full bg-[#16A34A] shadow-[0_0_8px_rgba(22,163,74,0.7)]';
           lbl.textContent = 'NOMINAL FIX';
+          lbl.className = 'font-semibold text-emerald-300';
           err.textContent = `±${avgErr.toFixed(1)}m`;
+          err.className = 'text-emerald-400 font-bold';
         } else if (pSub5 + pDeg >= 45 && avgErr !== null) {
-          dot.className = 'h-1.5 w-1.5 rounded-full bg-neutral-400';
+          dot.className = 'h-2 w-2 rounded-full bg-[#D97706] shadow-[0_0_8px_rgba(217,119,6,0.6)]';
           lbl.textContent = 'GEOM DEGRADED';
+          lbl.className = 'font-semibold text-amber-300';
           err.textContent = `±${avgErr.toFixed(1)}m`;
+          err.className = 'text-amber-400 font-semibold';
         } else {
-          dot.className = 'h-1.5 w-1.5 rounded-full bg-neutral-600';
+          dot.className = 'h-2 w-2 rounded-full bg-[#DC2626] shadow-[0_0_8px_rgba(220,38,38,0.7)]';
           lbl.textContent = 'NO FIX [LOST]';
+          lbl.className = 'font-semibold text-rose-300';
           err.textContent = '>15m';
+          err.className = 'text-rose-400 font-bold';
         }
 
         document.getElementById('ridge-count-label').textContent = String(rankedRidges.length);
@@ -3043,9 +3398,9 @@
           const row = document.createElement('div');
           row.className = `flex flex-wrap items-center justify-between gap-2 rounded border px-2.5 py-2 font-mono transition-colors ${
             isActive
-              ? 'border-white/40 bg-[#141C28] text-white'
+              ? 'border-emerald-500/40 bg-[#0A1A14] text-white shadow-sm'
               : isBest
-              ? 'border-white/20 bg-[#0E131C] text-neutral-200'
+              ? 'border-amber-500/30 bg-[#14120D] text-neutral-200'
               : 'border-white/10 bg-[#080B10] text-neutral-300'
           }`;
           const errStr = entry.stats.avgErr !== null ? `±${entry.stats.avgErr.toFixed(1)}m` : 'LOST';
@@ -3054,7 +3409,7 @@
               <div class="flex items-center gap-1.5">
                 <span class="text-[9.5px] text-neutral-400">[WP-0${idx + 1}]</span>
                 <span class="truncate text-[11.5px] font-medium text-white">${entry.ridge.name.toUpperCase()}</span>
-                ${isBest ? '<span class="rounded border border-white/20 bg-white/10 px-1.5 py-0.2 text-[8px] font-medium uppercase text-neutral-200">OPTIMAL</span>' : ''}
+                ${isBest ? '<span class="rounded border border-amber-500/40 bg-amber-500/15 px-1.5 py-0.2 text-[8px] font-semibold uppercase text-amber-300">OPTIMAL</span>' : ''}
               </div>
               <div class="mt-0.5 text-[9px] text-neutral-400">
                 SAR WATER: 0.00m · ELEV: ${entry.ridge.elevation_m}m · FIX: <span class="text-white font-medium">${errStr}</span> (${entry.stats.pSub5}% SUB-5m)
@@ -3062,7 +3417,9 @@
             </div>
             <button type="button" class="shrink-0 font-mono text-[9px] uppercase font-semibold px-2 py-1 rounded transition-colors ${
               isActive
-                ? 'bg-white text-[#0B0F14] border border-white'
+                ? 'bg-[#16A34A] text-white font-bold border border-emerald-400 shadow-sm'
+                : isBest
+                ? 'border border-amber-500/40 bg-amber-500/15 text-amber-300 hover:bg-amber-500/25'
                 : 'border border-white/20 bg-white/5 text-neutral-300 hover:bg-white/15 hover:text-white'
             }">
               ${isActive ? '[DEPLOYED]' : '[SELECT]'}
@@ -3080,8 +3437,14 @@
           0,
           Math.round(((baseStats.meanAllErr - bestStats.meanAllErr) / Math.max(1, baseStats.meanAllErr)) * 100)
         );
-        document.getElementById('impact-improvement-badge').textContent =
-          improvementPct > 0 ? `Δσ: -${improvementPct}% [RESTORED]` : 'GEOM NOMINAL';
+        const impBadge = document.getElementById('impact-improvement-badge');
+        if (improvementPct > 0) {
+          impBadge.textContent = `Δσ: -${improvementPct}% [RESTORED]`;
+          impBadge.className = 'rounded border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 font-mono text-[9.5px] font-semibold text-emerald-300';
+        } else {
+          impBadge.textContent = 'GEOM NOMINAL';
+          impBadge.className = 'rounded border border-white/20 bg-white/5 px-2 py-0.5 font-mono text-[9.5px] font-medium text-neutral-300';
+        }
 
         document.getElementById('before-error').textContent =
           baseStats.avgErr !== null && baseStats.pNo < 65 ? `±${baseStats.avgErr.toFixed(1)} m` : 'NO FIX [LOST]';
@@ -3123,8 +3486,14 @@
             ? 'Mode 02 · Dry-Ridge Drone Pseudolite'
             : 'Mode 03 · Barometric / DEM Failsafe';
 
-        document.getElementById('drawer-avg-err').textContent =
-          avgErr !== null && pNo < 65 ? `±${avgErr.toFixed(1)} m` : 'NO FIX [LOST]';
+        const drawerAvgEl = document.getElementById('drawer-avg-err');
+        if (avgErr !== null && pNo < 65) {
+          drawerAvgEl.textContent = `±${avgErr.toFixed(1)} m`;
+          drawerAvgEl.className = 'font-semibold text-emerald-400 font-mono';
+        } else {
+          drawerAvgEl.textContent = 'NO FIX [LOST]';
+          drawerAvgEl.className = 'font-semibold text-rose-400 font-mono';
+        }
         document.getElementById('bar-sub5').style.width = `${pSub5}%`;
         document.getElementById('bar-deg').style.width = `${pDeg}%`;
         document.getElementById('bar-nofix').style.width = `${pNo}%`;
@@ -3282,17 +3651,17 @@
           if (rank === 3) {
             btn3.className = 'rounded-md bg-[#0B0F14] px-3.5 py-2 text-[11.5px] font-semibold text-white transition-colors';
             btn4.className = 'rounded-md border border-neutral-300 bg-white px-3.5 py-2 text-[11.5px] font-semibold text-[#525B66] transition-colors';
-            badge.className = 'rounded border border-neutral-400 bg-neutral-200 px-2 py-0.5 font-mono text-[11px] font-semibold text-neutral-700';
+            badge.className = 'rounded border border-rose-300 bg-rose-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-rose-700';
             badge.textContent = 'RANK 3 · SINGULAR · NO FIX';
-            row4.className = 'flex items-center justify-between rounded border border-dashed border-neutral-300 bg-neutral-50 px-3 py-1.5 opacity-60 transition-all text-neutral-500 line-through';
-            row4.innerHTML = '<span class="font-semibold">Row 4 · MISSING (MASKED)</span><span class="font-semibold">[ — , — , — , — ]</span>';
+            row4.className = 'flex items-center justify-between rounded border border-dashed border-rose-300 bg-rose-50/70 px-3 py-1.5 opacity-70 transition-all text-rose-700';
+            row4.innerHTML = '<span class="font-semibold text-rose-800">Row 4 · MISSING (MASKED)</span><span class="font-semibold text-rose-600">[ — , — , — , — ]</span>';
           } else {
             btn4.className = 'rounded-md bg-[#0B0F14] px-3.5 py-2 text-[11.5px] font-semibold text-white transition-colors';
             btn3.className = 'rounded-md border border-neutral-300 bg-white px-3.5 py-2 text-[11.5px] font-semibold text-[#525B66] transition-colors';
-            badge.className = 'rounded border border-[#0B0F14] bg-[#0B0F14] px-2 py-0.5 font-mono text-[11px] font-semibold text-white';
+            badge.className = 'rounded border border-emerald-500/40 bg-emerald-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-emerald-800';
             badge.textContent = 'RANK 4 · INVERTIBLE · ±3.2 m';
-            row4.className = 'flex items-center justify-between rounded border border-neutral-300 bg-neutral-100 px-3 py-1.5 transition-all text-[#0B0F14]';
-            row4.innerHTML = '<span class="font-semibold">Row 4 · DRONE RELAY</span><span class="font-semibold text-neutral-600">[ +0.71, +0.64, +0.29, 1 ]</span>';
+            row4.className = 'flex items-center justify-between rounded border border-emerald-300 bg-emerald-50/80 px-3 py-1.5 transition-all text-emerald-900';
+            row4.innerHTML = '<span class="font-semibold text-emerald-800">Row 4 · DRONE RELAY</span><span class="font-semibold text-emerald-700">[ +0.71, +0.64, +0.29, 1 ]</span>';
           }
         }
 
@@ -3439,13 +3808,71 @@
       }
 
       /* --------------------------------------------------------------------- */
-      /* 10. INITIALIZE SAFELY (WORKS WHETHER LOAD ALREADY FIRED OR NOT)       */
+      /* 10. ARCHIVAL RESEARCH DOSSIER SLEEVES (Slide-Out Prior Art)           */
+      /* --------------------------------------------------------------------- */
+      function wireDossierSleeves() {
+        const docs = document.querySelectorAll('.dossier-doc');
+        const toggleAllBtn = document.getElementById('btn-dossier-toggle-all');
+        const toggleAllText = document.getElementById('lbl-dossier-toggle-text');
+        const toggleAllIcon = document.getElementById('lbl-dossier-toggle-icon');
+        if (!docs.length) return;
+
+        function setDocExtracted(doc, extracted) {
+          doc.classList.toggle('is-extracted', extracted);
+          const btnText = doc.querySelector('.btn-state-text');
+          const btnArrow = doc.querySelector('.btn-arrow');
+          if (btnText) btnText.textContent = extracted ? 'RETRACT' : 'SLIDE OUT';
+          if (btnArrow) btnArrow.textContent = extracted ? '↙' : '↗';
+        }
+
+        docs.forEach((doc) => {
+          const header = doc.querySelector('.dossier-peek-header');
+          const toggleBtn = doc.querySelector('.dossier-toggle-btn');
+          const retractBtn = doc.querySelector('.dossier-retract-btn');
+
+          const toggle = (e) => {
+            if (e.target.closest('.dossier-toggle-btn') && e.currentTarget === header) return;
+            const isExt = doc.classList.contains('is-extracted');
+            setDocExtracted(doc, !isExt);
+            updateToggleAllState();
+          };
+
+          header?.addEventListener('click', toggle);
+          toggleBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isExt = doc.classList.contains('is-extracted');
+            setDocExtracted(doc, !isExt);
+            updateToggleAllState();
+          });
+          retractBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            setDocExtracted(doc, false);
+            updateToggleAllState();
+          });
+        });
+
+        function updateToggleAllState() {
+          const allExtracted = Array.from(docs).every((d) => d.classList.contains('is-extracted'));
+          if (toggleAllText) toggleAllText.textContent = allExtracted ? 'RETRACT ALL DOSSIERS' : 'EXTRACT ALL 3 DOSSIERS';
+          if (toggleAllIcon) toggleAllIcon.textContent = allExtracted ? '↙' : '↗';
+        }
+
+        toggleAllBtn?.addEventListener('click', () => {
+          const allExtracted = Array.from(docs).every((d) => d.classList.contains('is-extracted'));
+          docs.forEach((d) => setDocExtracted(d, !allExtracted));
+          updateToggleAllState();
+        });
+      }
+
+      /* --------------------------------------------------------------------- */
+      /* 11. INITIALIZE SAFELY (WORKS WHETHER LOAD ALREADY FIRED OR NOT)       */
       /* --------------------------------------------------------------------- */
       function bootApp() {
         if (window.__navicBooted) return;
         window.__navicBooted = true;
         initThree();
         wireMatrixProof();
+        wireDossierSleeves();
         wireImportModal();
         renderSatelliteChips();
         loadScenario('chamoli');
