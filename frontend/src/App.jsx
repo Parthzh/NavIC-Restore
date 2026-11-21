@@ -201,6 +201,7 @@ export default function App() {
             selectedCell={selectedCell}
             onSelectCell={setSelectedCell}
             onDeployToRidge={handleDeployToRidge}
+            satellites={satellites}
           />
         </main>
 
