@@ -9,6 +9,7 @@ This file tracks active lanes, recent pushes, and shared contracts across all 4 
 - **Lane 4 (Interactive Web UI & Demo Polish):** Vedant (Completed & Merged)
 
 ## Coordination Log
+- 2026-11-22 04:38 IST | Research Papers Nomenclature & Typography Polish | Updated Section 04 and top navigation to explicitly emphasize "Research Papers" across titles, archival sleeves, and extract buttons. Removed all em-dashes ("—") across the entire section.
 - 2026-11-22 04:32 IST | Cockpit & Telemetry Rack Decluttering | Consolidated the dual stacked cockpit headers into one unified master control bar. Compacted Telemetry Bays 01–05 outer padding and spacing (`p-2.5 space-y-1.5`), streamlined SAR dry-ridge target strips, tightened covariance diagonals and 24h chart to fit the entire cockpit cleanly in view without removing any telemetry or breaking DOM IDs.
 - 2026-11-22 04:19 IST | Peer-Reviewed Scientific Dossier Sleeves | Added Section 04: Scientific Provenance with 3 interactive archival document sleeves citing landmark pseudolite (Tsujii 2006, Cobb 1997), SAR radar (Schumann 2007, Martinis 2015), and baro-DEM (Brown 1993, Groves 2013) research, physical slide-out inspection animations, and 1-click comparison.
 - 2026-11-22 03:43 IST | Monochrome Avionics & Anti-Neon Purge | Replaced multi-color neon AI-slop styling across telemetry rack, 3D map shaders, satellite rays, rescue routes, and proof matrix with high-contrast monochrome and sparse amber (#F5A623) avionics palette.
