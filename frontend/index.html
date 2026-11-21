@@ -201,13 +201,13 @@
               <g>
                 <!-- Blocked low-angle satellite -->
                 <rect x="34" y="34" width="22" height="10" rx="2" fill="#0B0F14" />
-                <rect x="22" y="37" width="10" height="4" fill="#D32F2F" />
-                <rect x="58" y="37" width="10" height="4" fill="#D32F2F" />
-                <text x="45" y="25" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#D32F2F">NVS-01 (24°)</text>
-                <!-- Blocked red ray hitting west cliff -->
-                <line x1="48" y1="45" x2="118" y2="148" stroke="#D32F2F" stroke-width="1.6" stroke-dasharray="4 3" />
-                <circle cx="118" cy="148" r="4" fill="#D32F2F" />
-                <text x="128" y="144" font-family="IBM Plex Mono" font-size="9" fill="#D32F2F">MASKED BY RIDGE</text>
+                <rect x="22" y="37" width="10" height="4" fill="#64748B" />
+                <rect x="58" y="37" width="10" height="4" fill="#64748B" />
+                <text x="45" y="25" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#64748B">NVS-01 (24°)</text>
+                <!-- Blocked ray hitting west cliff -->
+                <line x1="48" y1="45" x2="118" y2="148" stroke="#64748B" stroke-width="1.6" stroke-dasharray="4 3" />
+                <circle cx="118" cy="148" r="4" fill="#64748B" />
+                <text x="128" y="144" font-family="IBM Plex Mono" font-size="9" fill="#64748B">MASKED BY RIDGE</text>
 
                 <!-- Clear high-angle satellites -->
                 <rect x="234" y="22" width="22" height="10" rx="2" fill="#0B0F14" />
@@ -254,13 +254,13 @@
                 <circle cx="-18" cy="0" r="3.5" fill="#FFFFFF" stroke="#0B0F14" stroke-width="1.4" />
                 <circle cx="18" cy="0" r="3.5" fill="#FFFFFF" stroke="#0B0F14" stroke-width="1.4" />
                 <rect x="-7" y="-5" width="14" height="10" rx="2.5" fill="#0B0F14" />
-                <circle cx="0" cy="0" r="2.2" fill="#22C55E" />
+                <circle cx="0" cy="0" r="2.2" fill="#FFFFFF" />
               </g>
-              <text x="437" y="57" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" font-weight="600" fill="#16A34A">DRONE RELAY · 55m</text>
+              <text x="437" y="57" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" font-weight="600" fill="#0B0F14">DRONE RELAY · 55m</text>
 
               <!-- Restored 4th Vector Beam from Drone into Flooded Valley -->
-              <line x1="428" y1="78" x2="266" y2="232" stroke="#16A34A" stroke-width="2" />
-              <circle cx="262" cy="234" r="5" fill="#16A34A" stroke="#FFFFFF" stroke-width="2" />
+              <line x1="428" y1="78" x2="266" y2="232" stroke="#0B0F14" stroke-width="2" />
+              <circle cx="262" cy="234" r="5" fill="#0B0F14" stroke="#FFFFFF" stroke-width="2" />
               <rect x="210" y="242" width="104" height="20" rx="4" fill="#0B0F14" />
               <text x="262" y="255" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" font-weight="600" fill="#FFFFFF">RESCUE FIX ±3.2m</text>
             </svg>
@@ -312,8 +312,8 @@
           </div>
           <div class="hidden sm:flex items-center gap-3">
             <span class="text-neutral-400">CLOCK: OCXO 10 MHz (±1 ppb)</span>
-            <span class="flex items-center gap-1.5 text-emerald-400">
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+            <span class="flex items-center gap-1.5 text-neutral-300">
+              <span class="h-1.5 w-1.5 rounded-full bg-white"></span>
               TELEMETRY LOCKED
             </span>
           </div>
@@ -353,44 +353,44 @@
             </div>
           </div>
 
-          <!-- Center: 1-Click Judge Demo Storyboard (Fixes "execution is hindery") -->
-          <div class="hidden xl:flex items-center gap-1.5 rounded border border-white/15 bg-[#06080C] px-2.5 py-1">
-            <span class="font-mono text-[9px] uppercase tracking-wider text-[#F5A623] font-semibold">JUDGE FLIGHT RECORDER:</span>
+          <!-- Center: 1-Click Judge Demo Storyboard (Muted Aerospace Blueprint) -->
+          <div class="hidden xl:flex items-center gap-1.5 rounded border border-white/10 bg-[#06080C] px-2 py-0.5 font-mono text-[10px]">
+            <span class="text-[9px] uppercase tracking-wider text-neutral-400 mr-0.5">FLIGHT PLAN:</span>
             <button
               id="btn-story-outage"
               type="button"
-              class="flex items-center gap-1 rounded border border-rose-500/30 bg-rose-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-rose-300 transition-colors hover:bg-rose-500/20"
+              class="flex items-center gap-1.5 rounded border border-white/10 bg-[#10151E] px-2.5 py-1 text-neutral-300 transition-colors hover:border-white/30 hover:text-white"
               title="Step 1: Simulate 3-Sat Canyon Outage"
             >
-              <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
-              01 OUTAGE
+              <span class="text-neutral-400 font-semibold">[01]</span>
+              <span>CANYON OUTAGE</span>
             </button>
-            <span class="text-neutral-600 font-mono text-[10px]">→</span>
+            <span class="text-neutral-600 text-[10px]">→</span>
             <button
               id="btn-story-radar"
               type="button"
-              class="flex items-center gap-1 rounded border border-sky-500/30 bg-sky-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-sky-300 transition-colors hover:bg-sky-500/20"
+              class="flex items-center gap-1.5 rounded border border-white/10 bg-[#10151E] px-2.5 py-1 text-neutral-300 transition-colors hover:border-white/30 hover:text-white"
               title="Step 2: Inspect SAR Radar Flood & Dry Ridges"
             >
-              <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
-              02 SAR RADAR
+              <span class="text-neutral-400 font-semibold">[02]</span>
+              <span>SAR RADAR</span>
             </button>
-            <span class="text-neutral-600 font-mono text-[10px]">→</span>
+            <span class="text-neutral-600 text-[10px]">→</span>
             <button
               id="btn-story-drone"
               type="button"
-              class="flex items-center gap-1 rounded border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-300 transition-colors hover:bg-emerald-500/25"
+              class="flex items-center gap-1.5 rounded border border-white/20 bg-[#16202E] px-2.5 py-1 text-white font-medium transition-colors hover:border-white/40"
               title="Step 3: Deploy Tethered Pseudolite on Dhak Crest"
             >
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-              03 DRONE LOCK
+              <span class="text-[#F5A623] font-semibold">[03]</span>
+              <span>DRONE LOCK</span>
             </button>
           </div>
 
           <!-- Right: Master Status Indicator & Auto-Deploy -->
           <div class="flex flex-wrap items-center gap-2.5">
             <div class="flex items-center gap-2 rounded border border-white/15 bg-[#101620] px-3 py-1 text-[11.5px] font-mono">
-              <span id="status-dot" class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
+              <span id="status-dot" class="h-1.5 w-1.5 rounded-full bg-neutral-400"></span>
               <span id="status-label" class="font-semibold text-white">NO FIX</span>
               <span id="status-error" class="text-neutral-400">&gt;15m</span>
             </div>
@@ -453,13 +453,13 @@
 
                 <!-- Visual depth gauge bar -->
                 <div class="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/10">
-                  <div id="tt-depth-bar" class="h-full rounded-full bg-[#38BDF8] transition-all duration-75" style="width: 0%"></div>
+                  <div id="tt-depth-bar" class="h-full rounded-full bg-white/80 transition-all duration-75" style="width: 0%"></div>
                 </div>
 
                 <div class="mt-2 space-y-1 border-t border-white/10 pt-1.5 font-mono text-[10px]">
                   <div class="flex items-center justify-between">
                     <span class="text-neutral-400">NAVIC RESTORED FIX</span>
-                    <span id="tt-fix" class="font-semibold text-emerald-400">±3.2 m</span>
+                    <span id="tt-fix" class="font-semibold text-white">±3.2 m</span>
                   </div>
                   <div id="tt-note" class="text-[9px] text-neutral-400">30.535°N, 79.565°E · CARTOSAT-1 DEM</div>
                 </div>
@@ -482,9 +482,9 @@
               <div class="absolute bottom-3.5 left-3.5 z-20 rounded border border-white/15 bg-[#0C1017]/95 px-3 py-2 text-[10.5px] text-neutral-200 backdrop-blur-sm font-mono">
                 <div id="legend-rescue" class="space-y-1.5">
                   <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#22C55E]"></span>AMBULANCE (&lt;0.35m)</span>
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#38BDF8]"></span>BOAT CHANNEL (&gt;0.5m)</span>
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full border border-white bg-[#0D1218]"></span>DRY RIDGE (0.0m)</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-white"></span>AMBULANCE (&lt;0.35m)</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#4A7C9D]"></span>BOAT CHANNEL (&gt;0.5m)</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full border border-white/40 bg-[#0D1218]"></span>DRY RIDGE (0.0m)</span>
                   </div>
                   <div class="flex items-center gap-2 pt-0.5 text-[9.5px] text-neutral-400">
                     <span>SHALLOW 0.2m</span>
@@ -495,9 +495,9 @@
                 <div id="legend-dop" class="hidden space-y-1">
                   <div class="text-[9.5px] uppercase tracking-wider text-neutral-400">POSITIONING ERROR SPECTRUM</div>
                   <div class="flex items-center gap-3">
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#22C55E]"></span>SUB-5m FIX</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-white"></span>SUB-5m FIX</span>
                     <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#F5A623]"></span>5–15m DEGRADED</span>
-                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-[#D32F2F]"></span>NO FIX (&gt;15m)</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full border border-neutral-600 bg-neutral-800"></span>NO FIX (&gt;15m)</span>
                   </div>
                 </div>
               </div>
@@ -535,7 +535,7 @@
                 <div id="sat-chips" class="flex flex-wrap items-center gap-1.5"></div>
               </div>
               <div class="flex items-center gap-3 font-mono">
-                <button id="btn-outage" type="button" class="text-[10.5px] font-medium text-rose-300 underline decoration-rose-500/40 underline-offset-4 hover:text-rose-200">
+                <button id="btn-outage" type="button" class="text-[10.5px] font-medium text-neutral-300 underline decoration-white/20 underline-offset-4 hover:text-white">
                   SIMULATE CANYON OUTAGE (3 SATS)
                 </button>
                 <button id="btn-restore-sats" type="button" class="text-[10.5px] font-medium text-neutral-400 hover:text-white">
@@ -551,52 +551,52 @@
             <div class="p-3 sm:p-3.5 space-y-2.5">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <div class="font-mono text-[9.5px] uppercase tracking-[0.14em] text-neutral-400">
-                    BAY 01 // GEOMETRY STATE &amp; DILUTION
+                  <div class="font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-400">
+                    BAY 01 // GEOMETRY COVARIANCE STATE
                   </div>
-                  <h3 id="impact-headline" class="mt-0.5 font-mono text-[13.5px] font-bold text-white tracking-tight">
+                  <h3 id="impact-headline" class="mt-0.5 font-mono text-[13px] font-semibold text-white tracking-tight">
                     STATE 01 · UNMASKED CONSTELLATION ONLY
                   </h3>
                 </div>
-                <span id="impact-improvement-badge" class="rounded border border-[#F5A623]/40 bg-[#F5A623]/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-[#F5A623]">
+                <span id="impact-improvement-badge" class="rounded border border-white/20 bg-white/5 px-2 py-0.5 font-mono text-[9.5px] font-medium text-neutral-200">
                   GEOM NOMINAL
                 </span>
               </div>
 
-              <p id="impact-story" class="text-[11.5px] leading-relaxed text-neutral-300 font-mono">
+              <p id="impact-story" class="text-[11px] leading-relaxed text-neutral-400 font-mono">
                 Mountain walls mask low-elevation NavIC satellites. Rank deficient G-matrix drops receiver into blackout (&gt;15m error).
               </p>
 
               <!-- Comparison Bays -->
               <div class="grid grid-cols-2 gap-2 font-mono">
-                <div id="card-before" class="rounded border border-white/10 bg-[#0C1017] p-2 transition-colors">
+                <div id="card-before" class="rounded border border-white/10 bg-[#080C12] p-2.5 transition-colors">
                   <div class="flex items-center justify-between text-[9px] uppercase tracking-wider text-neutral-400">
                     <span>SATELLITES ONLY</span>
-                    <span id="before-pill" class="rounded bg-rose-500/20 px-1 py-0.2 text-[8.5px] text-rose-300">RAW</span>
+                    <span id="before-pill" class="rounded border border-white/10 bg-white/5 px-1.5 py-0.2 text-[8px] text-neutral-400">RAW</span>
                   </div>
-                  <div id="before-error" class="mt-1 text-[16px] font-semibold text-rose-400">NO FIX [LOST]</div>
-                  <div id="before-cov" class="mt-0.5 text-[10px] text-neutral-400">Sub-5m Coverage: 0%</div>
+                  <div id="before-error" class="mt-1.5 text-[15px] font-semibold text-neutral-300">NO FIX [LOST]</div>
+                  <div id="before-cov" class="mt-0.5 text-[10px] text-neutral-500">Sub-5m Fix: 0%</div>
                 </div>
 
-                <div id="card-after" class="rounded border border-emerald-500/30 bg-[#0A1A14] p-2 transition-colors">
+                <div id="card-after" class="rounded border border-white/25 bg-[#121824] p-2.5 transition-colors">
                   <div class="flex items-center justify-between text-[9px] uppercase tracking-wider text-neutral-300">
                     <span>WITH PSEUDOLITE</span>
-                    <span id="after-pill" class="rounded bg-emerald-500/20 px-1 py-0.2 text-[8.5px] text-emerald-300">AUGMENTED</span>
+                    <span id="after-pill" class="rounded border border-white/30 bg-white/10 px-1.5 py-0.2 text-[8px] text-white font-medium">AUGMENTED</span>
                   </div>
-                  <div id="after-error" class="mt-1 text-[16px] font-semibold text-emerald-400">±3.2 m</div>
-                  <div id="after-cov" class="mt-0.5 text-[10px] text-neutral-300">Sub-5m Coverage: 92%</div>
+                  <div id="after-error" class="mt-1.5 text-[15px] font-bold text-white">±3.2 m</div>
+                  <div id="after-cov" class="mt-0.5 text-[10px] text-neutral-300">Sub-5m Fix: 92%</div>
                 </div>
               </div>
 
               <!-- Action Bar -->
               <div class="flex items-center justify-between gap-2 border-t border-white/[0.08] pt-2">
-                <div id="impact-step-hint" class="font-mono text-[10px] text-neutral-400">
+                <div id="impact-step-hint" class="font-mono text-[9.5px] text-neutral-400">
                   TELEMETRY: 7 SVs IN-VIEW · MODE 01 [BASELINE]
                 </div>
                 <button
                   id="btn-toggle-solution"
                   type="button"
-                  class="rounded bg-white px-2.5 py-1 font-mono text-[10.5px] font-bold uppercase tracking-[0.05em] text-[#0B0F14] transition-colors hover:bg-neutral-200"
+                  class="rounded border border-white/20 bg-white px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.05em] text-[#0B0F14] transition-colors hover:bg-neutral-200"
                 >
                   DEPLOY ON BEST RIDGE
                 </button>
@@ -663,9 +663,9 @@
                 <span id="drawer-avg-err" class="font-semibold text-white">NO FIX</span>
               </div>
               <div class="flex h-1.5 w-full overflow-hidden rounded-sm bg-neutral-900 border border-white/10">
-                <div id="bar-sub5" class="bg-[#16A34A] transition-all duration-300" style="width: 0%"></div>
-                <div id="bar-deg" class="bg-[#F5A623] transition-all duration-300" style="width: 0%"></div>
-                <div id="bar-nofix" class="bg-[#D32F2F] transition-all duration-300" style="width: 100%"></div>
+                <div id="bar-sub5" class="bg-white transition-all duration-300" style="width: 0%"></div>
+                <div id="bar-deg" class="bg-neutral-500 transition-all duration-300" style="width: 0%"></div>
+                <div id="bar-nofix" class="bg-neutral-800 transition-all duration-300" style="width: 100%"></div>
               </div>
               <div class="flex justify-between text-[9px] text-neutral-400">
                 <span id="pct-sub5">SUB-5m: 0%</span>
@@ -709,10 +709,10 @@
             <div class="p-3 sm:p-3.5 space-y-1.5 font-mono">
               <div class="flex items-center justify-between text-[10.5px]">
                 <span class="text-[9.5px] uppercase tracking-[0.14em] text-neutral-400">BAY 05 // 24H DIURNAL GEOMETRY (m)</span>
-                <div class="flex gap-2 text-[9px]">
-                  <span class="text-[#D32F2F]">● BASE</span>
-                  <span class="text-[#F5A623]">● CLAMP</span>
-                  <span class="text-[#16A34A] font-semibold">● DRONE</span>
+                <div class="flex gap-2.5 text-[8.5px]">
+                  <span class="text-neutral-400">┄ BASELINE</span>
+                  <span class="text-neutral-300">┈ DEM CLAMP</span>
+                  <span class="text-white font-semibold">━ DRONE TARGET</span>
                 </div>
               </div>
               <div class="rounded border border-white/10 bg-[#05070A] p-2">
@@ -885,7 +885,7 @@
             class="w-full rounded-md border border-white/15 bg-[#0A0E14] p-3 font-mono text-[11.5px] text-neutral-200 outline-none focus:border-white/40"
           ></textarea>
 
-          <div id="json-error-msg" class="hidden rounded-md border border-rose-500/40 bg-rose-500/10 px-3 py-2 text-[12px] text-rose-300"></div>
+          <div id="json-error-msg" class="hidden rounded-md border border-neutral-400 bg-neutral-200 px-3 py-2 font-mono text-[12px] text-[#0B0F14]"></div>
 
           <div class="flex items-center justify-end gap-2.5 border-t border-white/10 pt-4">
             <button
@@ -964,7 +964,7 @@
               <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-[#6E7784]">
                 Geometry Matrix G (4×4)
               </span>
-              <span id="rank-badge" class="rounded bg-emerald-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-emerald-700">
+              <span id="rank-badge" class="rounded border border-[#0B0F14] bg-[#0B0F14] px-2 py-0.5 font-mono text-[11px] font-semibold text-white">
                 RANK 4 · INVERTIBLE · ±3.2 m
               </span>
             </div>
@@ -999,9 +999,9 @@
                 <span>Row 3 · IRNSS-1E</span>
                 <span class="text-[#525B66]">[ -0.48, -0.05, +0.88, 1 ]</span>
               </div>
-              <div id="rank-row-4" class="flex items-center justify-between rounded border border-emerald-200 bg-emerald-50/70 px-3 py-1.5 transition-all">
-                <span class="font-semibold text-emerald-800">Row 4 · DRONE RELAY</span>
-                <span class="font-semibold text-emerald-900">[ +0.71, +0.64, +0.29, 1 ]</span>
+              <div id="rank-row-4" class="flex items-center justify-between rounded border border-neutral-300 bg-neutral-100 px-3 py-1.5 transition-all text-[#0B0F14]">
+                <span class="font-semibold">Row 4 · DRONE RELAY</span>
+                <span class="font-semibold text-neutral-600">[ +0.71, +0.64, +0.29, 1 ]</span>
               </div>
             </div>
 
@@ -1826,9 +1826,10 @@
             if (overlayMode === 'rescue') {
               const d = depths[idx];
               if (d >= 0.03 && d <= 0.35) {
-                r = r * 0.62 + 34 * 0.38;
-                g = g * 0.62 + 197 * 0.38;
-                b = b * 0.62 + 94 * 0.38;
+                // Subtle high-contrast alpine silver evacuation corridor
+                r = r * 0.65 + 220 * 0.35;
+                g = g * 0.65 + 235 * 0.35;
+                b = b * 0.65 + 245 * 0.35;
               }
             } else if (overlayMode === 'dop') {
               const fx = (px / (TEX_SIZE - 1)) * (N - 1);
@@ -1844,15 +1845,18 @@
 
               let hr, hg, hb;
               if (err < 5.0) {
-                hr = 34; hg = 185; hb = 98;
+                // Sub-5m nominal lock: illuminated clean white/silver
+                hr = 245; hg = 248; hb = 252;
               } else if (err <= 15.0) {
-                hr = 240; hg = 165; hb = 35;
+                // 5-15m degraded geometry: signature warm amber
+                hr = 220; hg = 150; hb = 45;
               } else {
-                hr = 220; hg = 56; hb = 56;
+                // >15m blackout / unfixable: deep shadowed mountain slate
+                hr = 25; hg = 35; hb = 48;
               }
-              r = r * 0.55 + hr * 0.45;
-              g = g * 0.55 + hg * 0.45;
-              b = b * 0.55 + hb * 0.45;
+              r = r * 0.60 + hr * 0.40;
+              g = g * 0.60 + hg * 0.40;
+              b = b * 0.60 + hb * 0.40;
             }
 
             out[p4] = r;
@@ -1958,17 +1962,17 @@
         const passEl = document.getElementById('tt-passable');
         const barEl = document.getElementById('tt-depth-bar');
         if (info.passable_type === 'dry') {
-          passEl.textContent = 'Dry Ground';
-          passEl.className = 'rounded px-1.5 py-0.5 text-[10px] font-semibold bg-white/10 text-neutral-200';
-          barEl.className = 'h-full rounded-full bg-neutral-500 transition-all duration-75';
+          passEl.textContent = 'DRY GROUND';
+          passEl.className = 'rounded border border-white/20 px-1.5 py-0.5 text-[9px] font-semibold uppercase bg-white/10 text-neutral-200';
+          barEl.className = 'h-full rounded-full bg-neutral-600 transition-all duration-75';
         } else if (info.passable_type === 'ambulance_passable') {
-          passEl.textContent = 'Ambulance OK';
-          passEl.className = 'rounded px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-500/20 text-emerald-300';
-          barEl.className = 'h-full rounded-full bg-emerald-400 transition-all duration-75';
+          passEl.textContent = 'AMBULANCE OK';
+          passEl.className = 'rounded border border-white/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase bg-white/15 text-white';
+          barEl.className = 'h-full rounded-full bg-white transition-all duration-75';
         } else {
-          passEl.textContent = 'Boat Only';
-          passEl.className = 'rounded px-1.5 py-0.5 text-[10px] font-semibold bg-sky-500/20 text-sky-300';
-          barEl.className = 'h-full rounded-full bg-sky-400 transition-all duration-75';
+          passEl.textContent = 'BOAT ONLY';
+          passEl.className = 'rounded border border-white/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase bg-white/5 text-neutral-300';
+          barEl.className = 'h-full rounded-full bg-neutral-400 transition-all duration-75';
         }
         barEl.style.width = `${clamp((depth / 3.2) * 100, depth > 0.03 ? 8 : 0, 100)}%`;
 
@@ -1976,13 +1980,13 @@
         const dop = info.dop || { status: 'NO_FIX', error_m: 36 };
         if (dop.status === 'SUB_5M') {
           fixEl.textContent = `±${dop.error_m.toFixed(1)} m`;
-          fixEl.className = 'font-mono font-semibold text-emerald-400';
+          fixEl.className = 'font-mono font-semibold text-white';
         } else if (dop.status === 'DEGRADED') {
           fixEl.textContent = `±${dop.error_m.toFixed(1)} m`;
-          fixEl.className = 'font-mono font-semibold text-amber-300';
+          fixEl.className = 'font-mono font-medium text-neutral-300';
         } else {
-          fixEl.textContent = 'NO FIX';
-          fixEl.className = 'font-mono font-semibold text-rose-400';
+          fixEl.textContent = 'NO FIX [LOST]';
+          fixEl.className = 'font-mono font-medium text-neutral-400';
         }
 
         document.getElementById('tt-note').textContent = `${info.lat.toFixed(3)}°N, ${info.lon.toFixed(3)}°E`;
@@ -2125,7 +2129,7 @@
               if (!started) { ctx.moveTo(sp.x, sp.y); started = true; }
               else ctx.lineTo(sp.x, sp.y);
             }
-            ctx.strokeStyle = ch.type === 'ambulance' ? '#22C55E' : '#38BDF8';
+            ctx.strokeStyle = ch.type === 'ambulance' ? '#F8FAFC' : '#4A7C9D';
             ctx.lineWidth = 4;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
@@ -2140,7 +2144,7 @@
           const isDeployed = state.mode === 'pseudolite' && state.beacon && state.beacon.id === ridge.id;
           ctx.beginPath();
           ctx.arc(sp.x, sp.y, isDeployed ? 7 : 5, 0, Math.PI * 2);
-          ctx.fillStyle = isDeployed ? '#22C55E' : '#F8FAFC';
+          ctx.fillStyle = isDeployed ? '#FFFFFF' : '#94A3B8';
           ctx.fill();
           ctx.strokeStyle = '#0A0E14';
           ctx.lineWidth = 2;
@@ -2159,9 +2163,9 @@
 
               ctx.beginPath();
               ctx.arc(dp.x, dp.y, 6, 0, Math.PI * 2);
-              ctx.fillStyle = '#22C55E';
+              ctx.fillStyle = '#FFFFFF';
               ctx.fill();
-              ctx.strokeStyle = '#FFFFFF';
+              ctx.strokeStyle = '#0A0E14';
               ctx.lineWidth = 2;
               ctx.stroke();
             }
@@ -2188,7 +2192,7 @@
               ctx.beginPath();
               ctx.moveTo(satSp.x, satSp.y);
               ctx.lineTo(endX, endY);
-              ctx.strokeStyle = blocked ? 'rgba(239,68,68,0.65)' : 'rgba(34,197,94,0.5)';
+              ctx.strokeStyle = blocked ? 'rgba(100,116,139,0.35)' : 'rgba(255,255,255,0.6)';
               ctx.lineWidth = 1.6;
               ctx.stroke();
             }
@@ -2593,12 +2597,12 @@
               const isBest = state.bestRidgeId === ridge.id;
               const btn = document.createElement('button');
               btn.type = 'button';
-              btn.className = `pointer-events-auto absolute left-0 top-0 whitespace-nowrap rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold shadow-lg transition-colors ${
+              btn.className = `pointer-events-auto absolute left-0 top-0 whitespace-nowrap rounded border px-2 py-0.5 font-mono text-[9.5px] font-semibold uppercase shadow-lg transition-colors ${
                 isDeployed
-                  ? 'border-emerald-400 bg-[#0B1712]/95 text-emerald-300'
+                  ? 'border-white bg-[#141C28]/95 text-white'
                   : isBest
-                  ? 'border-amber-400/70 bg-[#121820]/92 text-amber-200 hover:border-amber-300'
-                  : 'border-white/30 bg-[#121820]/90 text-white hover:border-white'
+                  ? 'border-white/40 bg-[#0F141F]/95 text-neutral-200 hover:border-white'
+                  : 'border-white/20 bg-[#090D14]/90 text-neutral-300 hover:border-white/40'
               }`;
               btn.textContent = isDeployed ? `● ${ridge.name} (${state.tetherHeightM}m)` : isBest ? `★ ${ridge.name}` : ridge.name;
               btn.onclick = () => selectRidge(ridge);
@@ -2708,8 +2712,8 @@
             const tube = new THREE.Mesh(
               new THREE.TubeGeometry(curve, 48, 0.13, 8, false),
               new THREE.MeshStandardMaterial({
-                color: isAmb ? '#22C55E' : '#38BDF8',
-                emissive: isAmb ? '#14532D' : '#0C4A6E',
+                color: isAmb ? '#E2E8F0' : '#4A7C9D',
+                emissive: isAmb ? '#334155' : '#1E293B',
                 emissiveIntensity: 0.35,
                 roughness: 0.4,
               })
@@ -2728,7 +2732,7 @@
 
           const disk = new THREE.Mesh(
             new THREE.CylinderGeometry(0.42, 0.5, 0.12, 24),
-            new THREE.MeshStandardMaterial({ color: isDeployed ? '#22C55E' : '#F8FAFC', roughness: 0.4 })
+            new THREE.MeshStandardMaterial({ color: isDeployed ? '#FFFFFF' : '#64748B', roughness: 0.4 })
           );
           padGroup.add(disk);
 
@@ -2737,9 +2741,9 @@
           const halo = new THREE.Mesh(
             haloGeo,
             new THREE.MeshBasicMaterial({
-              color: isDeployed ? '#22C55E' : isBest ? '#F5A623' : '#FFFFFF',
+              color: isDeployed ? '#FFFFFF' : isBest ? '#F5A623' : '#64748B',
               transparent: true,
-              opacity: 0.8,
+              opacity: isDeployed ? 0.9 : isBest ? 0.7 : 0.35,
               side: THREE.DoubleSide,
             })
           );
@@ -2759,12 +2763,12 @@
           if (labelHost) {
             const btn = document.createElement('button');
             btn.type = 'button';
-            btn.className = `pointer-events-auto absolute left-0 top-0 whitespace-nowrap rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold shadow-lg transition-colors ${
+            btn.className = `pointer-events-auto absolute left-0 top-0 whitespace-nowrap rounded border px-2 py-0.5 font-mono text-[9.5px] font-semibold uppercase shadow-lg transition-colors ${
               isDeployed
-                ? 'border-emerald-400 bg-[#0B1712]/95 text-emerald-300'
+                ? 'border-white bg-[#141C28]/95 text-white'
                 : isBest
-                ? 'border-amber-400/70 bg-[#121820]/92 text-amber-200 hover:border-amber-300'
-                : 'border-white/30 bg-[#121820]/90 text-white hover:border-white'
+                ? 'border-white/40 bg-[#0F141F]/95 text-neutral-200 hover:border-white'
+                : 'border-white/20 bg-[#090D14]/90 text-neutral-300 hover:border-white/40'
             }`;
             btn.textContent = isDeployed ? `● ${ridge.name} (${state.tetherHeightM}m)` : isBest ? `★ ${ridge.name}` : ridge.name;
             btn.onclick = () => selectRidge(ridge);
@@ -2800,7 +2804,7 @@
 
           const beaconLed = new THREE.Mesh(
             new THREE.SphereGeometry(0.11, 10, 10),
-            new THREE.MeshBasicMaterial({ color: '#22C55E' })
+            new THREE.MeshBasicMaterial({ color: '#FFFFFF' })
           );
           beaconLed.position.y = 0.11;
           drone.add(beaconLed);
@@ -2810,7 +2814,7 @@
           covGeo.rotateX(-Math.PI / 2);
           const covRing = new THREE.Mesh(
             covGeo,
-            new THREE.MeshBasicMaterial({ color: '#22C55E', transparent: true, opacity: 0.35, side: THREE.DoubleSide })
+            new THREE.MeshBasicMaterial({ color: '#FFFFFF', transparent: true, opacity: 0.25, side: THREE.DoubleSide })
           );
           covRing.position.set(p.x, p.y + 0.2, p.z);
           threeCtx.dynamicGroup.add(covRing);
@@ -2836,15 +2840,15 @@
               new THREE.Line(
                 rayGeo,
                 new THREE.LineBasicMaterial({
-                  color: blocked ? '#EF4444' : '#22C55E',
+                  color: blocked ? '#64748B' : '#FFFFFF',
                   transparent: true,
-                  opacity: blocked ? 0.65 : 0.45,
+                  opacity: blocked ? 0.25 : 0.65,
                 })
               )
             );
             const satOrb = new THREE.Mesh(
               new THREE.SphereGeometry(0.28, 12, 12),
-              new THREE.MeshBasicMaterial({ color: blocked ? '#EF4444' : '#F8FAFC' })
+              new THREE.MeshBasicMaterial({ color: blocked ? '#64748B' : '#FFFFFF' })
             );
             satOrb.position.copy(satPos);
             threeCtx.dynamicGroup.add(satOrb);
@@ -2875,7 +2879,7 @@
               if (idx === 0) ctx.moveTo(px, py);
               else ctx.lineTo(px, py);
             });
-            ctx.strokeStyle = ch.type === 'ambulance' ? '#22C55E' : '#38BDF8';
+            ctx.strokeStyle = ch.type === 'ambulance' ? '#F8FAFC' : '#4A7C9D';
             ctx.lineWidth = 4.5;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
@@ -2896,8 +2900,8 @@
           btn.style.top = `${top}%`;
           btn.className = `pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold shadow-md transition-transform hover:scale-105 ${
             isDeployed
-              ? 'border-emerald-400 bg-[#0B1712] text-emerald-300'
-              : 'border-white/40 bg-[#121820]/90 text-white'
+              ? 'border-white bg-[#141C28]/95 text-white shadow-sm ring-1 ring-white/20'
+              : 'border-white/20 bg-[#0F141F]/80 text-neutral-300 hover:text-white'
           }`;
           btn.textContent = isDeployed ? `● ${ridge.name}` : ridge.name;
           btn.onclick = () => selectRidge(ridge);
@@ -2939,9 +2943,9 @@
         svg.innerHTML = `
           <line x1="${padL}" y1="${padT + plotH * 0.5}" x2="${w - padR}" y2="${padT + plotH * 0.5}" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3 3" />
           <line x1="${padL}" y1="${padT + plotH}" x2="${w - padR}" y2="${padT + plotH}" stroke="rgba(255,255,255,0.12)" />
-          <polyline fill="none" stroke="#D32F2F" stroke-width="1.6" points="${basePts.join(' ')}" />
-          <polyline fill="none" stroke="#F5A623" stroke-width="1.5" points="${clampPts.join(' ')}" />
-          <polyline fill="none" stroke="#16A34A" stroke-width="2" points="${dronePts.join(' ')}" />
+          <polyline fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="1.2" stroke-dasharray="3 3" points="${basePts.join(' ')}" />
+          <polyline fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4" stroke-dasharray="1 2" points="${clampPts.join(' ')}" />
+          <polyline fill="none" stroke="#FFFFFF" stroke-width="2" points="${dronePts.join(' ')}" />
           <text x="${padL}" y="${h - 2}" fill="#7A8491" font-family="IBM Plex Mono" font-size="8">00h</text>
           <text x="${w / 2 - 8}" y="${h - 2}" fill="#7A8491" font-family="IBM Plex Mono" font-size="8">12h</text>
           <text x="${w - padR - 14}" y="${h - 2}" fill="#7A8491" font-family="IBM Plex Mono" font-size="8">23h</text>
@@ -3015,15 +3019,15 @@
         const lbl = document.getElementById('status-label');
         const err = document.getElementById('status-error');
         if (pSub5 >= 60 && avgErr !== null) {
-          dot.className = 'h-1.5 w-1.5 rounded-full bg-[#16A34A]';
+          dot.className = 'h-1.5 w-1.5 rounded-full bg-white';
           lbl.textContent = 'NOMINAL FIX';
           err.textContent = `±${avgErr.toFixed(1)}m`;
         } else if (pSub5 + pDeg >= 45 && avgErr !== null) {
-          dot.className = 'h-1.5 w-1.5 rounded-full bg-[#F5A623]';
+          dot.className = 'h-1.5 w-1.5 rounded-full bg-neutral-400';
           lbl.textContent = 'GEOM DEGRADED';
           err.textContent = `±${avgErr.toFixed(1)}m`;
         } else {
-          dot.className = 'h-1.5 w-1.5 rounded-full bg-[#D32F2F]';
+          dot.className = 'h-1.5 w-1.5 rounded-full bg-neutral-600';
           lbl.textContent = 'NO FIX [LOST]';
           err.textContent = '>15m';
         }
@@ -3039,29 +3043,29 @@
           const row = document.createElement('div');
           row.className = `flex flex-wrap items-center justify-between gap-2 rounded border px-2.5 py-2 font-mono transition-colors ${
             isActive
-              ? 'border-[#16A34A] bg-[#0A1A12] text-white'
+              ? 'border-white/40 bg-[#141C28] text-white'
               : isBest
-              ? 'border-[#F5A623]/40 bg-[#0F141E] text-neutral-200'
-              : 'border-white/10 bg-[#080C12] text-neutral-300'
+              ? 'border-white/20 bg-[#0E131C] text-neutral-200'
+              : 'border-white/10 bg-[#080B10] text-neutral-300'
           }`;
           const errStr = entry.stats.avgErr !== null ? `±${entry.stats.avgErr.toFixed(1)}m` : 'LOST';
           row.innerHTML = `
             <div class="min-w-0">
               <div class="flex items-center gap-1.5">
-                <span class="text-[10px] text-neutral-400">[WP-0${idx + 1}]</span>
-                <span class="truncate text-[12px] font-semibold text-white">${entry.ridge.name.toUpperCase()}</span>
-                ${isBest ? '<span class="rounded border border-[#F5A623]/40 bg-[#F5A623]/10 px-1 py-0.2 text-[8.5px] font-semibold uppercase text-[#F5A623]">RANK 1 OPTIMAL</span>' : ''}
+                <span class="text-[9.5px] text-neutral-400">[WP-0${idx + 1}]</span>
+                <span class="truncate text-[11.5px] font-medium text-white">${entry.ridge.name.toUpperCase()}</span>
+                ${isBest ? '<span class="rounded border border-white/20 bg-white/10 px-1.5 py-0.2 text-[8px] font-medium uppercase text-neutral-200">OPTIMAL</span>' : ''}
               </div>
-              <div class="mt-0.5 text-[9.5px] text-neutral-400">
-                SAR WATER: 0.00m · ELEV: ${entry.ridge.elevation_m}m · FIX: <span class="text-[#22C55E] font-semibold">${errStr}</span> (${entry.stats.pSub5}% SUB-5m)
+              <div class="mt-0.5 text-[9px] text-neutral-400">
+                SAR WATER: 0.00m · ELEV: ${entry.ridge.elevation_m}m · FIX: <span class="text-white font-medium">${errStr}</span> (${entry.stats.pSub5}% SUB-5m)
               </div>
             </div>
-            <button type="button" class="shrink-0 font-mono text-[9.5px] uppercase font-semibold px-2 py-1 rounded transition-colors ${
+            <button type="button" class="shrink-0 font-mono text-[9px] uppercase font-semibold px-2 py-1 rounded transition-colors ${
               isActive
-                ? 'bg-[#16A34A] text-white border border-[#22C55E]'
-                : 'border border-white/20 bg-white text-[#0B0F14] hover:bg-neutral-200'
+                ? 'bg-white text-[#0B0F14] border border-white'
+                : 'border border-white/20 bg-white/5 text-neutral-300 hover:bg-white/15 hover:text-white'
             }">
-              ${isActive ? '[ENGAGED]' : '[DEPLOY LINK]'}
+              ${isActive ? '[DEPLOYED]' : '[SELECT]'}
             </button>
           `;
           row.querySelector('button').onclick = () => {
@@ -3081,11 +3085,11 @@
 
         document.getElementById('before-error').textContent =
           baseStats.avgErr !== null && baseStats.pNo < 65 ? `±${baseStats.avgErr.toFixed(1)} m` : 'NO FIX [LOST]';
-        document.getElementById('before-cov').textContent = `Sub-5m Coverage: ${baseStats.pSub5}%`;
+        document.getElementById('before-cov').textContent = `Sub-5m Fix: ${baseStats.pSub5}%`;
 
         document.getElementById('after-error').textContent =
           bestStats.avgErr !== null && bestStats.pNo < 65 ? `±${bestStats.avgErr.toFixed(1)} m` : 'NO FIX [LOST]';
-        document.getElementById('after-cov').textContent = `Sub-5m Coverage: ${bestStats.pSub5}%`;
+        document.getElementById('after-cov').textContent = `Sub-5m Fix: ${bestStats.pSub5}%`;
 
         const headlineEl = document.getElementById('impact-headline');
         const storyEl = document.getElementById('impact-story');
@@ -3165,7 +3169,7 @@
               ? 'border-white/20 bg-[#141A24] text-white hover:border-white/40'
               : 'border-white/10 bg-[#07090C] text-neutral-600 line-through hover:text-neutral-400'
           }`;
-          btn.innerHTML = `<span class="h-1.5 w-1.5 rounded-full ${on ? 'bg-[#16A34A]' : 'bg-[#D32F2F]'}"></span>${sat.short} <span class="text-[9px] text-neutral-400">${Math.round(sat.el)}°</span>`;
+          btn.innerHTML = `<span class="h-1.5 w-1.5 rounded-full ${on ? 'bg-white' : 'bg-neutral-600'}"></span>${sat.short} <span class="text-[9px] text-neutral-400">${Math.round(sat.el)}°</span>`;
           btn.onclick = () => {
             if (state.activePrns.has(sat.prn)) state.activePrns.delete(sat.prn);
             else state.activePrns.add(sat.prn);
@@ -3204,7 +3208,7 @@
 
         const raysBtn = document.getElementById('btn-sat-rays');
         raysBtn.className = `rounded px-2 py-1 text-[11px] font-medium transition-colors ${
-          state.showSatRays ? 'bg-[#232D3A] text-emerald-300' : 'text-neutral-400 hover:text-white'
+          state.showSatRays ? 'bg-white text-[#0B0F14] font-semibold' : 'text-neutral-400 hover:text-white'
         }`;
 
         document.getElementById('legend-rescue').classList.toggle('hidden', state.overlay === 'dop');
@@ -3278,17 +3282,17 @@
           if (rank === 3) {
             btn3.className = 'rounded-md bg-[#0B0F14] px-3.5 py-2 text-[11.5px] font-semibold text-white transition-colors';
             btn4.className = 'rounded-md border border-neutral-300 bg-white px-3.5 py-2 text-[11.5px] font-semibold text-[#525B66] transition-colors';
-            badge.className = 'rounded bg-rose-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-rose-700';
+            badge.className = 'rounded border border-neutral-400 bg-neutral-200 px-2 py-0.5 font-mono text-[11px] font-semibold text-neutral-700';
             badge.textContent = 'RANK 3 · SINGULAR · NO FIX';
-            row4.className = 'flex items-center justify-between rounded border border-dashed border-rose-300 bg-rose-50/70 px-3 py-1.5 opacity-60 transition-all';
-            row4.innerHTML = '<span class="font-semibold text-rose-700">Row 4 · MISSING (MASKED)</span><span class="font-semibold text-rose-700">[ — , — , — , — ]</span>';
+            row4.className = 'flex items-center justify-between rounded border border-dashed border-neutral-300 bg-neutral-50 px-3 py-1.5 opacity-60 transition-all text-neutral-500 line-through';
+            row4.innerHTML = '<span class="font-semibold">Row 4 · MISSING (MASKED)</span><span class="font-semibold">[ — , — , — , — ]</span>';
           } else {
             btn4.className = 'rounded-md bg-[#0B0F14] px-3.5 py-2 text-[11.5px] font-semibold text-white transition-colors';
             btn3.className = 'rounded-md border border-neutral-300 bg-white px-3.5 py-2 text-[11.5px] font-semibold text-[#525B66] transition-colors';
-            badge.className = 'rounded bg-emerald-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-emerald-700';
+            badge.className = 'rounded border border-[#0B0F14] bg-[#0B0F14] px-2 py-0.5 font-mono text-[11px] font-semibold text-white';
             badge.textContent = 'RANK 4 · INVERTIBLE · ±3.2 m';
-            row4.className = 'flex items-center justify-between rounded border border-emerald-200 bg-emerald-50/70 px-3 py-1.5 transition-all';
-            row4.innerHTML = '<span class="font-semibold text-emerald-800">Row 4 · DRONE RELAY</span><span class="font-semibold text-emerald-900">[ +0.71, +0.64, +0.29, 1 ]</span>';
+            row4.className = 'flex items-center justify-between rounded border border-neutral-300 bg-neutral-100 px-3 py-1.5 transition-all text-[#0B0F14]';
+            row4.innerHTML = '<span class="font-semibold">Row 4 · DRONE RELAY</span><span class="font-semibold text-neutral-600">[ +0.71, +0.64, +0.29, 1 ]</span>';
           }
         }
 
