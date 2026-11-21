@@ -286,16 +286,9 @@ For hackathon judges and evaluators, use the **1-Click Flight Recorder Storyboar
 
 ---
 
-## 10. License & Citations
+## 10. License & Project Attribution
 
-This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+This project is open-source software licensed under the [MIT License](LICENSE).
 
-```bibtex
-@misc{navic_restore_2026,
-  author = {Parth, Yashaswi, Jayant, Vedant},
-  title = {NavIC-Restore: Space-Based Positioning Recovery in Disaster Canyons via SAR and Drone Pseudolite Relays},
-  year = {2026},
-  publisher = {GitHub},
-  howpublished = {\url{https://github.com/Parthzh/NavIC-Restore}}
-}
-```
+- **Core Engineering Team**: Parth, Yashaswi, Jayant, Vedant
+- **Developed for**: ASTRA 2026 — Space & Disaster Resilience Track
