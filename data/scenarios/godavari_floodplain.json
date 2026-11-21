@@ -1,0 +1,2429 @@
+{
+  "metadata": {
+    "id": "godavari_floodplain",
+    "name": "Godavari River Floodplain (Bhadrachalam Basin)",
+    "region": "Godavari River Basin, Bhadrachalam & Polavaram Inundation Corridor",
+    "state": "Telangana / Andhra Pradesh",
+    "description": "Wide alluvial river floodplain experiencing severe monsoon inundation. SAR flood depth maps differentiate ambulance-passable channels (<0.3m) from deep motorboat channels (>0.5m), while high river bunds and temple mounds provide SAR-verified dry staging points for tethered drone pseudolites.",
+    "terrain_type": "river_floodplain",
+    "center": {
+      "lat": 17.668,
+      "lon": 80.89
+    },
+    "bounding_box": {
+      "min_lat": 17.63,
+      "max_lat": 17.71,
+      "min_lon": 80.84,
+      "max_lon": 80.94
+    },
+    "sar_source": "EOS-04 C-band SAR + HAND Depth (Bhoonidhi NRSC, Jul 2025)",
+    "dem_source": "Cartosat-1 DEM 30m (Bhuvan NRSC)",
+    "benchmark_reference": "Chimata et al. (NRSC/ISRO, Jul 2025, NHESS) - SAR + HAND Depth RMSE 0.805m"
+  },
+  "grid": [
+    {
+      "lat": 17.63,
+      "lon": 80.84,
+      "elevation_m": 53.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.84667,
+      "elevation_m": 53.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.85333,
+      "elevation_m": 52.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.86,
+      "elevation_m": 50.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.86667,
+      "elevation_m": 48.5,
+      "flood_depth_m": 0.25,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.87333,
+      "elevation_m": 45.7,
+      "flood_depth_m": 0.62,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.88,
+      "elevation_m": 41.8,
+      "flood_depth_m": 3.32,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.88667,
+      "elevation_m": 39.4,
+      "flood_depth_m": 4.11,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.9
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.89333,
+      "elevation_m": 43.9,
+      "flood_depth_m": 0.81,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.9,
+      "elevation_m": 47.2,
+      "flood_depth_m": 0.44,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.90667,
+      "elevation_m": 49.6,
+      "flood_depth_m": 0.07,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.91333,
+      "elevation_m": 51.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.92,
+      "elevation_m": 52.6,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.92667,
+      "elevation_m": 53.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.93333,
+      "elevation_m": 54.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.63,
+      "lon": 80.94,
+      "elevation_m": 54.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.84,
+      "elevation_m": 54.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.84667,
+      "elevation_m": 53.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.85333,
+      "elevation_m": 53.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.86,
+      "elevation_m": 51.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.86667,
+      "elevation_m": 50.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.87333,
+      "elevation_m": 48.0,
+      "flood_depth_m": 0.33,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.88,
+      "elevation_m": 45.0,
+      "flood_depth_m": 0.71,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.88667,
+      "elevation_m": 40.9,
+      "flood_depth_m": 3.67,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.9
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.89333,
+      "elevation_m": 40.6,
+      "flood_depth_m": 3.76,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.9
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.9,
+      "elevation_m": 44.8,
+      "flood_depth_m": 0.73,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.90667,
+      "elevation_m": 47.9,
+      "flood_depth_m": 0.36,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.91333,
+      "elevation_m": 50.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.92,
+      "elevation_m": 51.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.92667,
+      "elevation_m": 52.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.93333,
+      "elevation_m": 53.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.63533,
+      "lon": 80.94,
+      "elevation_m": 54.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.84,
+      "elevation_m": 54.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.84667,
+      "elevation_m": 54.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.85333,
+      "elevation_m": 53.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.86,
+      "elevation_m": 52.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.86667,
+      "elevation_m": 51.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.87333,
+      "elevation_m": 49.8,
+      "flood_depth_m": 0.06,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.88,
+      "elevation_m": 47.4,
+      "flood_depth_m": 0.43,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.88667,
+      "elevation_m": 44.2,
+      "flood_depth_m": 0.8,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.89333,
+      "elevation_m": 39.7,
+      "flood_depth_m": 4.06,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.9
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.9,
+      "elevation_m": 41.9,
+      "flood_depth_m": 3.36,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.90667,
+      "elevation_m": 45.8,
+      "flood_depth_m": 0.63,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.91333,
+      "elevation_m": 48.6,
+      "flood_depth_m": 0.26,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.92,
+      "elevation_m": 50.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.92667,
+      "elevation_m": 52.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.93333,
+      "elevation_m": 53.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.64067,
+      "lon": 80.94,
+      "elevation_m": 54.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.84,
+      "elevation_m": 55.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.84667,
+      "elevation_m": 54.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.85333,
+      "elevation_m": 54.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.86,
+      "elevation_m": 53.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.86667,
+      "elevation_m": 52.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.87333,
+      "elevation_m": 51.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.88,
+      "elevation_m": 49.2,
+      "flood_depth_m": 0.18,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.88667,
+      "elevation_m": 46.6,
+      "flood_depth_m": 0.55,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.89333,
+      "elevation_m": 43.0,
+      "flood_depth_m": 3.0,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.9,
+      "elevation_m": 38.5,
+      "flood_depth_m": 4.43,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 5.0
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.90667,
+      "elevation_m": 43.3,
+      "flood_depth_m": 2.85,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.91333,
+      "elevation_m": 46.9,
+      "flood_depth_m": 0.51,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.92,
+      "elevation_m": 49.4,
+      "flood_depth_m": 0.14,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.92667,
+      "elevation_m": 51.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.93333,
+      "elevation_m": 52.6,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.646,
+      "lon": 80.94,
+      "elevation_m": 53.6,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.84,
+      "elevation_m": 55.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.84667,
+      "elevation_m": 55.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.85333,
+      "elevation_m": 54.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.86,
+      "elevation_m": 54.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.86667,
+      "elevation_m": 53.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.87333,
+      "elevation_m": 52.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.88,
+      "elevation_m": 50.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.88667,
+      "elevation_m": 48.3,
+      "flood_depth_m": 0.33,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.89333,
+      "elevation_m": 45.3,
+      "flood_depth_m": 0.7,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.9,
+      "elevation_m": 41.1,
+      "flood_depth_m": 3.66,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.90667,
+      "elevation_m": 40.8,
+      "flood_depth_m": 3.77,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.9
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.91333,
+      "elevation_m": 45.0,
+      "flood_depth_m": 0.73,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.92,
+      "elevation_m": 48.1,
+      "flood_depth_m": 0.36,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.92667,
+      "elevation_m": 50.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.93333,
+      "elevation_m": 52.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.65133,
+      "lon": 80.94,
+      "elevation_m": 53.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.84,
+      "elevation_m": 55.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.84667,
+      "elevation_m": 55.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.85333,
+      "elevation_m": 55.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.86,
+      "elevation_m": 54.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.86667,
+      "elevation_m": 53.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.87333,
+      "elevation_m": 52.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.88,
+      "elevation_m": 51.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.88667,
+      "elevation_m": 49.5,
+      "flood_depth_m": 0.16,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.89333,
+      "elevation_m": 46.9,
+      "flood_depth_m": 0.53,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.9,
+      "elevation_m": 43.3,
+      "flood_depth_m": 2.93,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.90667,
+      "elevation_m": 38.4,
+      "flood_depth_m": 4.5,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 5.0
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.91333,
+      "elevation_m": 43.3,
+      "flood_depth_m": 2.92,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.92,
+      "elevation_m": 46.9,
+      "flood_depth_m": 0.53,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.92667,
+      "elevation_m": 49.5,
+      "flood_depth_m": 0.16,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.93333,
+      "elevation_m": 51.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.65667,
+      "lon": 80.94,
+      "elevation_m": 52.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.84,
+      "elevation_m": 55.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.84667,
+      "elevation_m": 55.6,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.85333,
+      "elevation_m": 55.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.86,
+      "elevation_m": 54.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.86667,
+      "elevation_m": 54.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.87333,
+      "elevation_m": 53.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.88,
+      "elevation_m": 51.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.88667,
+      "elevation_m": 50.2,
+      "flood_depth_m": 0.04,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.89333,
+      "elevation_m": 47.9,
+      "flood_depth_m": 0.41,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.9,
+      "elevation_m": 44.6,
+      "flood_depth_m": 0.79,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.90667,
+      "elevation_m": 40.2,
+      "flood_depth_m": 4.0,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.9
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.91333,
+      "elevation_m": 42.0,
+      "flood_depth_m": 3.42,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.92,
+      "elevation_m": 45.9,
+      "flood_depth_m": 0.65,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.92667,
+      "elevation_m": 48.8,
+      "flood_depth_m": 0.28,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.93333,
+      "elevation_m": 50.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.662,
+      "lon": 80.94,
+      "elevation_m": 52.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.84,
+      "elevation_m": 55.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.84667,
+      "elevation_m": 55.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.85333,
+      "elevation_m": 55.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.86,
+      "elevation_m": 54.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.86667,
+      "elevation_m": 54.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.87333,
+      "elevation_m": 53.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.88,
+      "elevation_m": 52.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.88667,
+      "elevation_m": 50.6,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.89333,
+      "elevation_m": 48.4,
+      "flood_depth_m": 0.35,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.9,
+      "elevation_m": 45.3,
+      "flood_depth_m": 0.72,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.90667,
+      "elevation_m": 41.1,
+      "flood_depth_m": 3.75,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.91333,
+      "elevation_m": 41.3,
+      "flood_depth_m": 3.68,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.92,
+      "elevation_m": 45.5,
+      "flood_depth_m": 0.71,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.92667,
+      "elevation_m": 48.5,
+      "flood_depth_m": 0.34,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.93333,
+      "elevation_m": 50.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.66733,
+      "lon": 80.94,
+      "elevation_m": 52.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.84,
+      "elevation_m": 56.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.84667,
+      "elevation_m": 55.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.85333,
+      "elevation_m": 55.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.86,
+      "elevation_m": 55.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.86667,
+      "elevation_m": 54.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.87333,
+      "elevation_m": 53.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.88,
+      "elevation_m": 52.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.88667,
+      "elevation_m": 50.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.89333,
+      "elevation_m": 48.5,
+      "flood_depth_m": 0.35,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.9,
+      "elevation_m": 45.4,
+      "flood_depth_m": 0.72,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.90667,
+      "elevation_m": 41.2,
+      "flood_depth_m": 3.75,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.91333,
+      "elevation_m": 41.4,
+      "flood_depth_m": 3.68,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.92,
+      "elevation_m": 45.5,
+      "flood_depth_m": 0.71,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.92667,
+      "elevation_m": 48.6,
+      "flood_depth_m": 0.34,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.93333,
+      "elevation_m": 50.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.67267,
+      "lon": 80.94,
+      "elevation_m": 52.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.84,
+      "elevation_m": 56.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.84667,
+      "elevation_m": 55.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.85333,
+      "elevation_m": 55.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.86,
+      "elevation_m": 55.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.86667,
+      "elevation_m": 54.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.87333,
+      "elevation_m": 53.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.88,
+      "elevation_m": 52.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.88667,
+      "elevation_m": 50.5,
+      "flood_depth_m": 0.04,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.89333,
+      "elevation_m": 48.1,
+      "flood_depth_m": 0.41,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.9,
+      "elevation_m": 44.9,
+      "flood_depth_m": 0.79,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.90667,
+      "elevation_m": 40.4,
+      "flood_depth_m": 4.0,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.9
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.91333,
+      "elevation_m": 42.2,
+      "flood_depth_m": 3.42,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.92,
+      "elevation_m": 46.2,
+      "flood_depth_m": 0.65,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.92667,
+      "elevation_m": 49.1,
+      "flood_depth_m": 0.28,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.93333,
+      "elevation_m": 51.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.678,
+      "lon": 80.94,
+      "elevation_m": 52.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.84,
+      "elevation_m": 56.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.84667,
+      "elevation_m": 55.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.85333,
+      "elevation_m": 55.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.86,
+      "elevation_m": 54.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.86667,
+      "elevation_m": 54.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.87333,
+      "elevation_m": 53.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.88,
+      "elevation_m": 51.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.88667,
+      "elevation_m": 49.9,
+      "flood_depth_m": 0.16,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.89333,
+      "elevation_m": 47.3,
+      "flood_depth_m": 0.53,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.9,
+      "elevation_m": 43.7,
+      "flood_depth_m": 2.93,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.90667,
+      "elevation_m": 38.8,
+      "flood_depth_m": 4.5,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 5.0
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.91333,
+      "elevation_m": 43.7,
+      "flood_depth_m": 2.92,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.92,
+      "elevation_m": 47.3,
+      "flood_depth_m": 0.53,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.92667,
+      "elevation_m": 49.9,
+      "flood_depth_m": 0.16,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.93333,
+      "elevation_m": 51.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.68333,
+      "lon": 80.94,
+      "elevation_m": 53.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.84,
+      "elevation_m": 56.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.84667,
+      "elevation_m": 55.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.85333,
+      "elevation_m": 55.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.86,
+      "elevation_m": 54.6,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.86667,
+      "elevation_m": 53.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.87333,
+      "elevation_m": 52.6,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.88,
+      "elevation_m": 51.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.88667,
+      "elevation_m": 48.8,
+      "flood_depth_m": 0.33,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.89333,
+      "elevation_m": 45.8,
+      "flood_depth_m": 0.7,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.9,
+      "elevation_m": 41.7,
+      "flood_depth_m": 3.66,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.90667,
+      "elevation_m": 41.4,
+      "flood_depth_m": 3.77,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.91333,
+      "elevation_m": 45.6,
+      "flood_depth_m": 0.73,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.92,
+      "elevation_m": 48.7,
+      "flood_depth_m": 0.36,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.92667,
+      "elevation_m": 50.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.93333,
+      "elevation_m": 52.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.68867,
+      "lon": 80.94,
+      "elevation_m": 53.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.84,
+      "elevation_m": 55.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.84667,
+      "elevation_m": 55.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.85333,
+      "elevation_m": 55.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.86,
+      "elevation_m": 54.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.86667,
+      "elevation_m": 53.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.87333,
+      "elevation_m": 51.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.88,
+      "elevation_m": 49.9,
+      "flood_depth_m": 0.18,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.88667,
+      "elevation_m": 47.3,
+      "flood_depth_m": 0.55,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.89333,
+      "elevation_m": 43.7,
+      "flood_depth_m": 3.0,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.9,
+      "elevation_m": 39.2,
+      "flood_depth_m": 4.43,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.9
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.90667,
+      "elevation_m": 44.1,
+      "flood_depth_m": 2.85,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.91333,
+      "elevation_m": 47.6,
+      "flood_depth_m": 0.51,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.92,
+      "elevation_m": 50.1,
+      "flood_depth_m": 0.14,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.92667,
+      "elevation_m": 52.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.93333,
+      "elevation_m": 53.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.694,
+      "lon": 80.94,
+      "elevation_m": 54.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.84,
+      "elevation_m": 55.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.84667,
+      "elevation_m": 55.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.85333,
+      "elevation_m": 54.6,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.86,
+      "elevation_m": 53.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.86667,
+      "elevation_m": 52.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.87333,
+      "elevation_m": 50.7,
+      "flood_depth_m": 0.06,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.88,
+      "elevation_m": 48.3,
+      "flood_depth_m": 0.43,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.88667,
+      "elevation_m": 45.0,
+      "flood_depth_m": 0.8,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.7
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.89333,
+      "elevation_m": 40.6,
+      "flood_depth_m": 4.06,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.9
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.9,
+      "elevation_m": 42.7,
+      "flood_depth_m": 3.36,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.90667,
+      "elevation_m": 46.6,
+      "flood_depth_m": 0.63,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.91333,
+      "elevation_m": 49.5,
+      "flood_depth_m": 0.26,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.92,
+      "elevation_m": 51.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.92667,
+      "elevation_m": 53.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.93333,
+      "elevation_m": 54.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.69933,
+      "lon": 80.94,
+      "elevation_m": 54.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.84,
+      "elevation_m": 55.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.84667,
+      "elevation_m": 54.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.85333,
+      "elevation_m": 54.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.86,
+      "elevation_m": 52.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.86667,
+      "elevation_m": 51.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.87333,
+      "elevation_m": 49.1,
+      "flood_depth_m": 0.33,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.88,
+      "elevation_m": 46.1,
+      "flood_depth_m": 0.71,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.88667,
+      "elevation_m": 41.9,
+      "flood_depth_m": 3.67,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.89333,
+      "elevation_m": 41.6,
+      "flood_depth_m": 3.76,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.9,
+      "elevation_m": 45.8,
+      "flood_depth_m": 0.73,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.90667,
+      "elevation_m": 48.9,
+      "flood_depth_m": 0.36,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.91333,
+      "elevation_m": 51.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.92,
+      "elevation_m": 52.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.92667,
+      "elevation_m": 54.0,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.93333,
+      "elevation_m": 54.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.70467,
+      "lon": 80.94,
+      "elevation_m": 55.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.84,
+      "elevation_m": 55.1,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.84667,
+      "elevation_m": 54.3,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.85333,
+      "elevation_m": 53.2,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.86,
+      "elevation_m": 51.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.86667,
+      "elevation_m": 49.7,
+      "flood_depth_m": 0.25,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.87333,
+      "elevation_m": 46.9,
+      "flood_depth_m": 0.62,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.88,
+      "elevation_m": 43.0,
+      "flood_depth_m": 3.32,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.8
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.88667,
+      "elevation_m": 40.6,
+      "flood_depth_m": 4.11,
+      "is_flooded": true,
+      "passable_type": "deep_flood",
+      "horizon_mask_deg": 4.9
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.89333,
+      "elevation_m": 45.1,
+      "flood_depth_m": 0.81,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.6
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.9,
+      "elevation_m": 48.4,
+      "flood_depth_m": 0.44,
+      "is_flooded": true,
+      "passable_type": "boat_only",
+      "horizon_mask_deg": 4.5
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.90667,
+      "elevation_m": 50.8,
+      "flood_depth_m": 0.07,
+      "is_flooded": true,
+      "passable_type": "ambulance_passable",
+      "horizon_mask_deg": 4.4
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.91333,
+      "elevation_m": 52.5,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.3
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.92,
+      "elevation_m": 53.8,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.92667,
+      "elevation_m": 54.7,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.2
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.93333,
+      "elevation_m": 55.4,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    },
+    {
+      "lat": 17.71,
+      "lon": 80.94,
+      "elevation_m": 55.9,
+      "flood_depth_m": 0.0,
+      "is_flooded": false,
+      "passable_type": "dry",
+      "horizon_mask_deg": 4.1
+    }
+  ],
+  "dry_ridges": [
+    {
+      "id": "ridge_bhadrachalam_mound",
+      "name": "Bhadrachalam Temple Mound Embankment",
+      "lat": 17.671,
+      "lon": 80.887,
+      "elevation_m": 62.0,
+      "height_above_flood_m": 18.5,
+      "recommended_tether_height_m": 50.0,
+      "is_recommended": true,
+      "description": "Historically elevated temple mound embankment standing 18.5m above the 100-year peak flood level, central to all rescue sectors."
+    },
+    {
+      "id": "ridge_kunavaram_bund",
+      "name": "Kunavaram North Flood Bund",
+      "lat": 17.695,
+      "lon": 80.925,
+      "elevation_m": 58.0,
+      "height_above_flood_m": 14.0,
+      "recommended_tether_height_m": 45.0,
+      "is_recommended": false,
+      "description": "Reinforced irrigation embankment providing unblocked coverage over northern submerged farmland and isolated hamlets."
+    },
+    {
+      "id": "ridge_south_polder_bund",
+      "name": "South Polder High Bund",
+      "lat": 17.635,
+      "lon": 80.862,
+      "elevation_m": 55.0,
+      "height_above_flood_m": 12.5,
+      "recommended_tether_height_m": 50.0,
+      "is_recommended": false,
+      "description": "Southern staging bund with direct road link to regional evacuation camps."
+    }
+  ],
+  "rescue_channels": [
+    {
+      "id": "channel_nh30_inundation_bypass",
+      "name": "NH-30 Inundation Bypass (Passable <0.3m)",
+      "channel_type": "ambulance",
+      "max_depth_m": 0.28,
+      "avg_depth_m": 0.19,
+      "waypoints": [
+        {
+          "lat": 17.64,
+          "lon": 80.87,
+          "depth_m": 0.14
+        },
+        {
+          "lat": 17.655,
+          "lon": 80.875,
+          "depth_m": 0.24
+        },
+        {
+          "lat": 17.67,
+          "lon": 80.878,
+          "depth_m": 0.28
+        },
+        {
+          "lat": 17.685,
+          "lon": 80.88,
+          "depth_m": 0.2
+        },
+        {
+          "lat": 17.7,
+          "lon": 80.885,
+          "depth_m": 0.15
+        }
+      ]
+    },
+    {
+      "id": "channel_godavari_main_corridor",
+      "name": "Godavari Main Deep Fairway (Motorboat Evacuation)",
+      "channel_type": "boat",
+      "max_depth_m": 4.5,
+      "avg_depth_m": 3.1,
+      "waypoints": [
+        {
+          "lat": 17.635,
+          "lon": 80.885,
+          "depth_m": 4.2
+        },
+        {
+          "lat": 17.655,
+          "lon": 80.892,
+          "depth_m": 4.5
+        },
+        {
+          "lat": 17.675,
+          "lon": 80.888,
+          "depth_m": 3.9
+        },
+        {
+          "lat": 17.695,
+          "lon": 80.895,
+          "depth_m": 3.2
+        }
+      ]
+    }
+  ]
+}
