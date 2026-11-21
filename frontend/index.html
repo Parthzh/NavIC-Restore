@@ -106,7 +106,7 @@
   <!-- TOP EDITORIAL NAVIGATION                                                -->
   <!-- ======================================================================= -->
   <header class="sticky top-0 z-50 border-b border-neutral-200 bg-white/95 backdrop-blur-sm">
-    <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+    <div class="mx-auto flex h-16 max-w-[1560px] w-full px-4 sm:px-8 lg:px-12 items-center justify-between px-4 sm:px-6">
       <a href="#top" class="flex items-center gap-2.5 text-[#0B0F14]">
         <svg class="h-6 w-6" viewBox="0 0 28 28" fill="none" aria-hidden="true">
           <rect x="2" y="2" width="24" height="24" rx="5" fill="#0B0F14" />
@@ -135,7 +135,7 @@
   <!-- SECTION 1: ORIGINAL EDITORIAL HERO + CANYON GEOMETRY SCHEMATIC          -->
   <!-- ======================================================================= -->
   <section id="top" class="bg-white">
-    <div class="mx-auto max-w-6xl px-4 pb-14 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
+    <div class="mx-auto max-w-[1560px] w-full px-4 sm:px-8 lg:px-12 px-4 pb-14 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
       <div class="grid items-center gap-12 lg:grid-cols-12">
         <!-- Left Editorial Copy -->
         <div class="lg:col-span-6">
@@ -282,7 +282,7 @@
   <!-- SECTION 2: HIGH-DETAIL 3D SATELLITE & BATHYMETRIC FLOOD SIMULATOR       -->
   <!-- ======================================================================= -->
   <section id="simulator" class="bg-[#080B0F] py-12 sm:py-16">
-    <div class="mx-auto max-w-6xl px-3 sm:px-6">
+    <div class="mx-auto max-w-[1560px] w-full px-4 sm:px-8 lg:px-12 px-3 sm:px-6">
       <!-- Concise Section Heading -->
       <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
@@ -302,7 +302,7 @@
       <!-- Main Simulator Container -->
       <div class="overflow-hidden rounded-2xl border border-white/12 bg-[#0D1218] text-white shadow-2xl">
         <!-- Minimal Top Control Bar -->
-        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-[#121820] px-4 py-3 sm:px-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-[#121820] px-4 py-3 sm:px-6">
           <!-- Left: Scenario + 3 Operating Modes -->
           <div class="flex flex-wrap items-center gap-2.5">
             <select
@@ -335,7 +335,7 @@
             </div>
           </div>
 
-          <!-- Right: First-Glance Status + 1-Click Auto-Deploy + Telemetry Toggle -->
+          <!-- Right: First-Glance Status + 1-Click Auto-Deploy -->
           <div class="flex flex-wrap items-center gap-2.5">
             <div class="flex items-center gap-2 rounded-md border border-white/10 bg-[#171E28] px-3 py-1.5 text-[12px]">
               <span id="status-dot" class="h-2 w-2 rounded-full bg-rose-500"></span>
@@ -351,319 +351,294 @@
               Auto-Deploy Drone
             </button>
 
-            <button
-              id="btn-toggle-drawer"
-              type="button"
-              class="h-9 rounded-md border border-white/15 bg-[#19212C] px-3 text-[12px] font-medium text-neutral-200 transition-colors hover:border-white/30 hover:text-white"
-            >
-              Telemetry
-            </button>
+            <!-- Hidden button for backward compatibility with JS event listener -->
+            <button id="btn-toggle-drawer" type="button" class="hidden"></button>
           </div>
         </div>
 
-        <!-- Map Viewport -->
-        <div id="map-stage" class="relative h-[560px] w-full select-none bg-[#0A0E14] sm:h-[630px]">
-          <!-- 3D WebGL Canvas Mount -->
-          <div id="three-mount" class="h-full w-full"></div>
+        <!-- Main Cockpit Layout: 3D Map (Left 8 Cols) + Telemetry & Controls (Right 4 Cols) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12">
+          <!-- LEFT COLUMN: 3D Map Stage & Satellite Strip -->
+          <div class="flex flex-col lg:col-span-8 border-b lg:border-b-0 lg:border-r border-white/10">
+            <!-- Map Viewport -->
+            <div id="map-stage" class="relative h-[560px] sm:h-[640px] xl:h-[720px] w-full select-none bg-[#0A0E14]">
+              <!-- 3D WebGL Canvas Mount -->
+              <div id="three-mount" class="h-full w-full"></div>
 
-          <!-- Crisp 3D-Projected Floating Labels Layer (Dry Ridges + Drone) -->
-          <div id="labels-3d" class="pointer-events-none absolute inset-0 z-10 overflow-hidden"></div>
+              <!-- Crisp 3D-Projected Floating Labels Layer (Dry Ridges + Drone) -->
+              <div id="labels-3d" class="pointer-events-none absolute inset-0 z-10 overflow-hidden"></div>
 
-          <!-- 2D High-Res Orthophoto Canvas (Shown in 2D Mode) -->
-          <div id="map2d-mount" class="hidden h-full w-full items-center justify-center p-4 sm:p-6">
-            <div class="relative aspect-square h-full max-h-[580px] max-w-full overflow-hidden rounded-xl border border-white/15 bg-[#0A0E14] shadow-2xl">
-              <canvas id="canvas-2d" width="640" height="640" class="h-full w-full cursor-crosshair"></canvas>
-              <div id="map2d-ridges" class="pointer-events-none absolute inset-0"></div>
-            </div>
-          </div>
-
-          <!-- Cursor-Following Hover Inspector (Water Depth + Vehicle Access + NavIC Fix) -->
-          <div
-            id="hover-tooltip"
-            class="pointer-events-none absolute left-0 top-0 z-30 hidden w-[224px] rounded-lg border border-white/15 bg-[#0E141C]/95 px-3.5 py-3 text-white shadow-2xl backdrop-blur-md"
-          >
-            <div class="flex items-center justify-between gap-2">
-              <span class="font-mono text-[10px] uppercase tracking-wider text-neutral-400">Water Depth</span>
-              <span id="tt-passable" class="rounded px-1.5 py-0.5 text-[10px] font-semibold bg-white/10 text-neutral-200">Dry Ground</span>
-            </div>
-
-            <div class="mt-1 flex items-baseline justify-between">
-              <div class="font-mono text-[22px] font-semibold leading-none text-white">
-                <span id="tt-depth">0.00</span><span class="ml-1 text-[12px] font-normal text-neutral-400">m</span>
-              </div>
-              <span id="tt-elev" class="font-mono text-[11px] text-neutral-400">2140 m elev</span>
-            </div>
-
-            <!-- Visual depth gauge bar -->
-            <div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-              <div id="tt-depth-bar" class="h-full rounded-full bg-sky-400 transition-all duration-75" style="width: 0%"></div>
-            </div>
-
-            <div class="mt-2.5 space-y-1 border-t border-white/10 pt-2 text-[11.5px]">
-              <div class="flex items-center justify-between">
-                <span class="text-neutral-400">NavIC Fix</span>
-                <span id="tt-fix" class="font-mono font-semibold text-emerald-400">±3.2 m</span>
-              </div>
-              <div id="tt-note" class="font-mono text-[10px] text-neutral-400">30.535°N, 79.565°E</div>
-            </div>
-          </div>
-
-          <!-- Top-Left: Quiet Layer Switcher -->
-          <div class="absolute left-3.5 top-3.5 z-20 flex items-center gap-1 rounded-lg border border-white/12 bg-[#111720]/90 p-1 backdrop-blur-sm">
-            <button type="button" data-overlay="rescue" class="overlay-btn rounded px-2.5 py-1 text-[11.5px] font-medium transition-colors">
-              Rescue &amp; Water
-            </button>
-            <button type="button" data-overlay="dop" class="overlay-btn rounded px-2.5 py-1 text-[11.5px] font-medium transition-colors">
-              NavIC Signal
-            </button>
-            <button type="button" data-overlay="satellite" class="overlay-btn rounded px-2.5 py-1 text-[11.5px] font-medium transition-colors">
-              Satellite
-            </button>
-          </div>
-
-          <!-- Bottom-Left: Crisp First-Glance Legend with Water Depth Scale -->
-          <div class="absolute bottom-3.5 left-3.5 z-20 rounded-lg border border-white/12 bg-[#111720]/90 px-3.5 py-2.5 text-[11px] text-neutral-200 backdrop-blur-sm">
-            <div id="legend-rescue" class="space-y-1.5">
-              <div class="flex flex-wrap items-center gap-x-3.5 gap-y-1">
-                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#22C55E]"></span>Ambulance (&lt;0.35m)</span>
-                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#38BDF8]"></span>Boat Channel (&gt;0.5m)</span>
-                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full border border-white bg-[#0D1218]"></span>Dry Ridge</span>
-              </div>
-              <div class="flex items-center gap-2 pt-0.5 text-[10px] text-neutral-400">
-                <span>Shallow 0.2m</span>
-                <span class="h-1.5 w-24 rounded-full" style="background: linear-gradient(90deg, #56B8CE 0%, #2368A2 55%, #0D2C54 100%);"></span>
-                <span>Deep 3.2m</span>
-              </div>
-            </div>
-            <div id="legend-dop" class="hidden space-y-1">
-              <div class="font-mono text-[10px] uppercase tracking-wider text-neutral-400">NavIC Positioning Error</div>
-              <div class="flex items-center gap-3.5">
-                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#22C55E]"></span>Sub-5m Fix</span>
-                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#F5A623]"></span>5–15m Degraded</span>
-                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#EF4444]"></span>No Fix (&gt;15m)</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bottom-Right: Camera Presets & 3D/2D Toggle -->
-          <div class="absolute bottom-3.5 right-3.5 z-20 flex flex-wrap items-center justify-end gap-2">
-            <div id="camera-controls" class="flex items-center gap-1 rounded-lg border border-white/12 bg-[#111720]/90 p-1 backdrop-blur-sm">
-              <button type="button" data-cam="topdown" class="cam-btn rounded px-2.5 py-1 text-[11px] font-medium">Top-Down</button>
-              <button type="button" data-cam="relief" class="cam-btn rounded px-2.5 py-1 text-[11px] font-medium">3D Relief</button>
-              <button type="button" data-cam="drone" class="cam-btn rounded px-2.5 py-1 text-[11px] font-medium">Ridge</button>
-              <span class="mx-0.5 h-3.5 w-px bg-white/12"></span>
-              <button type="button" id="btn-sat-rays" class="rounded px-2 py-1 text-[11px] font-medium text-neutral-400 hover:text-white">
-                LOS Rays
-              </button>
-            </div>
-
-            <div class="flex items-center rounded-lg border border-white/12 bg-[#111720]/90 p-1 backdrop-blur-sm">
-              <button type="button" data-view="3d" class="view-btn rounded px-2.5 py-1 text-[11px] font-medium">3D</button>
-              <button type="button" data-view="2d" class="view-btn rounded px-2.5 py-1 text-[11px] font-medium">2D</button>
-            </div>
-          </div>
-
-          <!-- Collapsible Telemetry Drawer (Hidden on Initial Load) -->
-          <aside
-            id="telemetry-drawer"
-            class="absolute bottom-0 right-0 top-0 z-30 hidden w-[328px] max-w-[90vw] flex-col border-l border-white/12 bg-[#111720]/96 p-4 text-white backdrop-blur-md"
-          >
-            <div class="flex items-center justify-between border-b border-white/10 pb-3">
-              <div>
-                <h3 class="text-[13.5px] font-semibold">Telemetry &amp; Parameters</h3>
-                <p id="drawer-mode-desc" class="text-[11px] text-neutral-400">Mode 01 · Unaugmented NavIC</p>
-              </div>
-              <button id="btn-close-drawer" type="button" class="rounded px-2 py-1 text-neutral-400 hover:bg-white/10 hover:text-white">
-                ✕
-              </button>
-            </div>
-
-            <div class="mt-4 flex-1 space-y-4 overflow-y-auto pr-1">
-              <!-- Coverage Bar -->
-              <div>
-                <div class="mb-1.5 flex items-baseline justify-between text-[11.5px]">
-                  <span class="text-neutral-400">Corridor Positioning</span>
-                  <span id="drawer-avg-err" class="font-mono font-semibold text-white">NO FIX</span>
-                </div>
-                <div class="flex h-2 w-full overflow-hidden rounded-full bg-neutral-800">
-                  <div id="bar-sub5" class="bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
-                  <div id="bar-deg" class="bg-amber-400 transition-all duration-300" style="width: 0%"></div>
-                  <div id="bar-nofix" class="bg-rose-500 transition-all duration-300" style="width: 100%"></div>
-                </div>
-                <div class="mt-1.5 flex justify-between font-mono text-[10px] text-neutral-400">
-                  <span id="pct-sub5">Sub-5m 0%</span>
-                  <span id="pct-deg">5-15m 0%</span>
-                  <span id="pct-nofix">No Fix 100%</span>
+              <!-- 2D High-Res Orthophoto Canvas (Shown in 2D Mode) -->
+              <div id="map2d-mount" class="hidden h-full w-full items-center justify-center p-4 sm:p-6">
+                <div class="relative aspect-square h-full max-h-[640px] max-w-full overflow-hidden rounded-xl border border-white/15 bg-[#0A0E14] shadow-2xl">
+                  <canvas id="canvas-2d" width="640" height="640" class="h-full w-full cursor-crosshair"></canvas>
+                  <div id="map2d-ridges" class="pointer-events-none absolute inset-0"></div>
                 </div>
               </div>
 
-              <!-- DOP Readouts -->
-              <div class="grid grid-cols-2 gap-2">
-                <div class="rounded-md border border-white/10 bg-[#171F2A] p-2.5">
-                  <div class="text-[10.5px] text-neutral-400">GDOP</div>
-                  <div id="val-gdop" class="mt-0.5 font-mono text-[15px] font-semibold">—</div>
+              <!-- Cursor-Following Hover Inspector (Water Depth + Vehicle Access + NavIC Fix) -->
+              <div
+                id="hover-tooltip"
+                class="pointer-events-none absolute left-0 top-0 z-30 hidden w-[224px] rounded-lg border border-white/15 bg-[#0E141C]/95 px-3.5 py-3 text-white shadow-2xl backdrop-blur-md"
+              >
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-mono text-[10px] uppercase tracking-wider text-neutral-400">Water Depth</span>
+                  <span id="tt-passable" class="rounded px-1.5 py-0.5 text-[10px] font-semibold bg-white/10 text-neutral-200">Dry Ground</span>
                 </div>
-                <div class="rounded-md border border-white/10 bg-[#171F2A] p-2.5">
-                  <div class="text-[10.5px] text-neutral-400">PDOP</div>
-                  <div id="val-pdop" class="mt-0.5 font-mono text-[15px] font-semibold">—</div>
-                </div>
-                <div class="rounded-md border border-white/10 bg-[#171F2A] p-2.5">
-                  <div class="text-[10.5px] text-neutral-400">HDOP</div>
-                  <div id="val-hdop" class="mt-0.5 font-mono text-[15px] font-semibold">—</div>
-                </div>
-                <div class="rounded-md border border-white/10 bg-[#171F2A] p-2.5">
-                  <div class="text-[10.5px] text-neutral-400">VDOP</div>
-                  <div id="val-vdop" class="mt-0.5 font-mono text-[15px] font-semibold">—</div>
-                </div>
-              </div>
 
-              <!-- Dry Ridges -->
-              <div>
-                <div class="mb-1.5 text-[11px] font-medium text-neutral-400">SAR-Verified Dry Ridges (0.00m water)</div>
-                <div id="ridge-list" class="space-y-1.5"></div>
-              </div>
-
-              <!-- Tether & UERE Sliders -->
-              <div class="space-y-3 border-t border-white/10 pt-3">
-                <div>
-                  <div class="mb-1 flex justify-between text-[11.5px]">
-                    <span class="text-neutral-300">Drone Tether Altitude</span>
-                    <span id="lbl-tether" class="font-mono text-white">55 m</span>
+                <div class="mt-1 flex items-baseline justify-between">
+                  <div class="font-mono text-[22px] font-semibold leading-none text-white">
+                    <span id="tt-depth">0.00</span><span class="ml-1 text-[12px] font-normal text-neutral-400">m</span>
                   </div>
-                  <input id="slider-tether" type="range" min="10" max="150" step="5" value="55" class="studio-slider w-full" />
+                  <span id="tt-elev" class="font-mono text-[11px] text-neutral-400">2140 m elev</span>
                 </div>
-                <div>
-                  <div class="mb-1 flex justify-between text-[11.5px]">
-                    <span class="text-neutral-300">UERE Range Error</span>
-                    <span id="lbl-uere" class="font-mono text-white">3.0 m</span>
+
+                <!-- Visual depth gauge bar -->
+                <div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                  <div id="tt-depth-bar" class="h-full rounded-full bg-sky-400 transition-all duration-75" style="width: 0%"></div>
+                </div>
+
+                <div class="mt-2.5 space-y-1 border-t border-white/10 pt-2 text-[11.5px]">
+                  <div class="flex items-center justify-between">
+                    <span class="text-neutral-400">NavIC Fix</span>
+                    <span id="tt-fix" class="font-mono font-semibold text-emerald-400">±3.2 m</span>
                   </div>
-                  <input id="slider-uere" type="range" min="2" max="5" step="0.5" value="3" class="studio-slider w-full" />
+                  <div id="tt-note" class="font-mono text-[10px] text-neutral-400">30.535°N, 79.565°E</div>
                 </div>
               </div>
 
-              <!-- 24h Diurnal Error Chart -->
-              <div class="border-t border-white/10 pt-3">
-                <div class="mb-1.5 flex items-center justify-between text-[11px]">
-                  <span class="text-neutral-400">24h Diurnal Error (m)</span>
-                  <div class="flex gap-2.5 text-[10px]">
-                    <span class="text-rose-400">Base</span>
-                    <span class="text-amber-400">Clamp</span>
-                    <span class="text-emerald-400">Drone</span>
+              <!-- Top-Left: Quiet Layer Switcher -->
+              <div class="absolute left-3.5 top-3.5 z-20 flex items-center gap-1 rounded-lg border border-white/12 bg-[#111720]/90 p-1 backdrop-blur-sm">
+                <button type="button" data-overlay="rescue" class="overlay-btn rounded px-2.5 py-1 text-[11.5px] font-medium transition-colors">
+                  Rescue &amp; Water
+                </button>
+                <button type="button" data-overlay="dop" class="overlay-btn rounded px-2.5 py-1 text-[11.5px] font-medium transition-colors">
+                  NavIC Signal
+                </button>
+                <button type="button" data-overlay="satellite" class="overlay-btn rounded px-2.5 py-1 text-[11.5px] font-medium transition-colors">
+                  Satellite
+                </button>
+              </div>
+
+              <!-- Bottom-Left: Crisp First-Glance Legend with Water Depth Scale -->
+              <div class="absolute bottom-3.5 left-3.5 z-20 rounded-lg border border-white/12 bg-[#111720]/90 px-3.5 py-2.5 text-[11px] text-neutral-200 backdrop-blur-sm">
+                <div id="legend-rescue" class="space-y-1.5">
+                  <div class="flex flex-wrap items-center gap-x-3.5 gap-y-1">
+                    <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#22C55E]"></span>Ambulance (&lt;0.35m)</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#38BDF8]"></span>Boat Channel (&gt;0.5m)</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full border border-white bg-[#0D1218]"></span>Dry Ridge</span>
+                  </div>
+                  <div class="flex items-center gap-2 pt-0.5 text-[10px] text-neutral-400">
+                    <span>Shallow 0.2m</span>
+                    <span class="h-1.5 w-24 rounded-full" style="background: linear-gradient(90deg, #56B8CE 0%, #2368A2 55%, #0D2C54 100%);"></span>
+                    <span>Deep 3.2m</span>
                   </div>
                 </div>
-                <div class="rounded-md border border-white/10 bg-[#0A0E14] p-2">
-                  <svg id="chart-24h" viewBox="0 0 260 92" class="h-24 w-full"></svg>
+                <div id="legend-dop" class="hidden space-y-1">
+                  <div class="font-mono text-[10px] uppercase tracking-wider text-neutral-400">NavIC Positioning Error</div>
+                  <div class="flex items-center gap-3.5">
+                    <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#22C55E]"></span>Sub-5m Fix</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#F5A623]"></span>5–15m Degraded</span>
+                    <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#EF4444]"></span>No Fix (&gt;15m)</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </aside>
-        </div>
 
-        <!-- Bottom NavIC Satellite Kill-Switch Strip -->
-        <div class="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 bg-[#121820] px-4 py-2.5 sm:px-5">
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="text-[11.5px] font-medium text-neutral-300">NavIC Satellites:</span>
-            <div id="sat-chips" class="flex flex-wrap items-center gap-1.5"></div>
-          </div>
-          <div class="flex items-center gap-4">
-            <button id="btn-outage" type="button" class="text-[11.5px] font-medium text-neutral-200 underline decoration-white/30 underline-offset-4 hover:text-white">
-              Simulate 3-Sat Canyon Outage
-            </button>
-            <button id="btn-restore-sats" type="button" class="text-[11.5px] font-medium text-neutral-400 hover:text-white">
-              Restore All 7
-            </button>
-          </div>
-        </div>
-
-        <!-- =============================================================== -->
-        <!-- MISSION CLARITY STRIP: DRY RIDGE RANKING + BEFORE/AFTER IMPACT  -->
-        <!-- =============================================================== -->
-        <div class="grid border-t border-white/10 bg-[#0F141B] lg:grid-cols-12">
-          <!-- Left (Domain 03 — Disaster Management): Candidate Dry Ridges & Best Suggestion -->
-          <div class="border-b border-white/10 p-4 sm:p-5 lg:col-span-6 lg:border-b-0 lg:border-r">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <div class="font-mono text-[10.5px] uppercase tracking-[0.12em] text-neutral-400">
-                  01 · SAR Dry-Ridge Analysis
+              <!-- Bottom-Right: Camera Presets & 3D/2D Toggle -->
+              <div class="absolute bottom-3.5 right-3.5 z-20 flex flex-wrap items-center justify-end gap-2">
+                <div id="camera-controls" class="flex items-center gap-1 rounded-lg border border-white/12 bg-[#111720]/90 p-1 backdrop-blur-sm">
+                  <button type="button" data-cam="topdown" class="cam-btn rounded px-2.5 py-1 text-[11px] font-medium">Top-Down</button>
+                  <button type="button" data-cam="relief" class="cam-btn rounded px-2.5 py-1 text-[11px] font-medium">3D Relief</button>
+                  <button type="button" data-cam="drone" class="cam-btn rounded px-2.5 py-1 text-[11px] font-medium">Ridge</button>
+                  <span class="mx-0.5 h-3.5 w-px bg-white/12"></span>
+                  <button type="button" id="btn-sat-rays" class="rounded px-2 py-1 text-[11px] font-medium text-neutral-400 hover:text-white">
+                    LOS Rays
+                  </button>
                 </div>
-                <h3 class="mt-0.5 text-[15px] font-semibold text-white">
-                  <span id="ridge-count-label">3</span> Candidate Dry Ridges Found
-                </h3>
+
+                <div class="flex items-center rounded-lg border border-white/12 bg-[#111720]/90 p-1 backdrop-blur-sm">
+                  <button type="button" data-view="3d" class="view-btn rounded px-2.5 py-1 text-[11px] font-medium">3D</button>
+                  <button type="button" data-view="2d" class="view-btn rounded px-2.5 py-1 text-[11px] font-medium">2D</button>
+                </div>
               </div>
-              <span class="rounded border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 font-mono text-[10.5px] font-medium text-emerald-300">
-                Best: <span id="best-ridge-name">Dhak Crest</span>
-              </span>
+
+              <!-- Hidden Drawer placeholder for backward compatibility with JS handlers -->
+              <aside id="telemetry-drawer" class="hidden">
+                <p id="drawer-mode-desc" class="hidden"></p>
+                <button id="btn-close-drawer" type="button" class="hidden"></button>
+                <div id="ridge-list" class="hidden"></div>
+              </aside>
             </div>
 
-            <p class="mt-1.5 text-[12.5px] text-neutral-400">
-              Ranked automatically from SAR flood-free zones (0.00 m water) by canyon line-of-sight and resulting NavIC corridor accuracy.
-            </p>
-
-            <div id="ranked-ridges-container" class="mt-3.5 space-y-2"></div>
+            <!-- Bottom NavIC Satellite Kill-Switch Strip (Directly Under 3D Map) -->
+            <div class="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 bg-[#121820] px-4 py-2.5 sm:px-5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-[11.5px] font-medium text-neutral-300">NavIC Satellites:</span>
+                <div id="sat-chips" class="flex flex-wrap items-center gap-1.5"></div>
+              </div>
+              <div class="flex items-center gap-3">
+                <button id="btn-outage" type="button" class="text-[11px] font-medium text-neutral-200 underline decoration-white/30 underline-offset-4 hover:text-white">
+                  Simulate 3-Sat Outage
+                </button>
+                <button id="btn-restore-sats" type="button" class="text-[11px] font-medium text-neutral-400 hover:text-white">
+                  Restore All 7
+                </button>
+              </div>
+            </div>
           </div>
 
-          <!-- Right (Domain 04 — Navigation): Live Before vs. After Drone Impact -->
-          <div class="flex flex-col justify-between p-4 sm:p-5 lg:col-span-6">
-            <div>
+          <!-- RIGHT COLUMN: Unified Telemetry, Controls & Navigation Cockpit -->
+          <div class="flex flex-col justify-between bg-[#0F141B] p-4 sm:p-5 lg:col-span-4 h-full lg:max-h-[790px] overflow-y-auto space-y-4">
+            <!-- 1. Live Navigation Impact (Before vs After Drone) -->
+            <div class="rounded-xl border border-white/10 bg-[#121820] p-4 shadow-sm">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <div class="font-mono text-[10.5px] uppercase tracking-[0.12em] text-neutral-400">
-                    02 · Live Navigation Impact
+                  <div class="font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-400">
+                    Live Navigation Impact
                   </div>
-                  <h3 id="impact-headline" class="mt-0.5 text-[15px] font-semibold text-white">
-                    Currently Viewing: Baseline (Satellites Only)
+                  <h3 id="impact-headline" class="mt-0.5 text-[14.5px] font-semibold text-white">
+                    Currently Viewing: Baseline
                   </h3>
                 </div>
-                <span id="impact-improvement-badge" class="rounded bg-white/10 px-2.5 py-1 font-mono text-[11px] font-semibold text-emerald-300">
+                <span id="impact-improvement-badge" class="rounded bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 font-mono text-[10.5px] font-semibold text-emerald-300">
                   -78% Error with Drone
                 </span>
               </div>
 
-              <p id="impact-story" class="mt-1.5 text-[12.5px] leading-relaxed text-neutral-300">
+              <p id="impact-story" class="mt-1.5 text-[12px] leading-relaxed text-neutral-300">
                 Steep terrain masks low-elevation satellites. Deploy the recommended dry-ridge drone to restore full 4-vector geometry.
               </p>
 
-              <!-- Clear Before vs. After Comparison Cards -->
-              <div class="mt-3.5 grid grid-cols-2 gap-3">
-                <div id="card-before" class="rounded-lg border border-white/10 bg-[#141B24] p-3 transition-colors">
-                  <div class="flex items-center justify-between text-[10.5px] font-mono uppercase tracking-wider text-neutral-400">
+              <!-- Comparison Cards -->
+              <div class="mt-3 grid grid-cols-2 gap-2.5">
+                <div id="card-before" class="rounded-lg border border-white/10 bg-[#161E28] p-2.5 transition-colors">
+                  <div class="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-neutral-400">
                     <span>Without Drone</span>
-                    <span id="before-pill" class="rounded bg-rose-500/15 px-1.5 py-0.5 text-[9.5px] text-rose-300">Baseline</span>
+                    <span id="before-pill" class="rounded bg-rose-500/15 px-1 py-0.2 text-[9px] text-rose-300">Baseline</span>
                   </div>
-                  <div id="before-error" class="mt-1.5 font-mono text-[20px] font-semibold text-rose-400">NO FIX</div>
-                  <div id="before-cov" class="mt-0.5 text-[11.5px] text-neutral-400">Sub-5m coverage: 0%</div>
+                  <div id="before-error" class="mt-1 font-mono text-[18px] font-semibold text-rose-400">NO FIX</div>
+                  <div id="before-cov" class="mt-0.5 text-[11px] text-neutral-400">Coverage: 0%</div>
                 </div>
 
-                <div id="card-after" class="rounded-lg border border-emerald-500/30 bg-[#131F1D] p-3 transition-colors">
-                  <div class="flex items-center justify-between text-[10.5px] font-mono uppercase tracking-wider text-neutral-300">
+                <div id="card-after" class="rounded-lg border border-emerald-500/30 bg-[#13221E] p-2.5 transition-colors">
+                  <div class="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-neutral-300">
                     <span>With Best Drone</span>
-                    <span id="after-pill" class="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[9.5px] text-emerald-300">Restored</span>
+                    <span id="after-pill" class="rounded bg-emerald-500/20 px-1 py-0.2 text-[9px] text-emerald-300">Restored</span>
                   </div>
-                  <div id="after-error" class="mt-1.5 font-mono text-[20px] font-semibold text-emerald-400">±3.2 m</div>
-                  <div id="after-cov" class="mt-0.5 text-[11.5px] text-neutral-300">Sub-5m coverage: 92%</div>
+                  <div id="after-error" class="mt-1 font-mono text-[18px] font-semibold text-emerald-400">±3.2 m</div>
+                  <div id="after-cov" class="mt-0.5 text-[11px] text-neutral-300">Coverage: 92%</div>
+                </div>
+              </div>
+
+              <!-- Deploy Action -->
+              <div class="mt-3 flex items-center justify-between gap-2 border-t border-white/10 pt-2.5">
+                <div id="impact-step-hint" class="font-mono text-[10.5px] text-neutral-400">
+                  Active Sats: 7 · Mode 01
+                </div>
+                <button
+                  id="btn-toggle-solution"
+                  type="button"
+                  class="rounded-md bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-[#0B0F14] transition-colors hover:bg-neutral-200"
+                >
+                  Deploy Recommended Drone
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. Candidate Dry Ridges Found (Ranked List) -->
+            <div class="rounded-xl border border-white/10 bg-[#121820] p-4 shadow-sm">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-400">
+                    SAR Dry-Ridge Analysis (0.00m Water)
+                  </div>
+                  <h4 class="mt-0.5 text-[13.5px] font-semibold text-white">
+                    <span id="ridge-count-label">3</span> Candidate Ridges Available
+                  </h4>
+                </div>
+                <span class="rounded border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-medium text-emerald-300">
+                  Best: <span id="best-ridge-name">Dhak Crest</span>
+                </span>
+              </div>
+              <div id="ranked-ridges-container" class="mt-2.5 space-y-1.5"></div>
+            </div>
+
+            <!-- 3. Real-Time Sliders: Drone Tether & Range Error -->
+            <div class="rounded-xl border border-white/10 bg-[#121820] p-4 shadow-sm space-y-3">
+              <div>
+                <div class="mb-1 flex justify-between text-[11.5px]">
+                  <span class="text-neutral-300 font-medium">Drone Tether Altitude ($h_p$)</span>
+                  <span id="lbl-tether" class="font-mono font-semibold text-white">55 m</span>
+                </div>
+                <input id="slider-tether" type="range" min="10" max="150" step="5" value="55" class="studio-slider w-full" />
+              </div>
+
+              <div>
+                <div class="mb-1 flex justify-between text-[11.5px]">
+                  <span class="text-neutral-300 font-medium">UERE Range Error ($\sigma_{\text{UERE}}$)</span>
+                  <span id="lbl-uere" class="font-mono font-semibold text-white">3.0 m</span>
+                </div>
+                <input id="slider-uere" type="range" min="2" max="5" step="0.5" value="3" class="studio-slider w-full" />
+              </div>
+            </div>
+
+            <!-- 4. DOP Telemetry Matrix & Corridor Fix Bar -->
+            <div class="rounded-xl border border-white/10 bg-[#121820] p-4 shadow-sm">
+              <div class="mb-2 flex items-baseline justify-between text-[11.5px]">
+                <span class="font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-400">Corridor Precision</span>
+                <span id="drawer-avg-err" class="font-mono font-semibold text-white">NO FIX</span>
+              </div>
+              <div class="flex h-2 w-full overflow-hidden rounded-full bg-neutral-800">
+                <div id="bar-sub5" class="bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                <div id="bar-deg" class="bg-amber-400 transition-all duration-300" style="width: 0%"></div>
+                <div id="bar-nofix" class="bg-rose-500 transition-all duration-300" style="width: 100%"></div>
+              </div>
+              <div class="mt-1 flex justify-between font-mono text-[9.5px] text-neutral-400">
+                <span id="pct-sub5">Sub-5m 0%</span>
+                <span id="pct-deg">5-15m 0%</span>
+                <span id="pct-nofix">No Fix 100%</span>
+              </div>
+
+              <!-- 4-Box DOP Metrics Grid -->
+              <div class="mt-3 grid grid-cols-4 gap-1.5 text-center">
+                <div class="rounded border border-white/10 bg-[#161E28] p-1.5">
+                  <div class="text-[9.5px] text-neutral-400">GDOP</div>
+                  <div id="val-gdop" class="font-mono text-[13px] font-semibold text-white">—</div>
+                </div>
+                <div class="rounded border border-white/10 bg-[#161E28] p-1.5">
+                  <div class="text-[9.5px] text-neutral-400">PDOP</div>
+                  <div id="val-pdop" class="font-mono text-[13px] font-semibold text-white">—</div>
+                </div>
+                <div class="rounded border border-white/10 bg-[#161E28] p-1.5">
+                  <div class="text-[9.5px] text-neutral-400">HDOP</div>
+                  <div id="val-hdop" class="font-mono text-[13px] font-semibold text-white">—</div>
+                </div>
+                <div class="rounded border border-white/10 bg-[#161E28] p-1.5">
+                  <div class="text-[9.5px] text-neutral-400">VDOP</div>
+                  <div id="val-vdop" class="font-mono text-[13px] font-semibold text-white">—</div>
                 </div>
               </div>
             </div>
 
-            <!-- Single Clear Action Button to Toggle Story State -->
-            <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-3">
-              <div id="impact-step-hint" class="font-mono text-[11px] text-neutral-400">
-                Active Sats: 7 · Mode 01 Baseline
+            <!-- 5. 24-Hour Diurnal Error Curve -->
+            <div class="rounded-xl border border-white/10 bg-[#121820] p-4 shadow-sm">
+              <div class="mb-1.5 flex items-center justify-between text-[11px]">
+                <span class="font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-400">24h Diurnal Error (m)</span>
+                <div class="flex gap-2 text-[10px]">
+                  <span class="text-rose-400">Base</span>
+                  <span class="text-amber-400">Clamp</span>
+                  <span class="text-emerald-400 font-semibold">Drone</span>
+                </div>
               </div>
-              <button
-                id="btn-toggle-solution"
-                type="button"
-                class="rounded-md bg-white px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[0.07em] text-[#0B0F14] transition-colors hover:bg-neutral-200"
-              >
-                Deploy Recommended Drone
-              </button>
+              <div class="rounded-md border border-white/10 bg-[#0A0E14] p-2">
+                <svg id="chart-24h" viewBox="0 0 260 92" class="h-20 w-full"></svg>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- ===================================================================== -->
+<!-- ===================================================================== -->
     <!-- CUSTOM RADAR / SAR & DEM DATA IMPORT MODAL                            -->
     <!-- ===================================================================== -->
     <div
@@ -852,7 +827,7 @@
   <!-- SECTION 3: FIELD METHOD & INTERACTIVE MATRIX RANK PROOF                 -->
   <!-- ======================================================================= -->
   <section id="method" class="bg-white py-20">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="mx-auto max-w-[1560px] w-full px-4 sm:px-8 lg:px-12 px-4 sm:px-6">
       <div class="grid items-start gap-12 lg:grid-cols-12">
         <!-- Left: 3-Step Field Architecture -->
         <div class="lg:col-span-6">
@@ -958,7 +933,7 @@
   <!-- SECTION 4: ORIGINAL VALIDATION LEDGER (Clean Typographic Split)         -->
   <!-- ======================================================================= -->
   <section id="validation" class="border-t border-neutral-200 bg-[#F8F9FA] py-20">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="mx-auto max-w-[1560px] w-full px-4 sm:px-8 lg:px-12 px-4 sm:px-6">
       <div class="grid gap-10 lg:grid-cols-12">
         <div class="lg:col-span-5">
           <div class="font-mono text-[11px] uppercase tracking-[0.14em] text-[#7A8491]">Operational Proof</div>
@@ -1019,7 +994,7 @@
       <span class="h-1 bg-[#D32F2F]"></span>
       <span class="h-1 bg-[#7B1113]"></span>
     </div>
-    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row sm:px-6">
+    <div class="mx-auto flex max-w-[1560px] w-full px-4 sm:px-8 lg:px-12 flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row sm:px-6">
       <div>
         <div class="text-[14px] font-semibold">NavIC Restore</div>
         <div class="mt-0.5 text-[12px] text-neutral-400">Team Hypervisors · VIT Bhopal · ASTRA 2026</div>
