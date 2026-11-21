@@ -2,6 +2,7 @@
 
 > **Autonomous Multi-Sensor Positioning Augmentation via ISRO EOS-04 C-Band SAR, Cartosat-1 Stereo DEM, and Tethered Drone Pseudolite Relays.**
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-nav--ic--restore--six.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://nav-ic-restore-six.vercel.app/)
 [![FastAPI Backend](https://img.shields.io/badge/Backend-FastAPI%200.115-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Python Engine](https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![Three.js WebGL](https://img.shields.io/badge/3D%20Engine-Three.js%20r160-000000?style=flat-square&logo=three.js&logoColor=white)](https://threejs.org)
@@ -255,20 +256,20 @@ Open your browser at `http://localhost:5173` to interact with the full 3D simula
 
 ---
 
-## 8. Deployment Options
+## 8. Live Production Deployment
 
-The web interface is 100% self-contained and requires zero server infrastructure for live simulation:
+The web interface is 100% self-contained, client-side WebGL, and hosted with global edge distribution:
 
-### Option A: GitHub Pages (Automated CI/CD)
+- **Official Live Production URL**: [https://nav-ic-restore-six.vercel.app/](https://nav-ic-restore-six.vercel.app/)
+- **Hosting Platform**: Vercel (Automated CI/CD linked to GitHub `main`)
+- **Performance**: Zero cold-starts, client-side SGP4 look-angle solver, 60 FPS Three.js rendering.
+
+### Alternative Deployment Targets
+
+#### Option A: GitHub Pages (Automated CI/CD)
 The repository includes `.github/workflows/deploy.yml`. When pushed to `main`, GitHub Actions automatically compiles `frontend/dist` and deploys to `https://<username>.github.io/NavIC-Restore/`.
 
-### Option B: Vercel (1-Click)
-Deploy instantly via `vercel.json`:
-```bash
-npx vercel
-```
-
-### Option C: Netlify
+#### Option B: Netlify
 Deploy instantly via `netlify.toml`:
 ```bash
 npx netlify deploy --prod
