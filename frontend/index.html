@@ -1,19 +1,3491 @@
-<!doctype html>
-<html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF6F00'><path d='M12 2L2 19h20L12 2zm0 3.8L18.5 17H5.5L12 5.8z'/></svg>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NavIC Restore — Flood-Aware Navigation Augmentation</title>
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <!-- Inter & JetBrains Mono Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-space-900 text-slate-100 font-sans antialiased overflow-hidden select-none">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NavIC Restore — Space-Based Flood Navigation</title>
+
+  <!-- Newsreader (Editorial Serif) + DM Sans (UI Grotesque) + IBM Plex Mono (Telemetry) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"IBM Plex Mono"', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Three.js r128 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: #0B0F14;
+      background-color: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .font-editorial {
+      font-family: 'Newsreader', Georgia, serif;
+      letter-spacing: -0.025em;
+    }
+
+    .hairline-dashed {
+      border: 1px dashed #CFD5DC;
+    }
+
+    .strata-bar {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    .strata-bar span {
+      display: block;
+      width: 100%;
+    }
+
+    /* Clean range sliders */
+    input[type='range'].studio-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      background: #252D38;
+      border-radius: 999px;
+      outline: none;
+    }
+    input[type='range'].studio-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 2px solid #0B0F14;
+      cursor: pointer;
+    }
+    input[type='range'].studio-slider::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 2px solid #0B0F14;
+      cursor: pointer;
+    }
+
+    #three-mount canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+  </style>
+</head>
+
+<body class="bg-white text-[#0B0F14]">
+  <!-- ======================================================================= -->
+  <!-- TOP EDITORIAL NAVIGATION                                                -->
+  <!-- ======================================================================= -->
+  <header class="sticky top-0 z-50 border-b border-neutral-200 bg-white/95 backdrop-blur-sm">
+    <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <a href="#top" class="flex items-center gap-2.5 text-[#0B0F14]">
+        <svg class="h-6 w-6" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect x="2" y="2" width="24" height="24" rx="5" fill="#0B0F14" />
+          <path d="M8 20 L14 8 L20 20" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="14" cy="15.5" r="2.2" fill="#F5A623" />
+        </svg>
+        <span class="text-[15px] font-semibold tracking-tight">NavIC Restore</span>
+      </a>
+
+      <nav class="hidden items-center gap-8 text-[12px] font-medium uppercase tracking-[0.09em] text-[#525B66] md:flex">
+        <a href="#simulator" class="transition-colors hover:text-[#0B0F14]">3D Simulator</a>
+        <a href="#method" class="transition-colors hover:text-[#0B0F14]">Field Method</a>
+        <a href="#validation" class="transition-colors hover:text-[#0B0F14]">Validation</a>
+      </nav>
+
+      <a
+        href="#simulator"
+        class="rounded-md bg-[#0B0F14] px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#1E2630]"
+      >
+        Open Live Map
+      </a>
+    </div>
+  </header>
+
+  <!-- ======================================================================= -->
+  <!-- SECTION 1: ORIGINAL EDITORIAL HERO + CANYON GEOMETRY SCHEMATIC          -->
+  <!-- ======================================================================= -->
+  <section id="top" class="bg-white">
+    <div class="mx-auto max-w-6xl px-4 pb-14 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
+      <div class="grid items-center gap-12 lg:grid-cols-12">
+        <!-- Left Editorial Copy -->
+        <div class="lg:col-span-6">
+          <div class="font-mono text-[11px] uppercase tracking-[0.14em] text-[#7A8491]">
+            ISRO EOS-04 SAR · Bhuvan Cartosat-1 DEM · NavIC
+          </div>
+
+          <h1 class="font-editorial mt-4 text-[42px] font-normal leading-[1.05] text-[#0B0F14] sm:text-[58px]">
+            Navigation that survives the flood.
+          </h1>
+
+          <p class="mt-5 max-w-lg text-[16px] leading-relaxed text-[#525B66]">
+            In steep Himalayan gorges and flooded river basins, mountain walls block low-elevation NavIC satellites and drop rescue receivers into blackout. We map safe dry ridges from SAR radar and launch a single tethered drone beacon to restore sub-5m positioning.
+          </p>
+
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href="#simulator"
+              class="rounded-md bg-[#0B0F14] px-5 py-3 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-white transition-colors hover:bg-[#1E2630]"
+            >
+              Explore 3D Flood Map
+            </a>
+            <a
+              href="#method"
+              class="px-2 py-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-[#0B0F14] underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-[#0B0F14]"
+            >
+              How Geometry Recovers
+            </a>
+          </div>
+
+          <!-- Quiet Key Metrics Row -->
+          <div class="mt-10 grid grid-cols-3 gap-4 border-t border-dashed border-neutral-300 pt-6">
+            <div>
+              <div class="font-mono text-[22px] font-semibold text-[#0B0F14]">&lt;5 m</div>
+              <div class="mt-0.5 text-[12px] text-[#525B66]">Restored fix target</div>
+            </div>
+            <div>
+              <div class="font-mono text-[22px] font-semibold text-[#0B0F14]">0.00 m</div>
+              <div class="mt-0.5 text-[12px] text-[#525B66]">SAR dry-ridge water</div>
+            </div>
+            <div>
+              <div class="font-mono text-[22px] font-semibold text-[#0B0F14]">150 m</div>
+              <div class="mt-0.5 text-[12px] text-[#525B66]">Max tether altitude</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Original Visual: Live Canyon Cross-Section & Signal Geometry Diagram -->
+        <div class="lg:col-span-6">
+          <div class="hairline-dashed overflow-hidden rounded-xl bg-[#F8F9FA] p-5 sm:p-6">
+            <div class="mb-3 flex items-center justify-between font-mono text-[10.5px] uppercase tracking-[0.1em] text-[#6E7784]">
+              <span>Fig 01 · Canyon Line-of-Sight Recovery</span>
+              <span class="text-[#0B0F14]">30.535°N 79.565°E</span>
+            </div>
+
+            <svg viewBox="0 0 520 310" class="h-auto w-full" fill="none" aria-label="Canyon cross-section showing blocked NavIC ray and tethered drone relay on dry ridge">
+              <!-- Subtle coordinate grid -->
+              <line x1="0" y1="65" x2="520" y2="65" stroke="#E4E8EE" stroke-dasharray="3 4" />
+              <line x1="0" y1="130" x2="520" y2="130" stroke="#E4E8EE" stroke-dasharray="3 4" />
+              <line x1="0" y1="195" x2="520" y2="195" stroke="#E4E8EE" stroke-dasharray="3 4" />
+
+              <!-- Satellites in upper sky -->
+              <g>
+                <!-- Blocked low-angle satellite -->
+                <rect x="34" y="34" width="22" height="10" rx="2" fill="#0B0F14" />
+                <rect x="22" y="37" width="10" height="4" fill="#D32F2F" />
+                <rect x="58" y="37" width="10" height="4" fill="#D32F2F" />
+                <text x="45" y="25" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#D32F2F">NVS-01 (24°)</text>
+                <!-- Blocked red ray hitting west cliff -->
+                <line x1="48" y1="45" x2="118" y2="148" stroke="#D32F2F" stroke-width="1.6" stroke-dasharray="4 3" />
+                <circle cx="118" cy="148" r="4" fill="#D32F2F" />
+                <text x="128" y="144" font-family="IBM Plex Mono" font-size="9" fill="#D32F2F">MASKED BY RIDGE</text>
+
+                <!-- Clear high-angle satellites -->
+                <rect x="234" y="22" width="22" height="10" rx="2" fill="#0B0F14" />
+                <rect x="222" y="25" width="10" height="4" fill="#F5A623" />
+                <rect x="258" y="25" width="10" height="4" fill="#F5A623" />
+                <text x="245" y="14" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#0B0F14">IRNSS-1C (53°)</text>
+                <line x1="245" y1="34" x2="262" y2="232" stroke="#0B0F14" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.55" />
+
+                <rect x="372" y="32" width="22" height="10" rx="2" fill="#0B0F14" />
+                <rect x="360" y="35" width="10" height="4" fill="#F5A623" />
+                <rect x="396" y="35" width="10" height="4" fill="#F5A623" />
+                <text x="383" y="23" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#0B0F14">IRNSS-1E (61°)</text>
+                <line x1="380" y1="44" x2="268" y2="232" stroke="#0B0F14" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.55" />
+              </g>
+
+              <!-- Flooded River Water Fill inside Canyon Floor -->
+              <path d="M188 220 L336 220 L306 254 L214 254 Z" fill="#1D5B8F" fill-opacity="0.22" />
+              <line x1="188" y1="220" x2="336" y2="220" stroke="#1D5B8F" stroke-width="1.8" />
+              <text x="262" y="213" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#1D5B8F">FLOODED GORGE · 2.4m DEPTH</text>
+
+              <!-- Canyon Mountain Cross-Section Silhouette -->
+              <path
+                d="M0 132 L78 118 L138 160 L196 232 L262 252 L322 232 L392 142 L456 126 L520 144 L520 274 L0 274 Z"
+                fill="#FFFFFF"
+                stroke="#0B0F14"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+
+              <!-- Geological 4-Stripe Spectrum Strata along the Base -->
+              <rect x="0" y="274" width="520" height="9" fill="#F5A623" />
+              <rect x="0" y="283" width="520" height="9" fill="#E86820" />
+              <rect x="0" y="292" width="520" height="9" fill="#D32F2F" />
+              <rect x="0" y="301" width="520" height="9" fill="#7B1113" />
+
+              <!-- SAR Dry Ridge Staging Pad on East Crest -->
+              <rect x="418" y="122" width="38" height="6" rx="2" fill="#0B0F14" />
+              <text x="437" y="150" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" font-weight="600" fill="#0B0F14">DRY RIDGE (0.0m)</text>
+
+              <!-- Tether Cable + Hovering Drone Pseudolite -->
+              <line x1="437" y1="122" x2="437" y2="76" stroke="#0B0F14" stroke-width="1.8" stroke-dasharray="3 2" />
+              <g transform="translate(437, 72)">
+                <line x1="-18" y1="0" x2="18" y2="0" stroke="#0B0F14" stroke-width="2.4" stroke-linecap="round" />
+                <circle cx="-18" cy="0" r="3.5" fill="#FFFFFF" stroke="#0B0F14" stroke-width="1.4" />
+                <circle cx="18" cy="0" r="3.5" fill="#FFFFFF" stroke="#0B0F14" stroke-width="1.4" />
+                <rect x="-7" y="-5" width="14" height="10" rx="2.5" fill="#0B0F14" />
+                <circle cx="0" cy="0" r="2.2" fill="#22C55E" />
+              </g>
+              <text x="437" y="57" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" font-weight="600" fill="#16A34A">DRONE RELAY · 55m</text>
+
+              <!-- Restored 4th Vector Beam from Drone into Flooded Valley -->
+              <line x1="428" y1="78" x2="266" y2="232" stroke="#16A34A" stroke-width="2" />
+              <circle cx="262" cy="234" r="5" fill="#16A34A" stroke="#FFFFFF" stroke-width="2" />
+              <rect x="210" y="242" width="104" height="20" rx="4" fill="#0B0F14" />
+              <text x="262" y="255" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" font-weight="600" fill="#FFFFFF">RESCUE FIX ±3.2m</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clean Transition Strata Ribbon into Dark Simulator Stage -->
+    <div class="strata-bar" aria-hidden="true">
+      <span class="h-2.5 bg-[#F5A623]"></span>
+      <span class="h-2.5 bg-[#E86820]"></span>
+      <span class="h-2.5 bg-[#D32F2F]"></span>
+      <span class="h-2.5 bg-[#7B1113]"></span>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- SECTION 2: HIGH-DETAIL 3D SATELLITE & BATHYMETRIC FLOOD SIMULATOR       -->
+  <!-- ======================================================================= -->
+  <section id="simulator" class="bg-[#080B0F] py-12 sm:py-16">
+    <div class="mx-auto max-w-6xl px-3 sm:px-6">
+      <!-- Concise Section Heading -->
+      <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div>
+          <div class="font-mono text-[11px] uppercase tracking-[0.14em] text-neutral-400">
+            Interactive Terrain &amp; Signal Workbench
+          </div>
+          <h2 class="font-editorial mt-1 text-[30px] leading-tight text-white sm:text-[38px]">
+            Inspect water depth, rescue paths, and NavIC recovery live.
+          </h2>
+        </div>
+        <div class="text-[13px] text-neutral-400 sm:text-right">
+          Hover anywhere on the map for exact water depth.<br class="hidden sm:inline" />
+          Click any white <span class="text-white">Dry Ridge</span> pin to relocate the drone.
+        </div>
+      </div>
+
+      <!-- Main Simulator Container -->
+      <div class="overflow-hidden rounded-2xl border border-white/12 bg-[#0D1218] text-white shadow-2xl">
+        <!-- Minimal Top Control Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-[#121820] px-4 py-3 sm:px-5">
+          <!-- Left: Scenario + 3 Operating Modes -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <select
+              id="scenario-select"
+              aria-label="Select flood scenario"
+              class="h-9 cursor-pointer rounded-md border border-white/15 bg-[#19212C] px-3 pr-8 text-[12.5px] font-medium text-white outline-none transition-colors hover:border-white/30"
+            >
+              <option value="chamoli">Chamoli Gorge — Rishi Ganga Flash Flood</option>
+              <option value="godavari">Godavari Basin — Bhadrachalam Floodplain</option>
+            </select>
+
+            <button
+              id="btn-open-import"
+              type="button"
+              class="h-9 rounded-md border border-dashed border-white/25 bg-[#151C25] px-3 text-[12px] font-medium text-neutral-200 transition-colors hover:border-white/50 hover:text-white"
+            >
+              + Import Radar Data
+            </button>
+
+            <div class="flex items-center rounded-md border border-white/10 bg-[#0A0E14] p-0.5" role="group" aria-label="Operating mode">
+              <button type="button" data-mode="baseline" class="mode-btn rounded px-3 py-1.5 text-[11.5px] font-medium transition-colors">
+                01 Baseline
+              </button>
+              <button type="button" data-mode="pseudolite" class="mode-btn rounded px-3 py-1.5 text-[11.5px] font-medium transition-colors">
+                02 Drone Relay
+              </button>
+              <button type="button" data-mode="barometer" class="mode-btn rounded px-3 py-1.5 text-[11.5px] font-medium transition-colors">
+                03 Altitude Clamp
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: First-Glance Status + 1-Click Auto-Deploy + Telemetry Toggle -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <div class="flex items-center gap-2 rounded-md border border-white/10 bg-[#171E28] px-3 py-1.5 text-[12px]">
+              <span id="status-dot" class="h-2 w-2 rounded-full bg-rose-500"></span>
+              <span id="status-label" class="font-medium text-white">No Fix</span>
+              <span id="status-error" class="font-mono text-[11.5px] text-neutral-400">&gt;15m</span>
+            </div>
+
+            <button
+              id="btn-auto-deploy"
+              type="button"
+              class="h-9 rounded-md bg-white px-3.5 text-[11.5px] font-semibold uppercase tracking-[0.06em] text-[#0B0F14] transition-colors hover:bg-neutral-200"
+            >
+              Auto-Deploy Drone
+            </button>
+
+            <button
+              id="btn-toggle-drawer"
+              type="button"
+              class="h-9 rounded-md border border-white/15 bg-[#19212C] px-3 text-[12px] font-medium text-neutral-200 transition-colors hover:border-white/30 hover:text-white"
+            >
+              Telemetry
+            </button>
+          </div>
+        </div>
+
+        <!-- Map Viewport -->
+        <div id="map-stage" class="relative h-[560px] w-full select-none bg-[#0A0E14] sm:h-[630px]">
+          <!-- 3D WebGL Canvas Mount -->
+          <div id="three-mount" class="h-full w-full"></div>
+
+          <!-- Crisp 3D-Projected Floating Labels Layer (Dry Ridges + Drone) -->
+          <div id="labels-3d" class="pointer-events-none absolute inset-0 z-10 overflow-hidden"></div>
+
+          <!-- 2D High-Res Orthophoto Canvas (Shown in 2D Mode) -->
+          <div id="map2d-mount" class="hidden h-full w-full items-center justify-center p-4 sm:p-6">
+            <div class="relative aspect-square h-full max-h-[580px] max-w-full overflow-hidden rounded-xl border border-white/15 bg-[#0A0E14] shadow-2xl">
+              <canvas id="canvas-2d" width="640" height="640" class="h-full w-full cursor-crosshair"></canvas>
+              <div id="map2d-ridges" class="pointer-events-none absolute inset-0"></div>
+            </div>
+          </div>
+
+          <!-- Cursor-Following Hover Inspector (Water Depth + Vehicle Access + NavIC Fix) -->
+          <div
+            id="hover-tooltip"
+            class="pointer-events-none absolute left-0 top-0 z-30 hidden w-[224px] rounded-lg border border-white/15 bg-[#0E141C]/95 px-3.5 py-3 text-white shadow-2xl backdrop-blur-md"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-mono text-[10px] uppercase tracking-wider text-neutral-400">Water Depth</span>
+              <span id="tt-passable" class="rounded px-1.5 py-0.5 text-[10px] font-semibold bg-white/10 text-neutral-200">Dry Ground</span>
+            </div>
+
+            <div class="mt-1 flex items-baseline justify-between">
+              <div class="font-mono text-[22px] font-semibold leading-none text-white">
+                <span id="tt-depth">0.00</span><span class="ml-1 text-[12px] font-normal text-neutral-400">m</span>
+              </div>
+              <span id="tt-elev" class="font-mono text-[11px] text-neutral-400">2140 m elev</span>
+            </div>
+
+            <!-- Visual depth gauge bar -->
+            <div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+              <div id="tt-depth-bar" class="h-full rounded-full bg-sky-400 transition-all duration-75" style="width: 0%"></div>
+            </div>
+
+            <div class="mt-2.5 space-y-1 border-t border-white/10 pt-2 text-[11.5px]">
+              <div class="flex items-center justify-between">
+                <span class="text-neutral-400">NavIC Fix</span>
+                <span id="tt-fix" class="font-mono font-semibold text-emerald-400">±3.2 m</span>
+              </div>
+              <div id="tt-note" class="font-mono text-[10px] text-neutral-400">30.535°N, 79.565°E</div>
+            </div>
+          </div>
+
+          <!-- Top-Left: Quiet Layer Switcher -->
+          <div class="absolute left-3.5 top-3.5 z-20 flex items-center gap-1 rounded-lg border border-white/12 bg-[#111720]/90 p-1 backdrop-blur-sm">
+            <button type="button" data-overlay="rescue" class="overlay-btn rounded px-2.5 py-1 text-[11.5px] font-medium transition-colors">
+              Rescue &amp; Water
+            </button>
+            <button type="button" data-overlay="dop" class="overlay-btn rounded px-2.5 py-1 text-[11.5px] font-medium transition-colors">
+              NavIC Signal
+            </button>
+            <button type="button" data-overlay="satellite" class="overlay-btn rounded px-2.5 py-1 text-[11.5px] font-medium transition-colors">
+              Satellite
+            </button>
+          </div>
+
+          <!-- Bottom-Left: Crisp First-Glance Legend with Water Depth Scale -->
+          <div class="absolute bottom-3.5 left-3.5 z-20 rounded-lg border border-white/12 bg-[#111720]/90 px-3.5 py-2.5 text-[11px] text-neutral-200 backdrop-blur-sm">
+            <div id="legend-rescue" class="space-y-1.5">
+              <div class="flex flex-wrap items-center gap-x-3.5 gap-y-1">
+                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#22C55E]"></span>Ambulance (&lt;0.35m)</span>
+                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#38BDF8]"></span>Boat Channel (&gt;0.5m)</span>
+                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full border border-white bg-[#0D1218]"></span>Dry Ridge</span>
+              </div>
+              <div class="flex items-center gap-2 pt-0.5 text-[10px] text-neutral-400">
+                <span>Shallow 0.2m</span>
+                <span class="h-1.5 w-24 rounded-full" style="background: linear-gradient(90deg, #56B8CE 0%, #2368A2 55%, #0D2C54 100%);"></span>
+                <span>Deep 3.2m</span>
+              </div>
+            </div>
+            <div id="legend-dop" class="hidden space-y-1">
+              <div class="font-mono text-[10px] uppercase tracking-wider text-neutral-400">NavIC Positioning Error</div>
+              <div class="flex items-center gap-3.5">
+                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#22C55E]"></span>Sub-5m Fix</span>
+                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#F5A623]"></span>5–15m Degraded</span>
+                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-[#EF4444]"></span>No Fix (&gt;15m)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom-Right: Camera Presets & 3D/2D Toggle -->
+          <div class="absolute bottom-3.5 right-3.5 z-20 flex flex-wrap items-center justify-end gap-2">
+            <div id="camera-controls" class="flex items-center gap-1 rounded-lg border border-white/12 bg-[#111720]/90 p-1 backdrop-blur-sm">
+              <button type="button" data-cam="topdown" class="cam-btn rounded px-2.5 py-1 text-[11px] font-medium">Top-Down</button>
+              <button type="button" data-cam="relief" class="cam-btn rounded px-2.5 py-1 text-[11px] font-medium">3D Relief</button>
+              <button type="button" data-cam="drone" class="cam-btn rounded px-2.5 py-1 text-[11px] font-medium">Ridge</button>
+              <span class="mx-0.5 h-3.5 w-px bg-white/12"></span>
+              <button type="button" id="btn-sat-rays" class="rounded px-2 py-1 text-[11px] font-medium text-neutral-400 hover:text-white">
+                LOS Rays
+              </button>
+            </div>
+
+            <div class="flex items-center rounded-lg border border-white/12 bg-[#111720]/90 p-1 backdrop-blur-sm">
+              <button type="button" data-view="3d" class="view-btn rounded px-2.5 py-1 text-[11px] font-medium">3D</button>
+              <button type="button" data-view="2d" class="view-btn rounded px-2.5 py-1 text-[11px] font-medium">2D</button>
+            </div>
+          </div>
+
+          <!-- Collapsible Telemetry Drawer (Hidden on Initial Load) -->
+          <aside
+            id="telemetry-drawer"
+            class="absolute bottom-0 right-0 top-0 z-30 hidden w-[328px] max-w-[90vw] flex-col border-l border-white/12 bg-[#111720]/96 p-4 text-white backdrop-blur-md"
+          >
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+              <div>
+                <h3 class="text-[13.5px] font-semibold">Telemetry &amp; Parameters</h3>
+                <p id="drawer-mode-desc" class="text-[11px] text-neutral-400">Mode 01 · Unaugmented NavIC</p>
+              </div>
+              <button id="btn-close-drawer" type="button" class="rounded px-2 py-1 text-neutral-400 hover:bg-white/10 hover:text-white">
+                ✕
+              </button>
+            </div>
+
+            <div class="mt-4 flex-1 space-y-4 overflow-y-auto pr-1">
+              <!-- Coverage Bar -->
+              <div>
+                <div class="mb-1.5 flex items-baseline justify-between text-[11.5px]">
+                  <span class="text-neutral-400">Corridor Positioning</span>
+                  <span id="drawer-avg-err" class="font-mono font-semibold text-white">NO FIX</span>
+                </div>
+                <div class="flex h-2 w-full overflow-hidden rounded-full bg-neutral-800">
+                  <div id="bar-sub5" class="bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                  <div id="bar-deg" class="bg-amber-400 transition-all duration-300" style="width: 0%"></div>
+                  <div id="bar-nofix" class="bg-rose-500 transition-all duration-300" style="width: 100%"></div>
+                </div>
+                <div class="mt-1.5 flex justify-between font-mono text-[10px] text-neutral-400">
+                  <span id="pct-sub5">Sub-5m 0%</span>
+                  <span id="pct-deg">5-15m 0%</span>
+                  <span id="pct-nofix">No Fix 100%</span>
+                </div>
+              </div>
+
+              <!-- DOP Readouts -->
+              <div class="grid grid-cols-2 gap-2">
+                <div class="rounded-md border border-white/10 bg-[#171F2A] p-2.5">
+                  <div class="text-[10.5px] text-neutral-400">GDOP</div>
+                  <div id="val-gdop" class="mt-0.5 font-mono text-[15px] font-semibold">—</div>
+                </div>
+                <div class="rounded-md border border-white/10 bg-[#171F2A] p-2.5">
+                  <div class="text-[10.5px] text-neutral-400">PDOP</div>
+                  <div id="val-pdop" class="mt-0.5 font-mono text-[15px] font-semibold">—</div>
+                </div>
+                <div class="rounded-md border border-white/10 bg-[#171F2A] p-2.5">
+                  <div class="text-[10.5px] text-neutral-400">HDOP</div>
+                  <div id="val-hdop" class="mt-0.5 font-mono text-[15px] font-semibold">—</div>
+                </div>
+                <div class="rounded-md border border-white/10 bg-[#171F2A] p-2.5">
+                  <div class="text-[10.5px] text-neutral-400">VDOP</div>
+                  <div id="val-vdop" class="mt-0.5 font-mono text-[15px] font-semibold">—</div>
+                </div>
+              </div>
+
+              <!-- Dry Ridges -->
+              <div>
+                <div class="mb-1.5 text-[11px] font-medium text-neutral-400">SAR-Verified Dry Ridges (0.00m water)</div>
+                <div id="ridge-list" class="space-y-1.5"></div>
+              </div>
+
+              <!-- Tether & UERE Sliders -->
+              <div class="space-y-3 border-t border-white/10 pt-3">
+                <div>
+                  <div class="mb-1 flex justify-between text-[11.5px]">
+                    <span class="text-neutral-300">Drone Tether Altitude</span>
+                    <span id="lbl-tether" class="font-mono text-white">55 m</span>
+                  </div>
+                  <input id="slider-tether" type="range" min="10" max="150" step="5" value="55" class="studio-slider w-full" />
+                </div>
+                <div>
+                  <div class="mb-1 flex justify-between text-[11.5px]">
+                    <span class="text-neutral-300">UERE Range Error</span>
+                    <span id="lbl-uere" class="font-mono text-white">3.0 m</span>
+                  </div>
+                  <input id="slider-uere" type="range" min="2" max="5" step="0.5" value="3" class="studio-slider w-full" />
+                </div>
+              </div>
+
+              <!-- 24h Diurnal Error Chart -->
+              <div class="border-t border-white/10 pt-3">
+                <div class="mb-1.5 flex items-center justify-between text-[11px]">
+                  <span class="text-neutral-400">24h Diurnal Error (m)</span>
+                  <div class="flex gap-2.5 text-[10px]">
+                    <span class="text-rose-400">Base</span>
+                    <span class="text-amber-400">Clamp</span>
+                    <span class="text-emerald-400">Drone</span>
+                  </div>
+                </div>
+                <div class="rounded-md border border-white/10 bg-[#0A0E14] p-2">
+                  <svg id="chart-24h" viewBox="0 0 260 92" class="h-24 w-full"></svg>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Bottom NavIC Satellite Kill-Switch Strip -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 bg-[#121820] px-4 py-2.5 sm:px-5">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-[11.5px] font-medium text-neutral-300">NavIC Satellites:</span>
+            <div id="sat-chips" class="flex flex-wrap items-center gap-1.5"></div>
+          </div>
+          <div class="flex items-center gap-4">
+            <button id="btn-outage" type="button" class="text-[11.5px] font-medium text-neutral-200 underline decoration-white/30 underline-offset-4 hover:text-white">
+              Simulate 3-Sat Canyon Outage
+            </button>
+            <button id="btn-restore-sats" type="button" class="text-[11.5px] font-medium text-neutral-400 hover:text-white">
+              Restore All 7
+            </button>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- MISSION CLARITY STRIP: DRY RIDGE RANKING + BEFORE/AFTER IMPACT  -->
+        <!-- =============================================================== -->
+        <div class="grid border-t border-white/10 bg-[#0F141B] lg:grid-cols-12">
+          <!-- Left (Domain 03 — Disaster Management): Candidate Dry Ridges & Best Suggestion -->
+          <div class="border-b border-white/10 p-4 sm:p-5 lg:col-span-6 lg:border-b-0 lg:border-r">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div class="font-mono text-[10.5px] uppercase tracking-[0.12em] text-neutral-400">
+                  01 · SAR Dry-Ridge Analysis
+                </div>
+                <h3 class="mt-0.5 text-[15px] font-semibold text-white">
+                  <span id="ridge-count-label">3</span> Candidate Dry Ridges Found
+                </h3>
+              </div>
+              <span class="rounded border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 font-mono text-[10.5px] font-medium text-emerald-300">
+                Best: <span id="best-ridge-name">Dhak Crest</span>
+              </span>
+            </div>
+
+            <p class="mt-1.5 text-[12.5px] text-neutral-400">
+              Ranked automatically from SAR flood-free zones (0.00 m water) by canyon line-of-sight and resulting NavIC corridor accuracy.
+            </p>
+
+            <div id="ranked-ridges-container" class="mt-3.5 space-y-2"></div>
+          </div>
+
+          <!-- Right (Domain 04 — Navigation): Live Before vs. After Drone Impact -->
+          <div class="flex flex-col justify-between p-4 sm:p-5 lg:col-span-6">
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <div class="font-mono text-[10.5px] uppercase tracking-[0.12em] text-neutral-400">
+                    02 · Live Navigation Impact
+                  </div>
+                  <h3 id="impact-headline" class="mt-0.5 text-[15px] font-semibold text-white">
+                    Currently Viewing: Baseline (Satellites Only)
+                  </h3>
+                </div>
+                <span id="impact-improvement-badge" class="rounded bg-white/10 px-2.5 py-1 font-mono text-[11px] font-semibold text-emerald-300">
+                  -78% Error with Drone
+                </span>
+              </div>
+
+              <p id="impact-story" class="mt-1.5 text-[12.5px] leading-relaxed text-neutral-300">
+                Steep terrain masks low-elevation satellites. Deploy the recommended dry-ridge drone to restore full 4-vector geometry.
+              </p>
+
+              <!-- Clear Before vs. After Comparison Cards -->
+              <div class="mt-3.5 grid grid-cols-2 gap-3">
+                <div id="card-before" class="rounded-lg border border-white/10 bg-[#141B24] p-3 transition-colors">
+                  <div class="flex items-center justify-between text-[10.5px] font-mono uppercase tracking-wider text-neutral-400">
+                    <span>Without Drone</span>
+                    <span id="before-pill" class="rounded bg-rose-500/15 px-1.5 py-0.5 text-[9.5px] text-rose-300">Baseline</span>
+                  </div>
+                  <div id="before-error" class="mt-1.5 font-mono text-[20px] font-semibold text-rose-400">NO FIX</div>
+                  <div id="before-cov" class="mt-0.5 text-[11.5px] text-neutral-400">Sub-5m coverage: 0%</div>
+                </div>
+
+                <div id="card-after" class="rounded-lg border border-emerald-500/30 bg-[#131F1D] p-3 transition-colors">
+                  <div class="flex items-center justify-between text-[10.5px] font-mono uppercase tracking-wider text-neutral-300">
+                    <span>With Best Drone</span>
+                    <span id="after-pill" class="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[9.5px] text-emerald-300">Restored</span>
+                  </div>
+                  <div id="after-error" class="mt-1.5 font-mono text-[20px] font-semibold text-emerald-400">±3.2 m</div>
+                  <div id="after-cov" class="mt-0.5 text-[11.5px] text-neutral-300">Sub-5m coverage: 92%</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Single Clear Action Button to Toggle Story State -->
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-3">
+              <div id="impact-step-hint" class="font-mono text-[11px] text-neutral-400">
+                Active Sats: 7 · Mode 01 Baseline
+              </div>
+              <button
+                id="btn-toggle-solution"
+                type="button"
+                class="rounded-md bg-white px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[0.07em] text-[#0B0F14] transition-colors hover:bg-neutral-200"
+              >
+                Deploy Recommended Drone
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- CUSTOM RADAR / SAR & DEM DATA IMPORT MODAL                            -->
+    <!-- ===================================================================== -->
+    <div
+      id="import-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="import-modal-title"
+    >
+      <div class="w-full max-w-xl overflow-hidden rounded-xl border border-white/15 bg-[#121820] text-white shadow-2xl">
+        <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
+          <div>
+            <div class="font-mono text-[10.5px] uppercase tracking-[0.12em] text-neutral-400">
+              EOS-04 SAR · Bhuvan DEM · Custom Radar Feed
+            </div>
+            <h3 id="import-modal-title" class="mt-0.5 text-[16px] font-semibold text-white">
+              Import Custom Terrain &amp; Flood Data
+            </h3>
+          </div>
+          <button
+            id="btn-close-import"
+            type="button"
+            class="rounded-md px-2.5 py-1 text-neutral-400 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Tabs: Quick Region Builder vs. Upload / Paste JSON -->
+        <div class="flex border-b border-white/10 bg-[#0D1218] px-5 pt-2">
+          <button
+            type="button"
+            data-import-tab="builder"
+            class="import-tab-btn border-b-2 border-white px-4 py-2 text-[12px] font-semibold text-white"
+          >
+            Custom Region &amp; Flood Surge
+          </button>
+          <button
+            type="button"
+            data-import-tab="json"
+            class="import-tab-btn border-b-2 border-transparent px-4 py-2 text-[12px] font-medium text-neutral-400 hover:text-white"
+          >
+            Upload / Paste Radar JSON
+          </button>
+        </div>
+
+        <!-- Tab 1: Quick Region Builder -->
+        <form id="form-custom-region" class="space-y-4 p-5">
+          <p class="text-[12.5px] leading-relaxed text-neutral-300">
+            Enter coordinates and SAR flood surge parameters from any disaster zone to generate a live 3D water-depth map, rescue corridors, and ranked dry ridges.
+          </p>
+
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div class="sm:col-span-2">
+              <label for="inp-region-name" class="block text-[11.5px] font-medium text-neutral-300">Region / Disaster Name</label>
+              <input
+                id="inp-region-name"
+                type="text"
+                value="Assam — Kaziranga Brahmaputra Surge"
+                required
+                class="mt-1 w-full rounded-md border border-white/15 bg-[#0A0E14] px-3 py-2 text-[13px] text-white outline-none focus:border-white/40"
+              />
+            </div>
+
+            <div>
+              <label for="inp-region-lat" class="block text-[11.5px] font-medium text-neutral-300">Center Latitude (°N)</label>
+              <input
+                id="inp-region-lat"
+                type="number"
+                step="0.001"
+                value="26.577"
+                required
+                class="mt-1 w-full rounded-md border border-white/15 bg-[#0A0E14] px-3 py-2 font-mono text-[13px] text-white outline-none focus:border-white/40"
+              />
+            </div>
+
+            <div>
+              <label for="inp-region-lon" class="block text-[11.5px] font-medium text-neutral-300">Center Longitude (°E)</label>
+              <input
+                id="inp-region-lon"
+                type="number"
+                step="0.001"
+                value="93.171"
+                required
+                class="mt-1 w-full rounded-md border border-white/15 bg-[#0A0E14] px-3 py-2 font-mono text-[13px] text-white outline-none focus:border-white/40"
+              />
+            </div>
+
+            <div>
+              <label for="inp-region-terrain" class="block text-[11.5px] font-medium text-neutral-300">Terrain Profile (DEM)</label>
+              <select
+                id="inp-region-terrain"
+                class="mt-1 w-full rounded-md border border-white/15 bg-[#0A0E14] px-3 py-2 text-[13px] text-white outline-none focus:border-white/40"
+              >
+                <option value="river_floodplain">River Floodplain (Broad Basin)</option>
+                <option value="mountain_canyon">Mountain Canyon (Steep Gorge)</option>
+              </select>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between text-[11.5px]">
+                <label for="inp-region-surge" class="font-medium text-neutral-300">Peak SAR Flood Depth</label>
+                <span id="lbl-region-surge" class="font-mono text-white">3.2 m</span>
+              </div>
+              <input
+                id="inp-region-surge"
+                type="range"
+                min="0.8"
+                max="5.0"
+                step="0.2"
+                value="3.2"
+                class="studio-slider mt-3 w-full"
+              />
+            </div>
+          </div>
+
+          <div class="flex items-center justify-end gap-2.5 border-t border-white/10 pt-4">
+            <button
+              type="button"
+              id="btn-cancel-builder"
+              class="rounded-md border border-white/15 px-3.5 py-2 text-[12px] font-medium text-neutral-300 hover:text-white"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="rounded-md bg-white px-4 py-2 text-[12px] font-semibold text-[#0B0F14] transition-colors hover:bg-neutral-200"
+            >
+              Generate 3D Flood Map
+            </button>
+          </div>
+        </form>
+
+        <!-- Tab 2: Upload / Paste Radar JSON -->
+        <div id="panel-custom-json" class="hidden space-y-4 p-5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <p class="text-[12.5px] text-neutral-300">
+              Upload a <span class="font-mono text-white">.json</span> export from Bhuvan/EOS-04 SAR or paste a scenario grid payload below.
+            </p>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                id="btn-load-sample-json"
+                class="rounded border border-white/15 bg-[#19212C] px-2.5 py-1 text-[11px] font-medium text-neutral-200 hover:border-white/35"
+              >
+                Load Sample JSON
+              </button>
+              <label class="cursor-pointer rounded border border-white/15 bg-[#19212C] px-2.5 py-1 text-[11px] font-medium text-neutral-200 hover:border-white/35">
+                Choose File
+                <input id="inp-json-file" type="file" accept=".json,application/json" class="hidden" />
+              </label>
+            </div>
+          </div>
+
+          <textarea
+            id="inp-json-text"
+            rows="7"
+            placeholder='{"name":"Wayanad Landslide & Flood","terrain_type":"mountain_canyon","grid":[{"lat":11.55,"lon":76.12,"elevation_m":1120,"flood_depth_m":1.8}, ...]}'
+            class="w-full rounded-md border border-white/15 bg-[#0A0E14] p-3 font-mono text-[11.5px] text-neutral-200 outline-none focus:border-white/40"
+          ></textarea>
+
+          <div id="json-error-msg" class="hidden rounded-md border border-rose-500/40 bg-rose-500/10 px-3 py-2 text-[12px] text-rose-300"></div>
+
+          <div class="flex items-center justify-end gap-2.5 border-t border-white/10 pt-4">
+            <button
+              type="button"
+              id="btn-cancel-json"
+              class="rounded-md border border-white/15 px-3.5 py-2 text-[12px] font-medium text-neutral-300 hover:text-white"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              id="btn-apply-json"
+              class="rounded-md bg-white px-4 py-2 text-[12px] font-semibold text-[#0B0F14] transition-colors hover:bg-neutral-200"
+            >
+              Apply Radar JSON
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- SECTION 3: FIELD METHOD & INTERACTIVE MATRIX RANK PROOF                 -->
+  <!-- ======================================================================= -->
+  <section id="method" class="bg-white py-20">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="grid items-start gap-12 lg:grid-cols-12">
+        <!-- Left: 3-Step Field Architecture -->
+        <div class="lg:col-span-6">
+          <div class="font-mono text-[11px] uppercase tracking-[0.14em] text-[#7A8491]">
+            Field Architecture
+          </div>
+          <h2 class="font-editorial mt-2 text-[34px] leading-[1.1] text-[#0B0F14] sm:text-[42px]">
+            Why a single dry-ridge drone fixes canyon blackout.
+          </h2>
+          <p class="mt-4 text-[15px] leading-relaxed text-[#525B66]">
+            Solving 3D position and receiver clock bias requires four independent ranging equations. When mountain walls drop visible NavIC satellites to three, the geometry matrix collapses.
+          </p>
+
+          <div class="mt-8 space-y-5 border-t border-dashed border-neutral-300 pt-6">
+            <div class="flex gap-4">
+              <span class="font-mono text-[12px] font-semibold text-[#7A8491]">01</span>
+              <div>
+                <div class="font-semibold text-[#0B0F14]">SAR Flood Masking</div>
+                <p class="mt-0.5 text-[13.5px] text-[#525B66]">
+                  EOS-04 C-band radar penetrates storm clouds to separate flooded channels from verified 0.00 m dry ridges.
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <span class="font-mono text-[12px] font-semibold text-[#7A8491]">02</span>
+              <div>
+                <div class="font-semibold text-[#0B0F14]">Dry-Ridge Tethered Relay</div>
+                <p class="mt-0.5 text-[13.5px] text-[#525B66]">
+                  Our optimizer ranks every dry crest and launches a power-tethered drone pseudolite at 10–150 m altitude.
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <span class="font-mono text-[12px] font-semibold text-[#7A8491]">03</span>
+              <div>
+                <div class="font-semibold text-[#0B0F14]">Full-Rank Geometry Recovery</div>
+                <p class="mt-0.5 text-[13.5px] text-[#525B66]">
+                  The drone supplies the 4th independent row in the geometry matrix, restoring sub-5m fixes across rescue corridors.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Matrix Rank Proof Widget -->
+        <div class="lg:col-span-6">
+          <div class="hairline-dashed rounded-xl bg-[#F8F9FA] p-5 sm:p-6">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-[#6E7784]">
+                Geometry Matrix G (4×4)
+              </span>
+              <span id="rank-badge" class="rounded bg-emerald-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-emerald-700">
+                RANK 4 · INVERTIBLE · ±3.2 m
+              </span>
+            </div>
+
+            <div class="mt-4 flex flex-wrap gap-2">
+              <button
+                id="rank-btn-3"
+                type="button"
+                class="rounded-md border border-neutral-300 bg-white px-3.5 py-2 text-[11.5px] font-semibold text-[#525B66] transition-colors"
+              >
+                3 Sats Only (Canyon Outage)
+              </button>
+              <button
+                id="rank-btn-4"
+                type="button"
+                class="rounded-md bg-[#0B0F14] px-3.5 py-2 text-[11.5px] font-semibold text-white transition-colors"
+              >
+                3 Sats + Dry-Ridge Drone
+              </button>
+            </div>
+
+            <div class="mt-5 space-y-2 font-mono text-[11.5px]">
+              <div class="flex items-center justify-between rounded border border-neutral-200 bg-white px-3 py-1.5 text-[#0B0F14]">
+                <span>Row 1 · IRNSS-1B</span>
+                <span class="text-[#525B66]">[ +0.58, -0.31, +0.75, 1 ]</span>
+              </div>
+              <div class="flex items-center justify-between rounded border border-neutral-200 bg-white px-3 py-1.5 text-[#0B0F14]">
+                <span>Row 2 · IRNSS-1C</span>
+                <span class="text-[#525B66]">[ -0.17, -0.57, +0.80, 1 ]</span>
+              </div>
+              <div class="flex items-center justify-between rounded border border-neutral-200 bg-white px-3 py-1.5 text-[#0B0F14]">
+                <span>Row 3 · IRNSS-1E</span>
+                <span class="text-[#525B66]">[ -0.48, -0.05, +0.88, 1 ]</span>
+              </div>
+              <div id="rank-row-4" class="flex items-center justify-between rounded border border-emerald-200 bg-emerald-50/70 px-3 py-1.5 transition-all">
+                <span class="font-semibold text-emerald-800">Row 4 · DRONE RELAY</span>
+                <span class="font-semibold text-emerald-900">[ +0.71, +0.64, +0.29, 1 ]</span>
+              </div>
+            </div>
+
+            <div class="mt-4 border-t border-dashed border-neutral-300 pt-3 font-mono text-[11px] text-[#6E7784]">
+              Covariance: Q = (GᵀG)⁻¹ · PDOP = √(Q₁₁ + Q₂₂ + Q₃₃)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- SECTION 4: ORIGINAL VALIDATION LEDGER (Clean Typographic Split)         -->
+  <!-- ======================================================================= -->
+  <section id="validation" class="border-t border-neutral-200 bg-[#F8F9FA] py-20">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="grid gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <div class="font-mono text-[11px] uppercase tracking-[0.14em] text-[#7A8491]">Operational Proof</div>
+          <h2 class="font-editorial mt-2 text-[34px] leading-[1.1] text-[#0B0F14] sm:text-[42px]">
+            Engineered for field teams, not ideal lab skies.
+          </h2>
+          <p class="mt-4 text-[14.5px] leading-relaxed text-[#525B66]">
+            Every design choice—from cloud-penetrating SAR radar to offline browser matrix math—assumes terrestrial power and cellular networks have already failed.
+          </p>
+
+          <!-- Compact vertical-accent strata bar -->
+          <div class="mt-8 flex h-2 w-40 overflow-hidden rounded-sm">
+            <span class="flex-1 bg-[#F5A623]"></span>
+            <span class="flex-1 bg-[#E86820]"></span>
+            <span class="flex-1 bg-[#D32F2F]"></span>
+            <span class="flex-1 bg-[#7B1113]"></span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div class="divide-y divide-dashed divide-neutral-300 border-y border-dashed border-neutral-300">
+            <div class="flex flex-col justify-between gap-2 py-5 sm:flex-row sm:items-baseline">
+              <div>
+                <div class="font-editorial text-[21px] text-[#0B0F14]">Mean Corridor Error Reduction</div>
+                <div class="text-[13.5px] text-[#525B66]">Chamoli 3-satellite canyon outage with single Dhak Crest drone</div>
+              </div>
+              <div class="font-mono text-[24px] font-semibold text-[#0B0F14]">73.3%</div>
+            </div>
+
+            <div class="flex flex-col justify-between gap-2 py-5 sm:flex-row sm:items-baseline">
+              <div>
+                <div class="font-editorial text-[21px] text-[#0B0F14]">Barometric Failsafe Fallback</div>
+                <div class="text-[13.5px] text-[#525B66]">Maintains usable 2D fix when sheer cliffs block even the drone</div>
+              </div>
+              <div class="font-mono text-[24px] font-semibold text-[#0B0F14]">Mode 03</div>
+            </div>
+
+            <div class="flex flex-col justify-between gap-2 py-5 sm:flex-row sm:items-baseline">
+              <div>
+                <div class="font-editorial text-[21px] text-[#0B0F14]">Continuous Tethered Endurance</div>
+                <div class="text-[13.5px] text-[#525B66]">Ground-fed power removes 25-minute drone battery limits</div>
+              </div>
+              <div class="font-mono text-[24px] font-semibold text-[#0B0F14]">24+ hrs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- MINIMAL DARK FOOTER                                                     -->
+  <!-- ======================================================================= -->
+  <footer class="bg-[#080B0F] text-white">
+    <div class="strata-bar" aria-hidden="true">
+      <span class="h-1 bg-[#F5A623]"></span>
+      <span class="h-1 bg-[#E86820]"></span>
+      <span class="h-1 bg-[#D32F2F]"></span>
+      <span class="h-1 bg-[#7B1113]"></span>
+    </div>
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row sm:px-6">
+      <div>
+        <div class="text-[14px] font-semibold">NavIC Restore</div>
+        <div class="mt-0.5 text-[12px] text-neutral-400">Team Hypervisors · VIT Bhopal · ASTRA 2026</div>
+      </div>
+      <a
+        href="#simulator"
+        class="rounded-md border border-white/15 px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[0.08em] text-neutral-200 transition-colors hover:border-white/35 hover:text-white"
+      >
+        Back to 3D Simulator
+      </a>
+    </div>
+  </footer>
+
+  <!-- ======================================================================= -->
+  <!-- HIGH-DETAIL 3D RELIEF + BATHYMETRIC FLOOD & DOP SIMULATION ENGINE       -->
+  <!-- ======================================================================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* --------------------------------------------------------------------- */
+      /* 1. FAST DETERMINISTIC RIDGED NOISE & SCENARIO GENERATOR               */
+      /* --------------------------------------------------------------------- */
+      function lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+      function clamp(v, lo, hi) {
+        return v < lo ? lo : v > hi ? hi : v;
+      }
+      function hash2(x, y) {
+        const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
+        return n - Math.floor(n);
+      }
+      function vNoise(x, y) {
+        const ix = Math.floor(x);
+        const iy = Math.floor(y);
+        const fx = x - ix;
+        const fy = y - iy;
+        const ux = fx * fx * (3 - 2 * fx);
+        const uy = fy * fy * (3 - 2 * fy);
+        const a = hash2(ix, iy);
+        const b = hash2(ix + 1, iy);
+        const c = hash2(ix, iy + 1);
+        const d = hash2(ix + 1, iy + 1);
+        return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
+      }
+      function fbm(x, y) {
+        let v = 0;
+        let a = 0.5;
+        let f = 1;
+        for (let i = 0; i < 4; i++) {
+          v += a * vNoise(x * f, y * f);
+          f *= 2.04;
+          a *= 0.5;
+        }
+        return v;
+      }
+      function ridgedFbm(x, y) {
+        let v = 0;
+        let a = 0.55;
+        let f = 1;
+        for (let i = 0; i < 4; i++) {
+          const n = 1 - Math.abs(vNoise(x * f, y * f) * 2 - 1);
+          v += n * n * a;
+          f *= 2.1;
+          a *= 0.48;
+        }
+        return v;
+      }
+
+      const NAVIC_SATS = [
+        { prn: 'IRNSS-1A', short: '1A', az: 41.9, el: 42.1 },
+        { prn: 'IRNSS-1B', short: '1B', az: 118.4, el: 48.2 },
+        { prn: 'IRNSS-1C', short: '1C', az: 196.6, el: 53.1 },
+        { prn: 'IRNSS-1E', short: '1E', az: 264.2, el: 61.2 },
+        { prn: 'IRNSS-1G', short: '1G', az: 318.6, el: 27.2 },
+        { prn: 'IRNSS-1I', short: '1I', az: 78.5, el: 34.1 },
+        { prn: 'NVS-01', short: 'NVS', az: 224.6, el: 24.2 },
+      ];
+
+      /**
+       * Continuous analytical terrain & flood field for crisp high-resolution detail
+       * (eliminates blocky low-res grid artifacts).
+       */
+      function createFieldEvaluator(id, customConfig) {
+        const isCustom = Boolean(customConfig);
+        const isChamoli = isCustom ? customConfig.terrain_type === 'mountain_canyon' : id === 'chamoli';
+        const centerLat = isCustom ? customConfig.lat : isChamoli ? 30.535 : 17.67;
+        const centerLon = isCustom ? customConfig.lon : isChamoli ? 79.565 : 80.89;
+        const spanLat = isChamoli ? 0.03 : 0.04;
+        const spanLon = isChamoli ? 0.03 : 0.05;
+        const minLat = centerLat - spanLat;
+        const maxLat = centerLat + spanLat;
+        const minLon = centerLon - spanLon;
+        const maxLon = centerLon + spanLon;
+        const minElev = isChamoli ? 1840 : 48;
+        const maxElev = isChamoli ? 3240 : 182;
+        const heightScale = isChamoli ? 6.8 : 2.3;
+        const surgeScale = isCustom ? (customConfig.surge_m || 3.0) / 3.0 : 1.0;
+        const seedShift = isCustom ? ((Math.abs(centerLat * 13 + centerLon * 7) % 10) + 1) : 0;
+
+        function evalPoint(u, v) {
+          const cu = clamp(u, 0, 1);
+          const cv = clamp(v, 0, 1);
+
+          let elev = minElev;
+          let depth = 0;
+          let horizonMask = 12;
+
+          if (isChamoli) {
+            const mainRiverU = 0.5 + 0.13 * Math.sin(cv * Math.PI * 2.1 + seedShift) + 0.04 * Math.cos(cv * Math.PI * 4.3);
+            const dMain = Math.abs(cu - mainRiverU);
+
+            const tribU = mainRiverU + (cv - 0.42) * 0.72;
+            const dTrib = cv > 0.36 ? Math.abs(cu - tribU) + 0.035 : 1.0;
+            const dValley = Math.min(dMain, dTrib * 1.25);
+
+            const wallProfile = Math.pow(clamp(dValley / 0.46, 0, 1), 1.32);
+            const ridgeDetail = ridgedFbm(cu * 6.5 + 2.1 + seedShift, cv * 6.5 + 1.4);
+            const microGully = fbm(cu * 18.0 + seedShift, cv * 18.0);
+            const wallFactor = clamp((dValley - 0.06) / 0.25, 0, 1);
+
+            elev =
+              1845 +
+              wallProfile * 1020 +
+              wallFactor * (ridgeDetail * 410 + (microGully - 0.5) * 95);
+
+            const bankNoise = (fbm(cu * 16 + seedShift, cv * 16) - 0.5) * 0.022;
+            const effDist = dMain + bankNoise;
+            if (effDist < 0.072 * clamp(surgeScale, 0.7, 1.35)) {
+              const t = 1 - effDist / (0.072 * clamp(surgeScale, 0.7, 1.35));
+              depth = (0.52 + 2.55 * Math.pow(t, 1.25)) * surgeScale;
+            } else if (effDist < 0.145 * clamp(surgeScale, 0.75, 1.3)) {
+              const t = 1 - (effDist - 0.072) / 0.073;
+              depth = 0.34 * Math.pow(clamp(t, 0, 1), 1.3) * surgeScale;
+            }
+            if (cv > 0.38 && dTrib < 0.07) {
+              depth = Math.max(depth, 0.95 * (1 - dTrib / 0.07) * surgeScale);
+            }
+            horizonMask = dMain < 0.16 ? 36 : dMain < 0.28 ? 25 : 14;
+          } else {
+            const riverU = 0.48 + 0.17 * Math.cos(cv * Math.PI * 1.55 + seedShift) + 0.04 * Math.sin(cv * Math.PI * 3.4);
+            const dRiver = Math.abs(cu - riverU);
+            const oxbowDist = Math.hypot((cu - 0.72) * 1.3, (cv - 0.62) * 1.1);
+            const relief = fbm(cu * 7.5 + 4.2 + seedShift, cv * 7.5 + 2.7);
+            const ridges = ridgedFbm(cu * 5.0 + 1.1 + seedShift, cv * 5.0 + 3.2);
+
+            elev =
+              50 +
+              Math.pow(clamp(dRiver / 0.5, 0, 1), 1.2) * 86 +
+              clamp((dRiver - 0.12) / 0.3, 0, 1) * (ridges * 44 + relief * 18);
+
+            const edgeN = (fbm(cu * 14 + seedShift, cv * 14) - 0.5) * 0.03;
+            const effD = dRiver + edgeN;
+            if (effD < 0.14 * clamp(surgeScale, 0.75, 1.3)) {
+              const t = 1 - effD / (0.14 * clamp(surgeScale, 0.75, 1.3));
+              depth = (0.55 + 2.75 * Math.pow(t, 1.15)) * surgeScale;
+            } else if (effD < 0.255 * clamp(surgeScale, 0.8, 1.25)) {
+              const t = 1 - (effD - 0.14) / 0.115;
+              depth = 0.34 * Math.pow(clamp(t, 0, 1), 1.25) * surgeScale;
+            }
+            if (oxbowDist < 0.14) {
+              depth = Math.max(depth, 1.3 * (1 - oxbowDist / 0.14) * surgeScale);
+            }
+            horizonMask = dRiver < 0.24 ? 29 : 12;
+          }
+
+          if (depth < 0.025) depth = 0;
+          const normElev = clamp((elev - minElev) / (maxElev - minElev), 0, 1);
+
+          return {
+            lat: lerp(maxLat, minLat, cv),
+            lon: lerp(minLon, maxLon, cu),
+            u: cu,
+            v: cv,
+            elevation_m: elev,
+            flood_depth_m: depth,
+            passable_type:
+              depth < 0.03 ? 'dry' : depth <= 0.35 ? 'ambulance_passable' : 'boat_only',
+            horizon_mask_deg: horizonMask,
+            normElev,
+            worldY: normElev * heightScale,
+          };
+        }
+
+        let dry_ridges;
+        if (isCustom) {
+          dry_ridges = [
+            { id: 'crest_w', name: 'West High Crest', lat: centerLat + spanLat * 0.3, lon: centerLon - spanLon * 0.65, tether: 60 },
+            { id: 'spur_e', name: 'East Elevated Spur', lat: centerLat - spanLat * 0.35, lon: centerLon + spanLon * 0.68, tether: 65 },
+            { id: 'knoll_n', name: 'North Dry Knoll', lat: centerLat + spanLat * 0.62, lon: centerLon + spanLon * 0.58, tether: 55 },
+          ];
+        } else {
+          dry_ridges = isChamoli
+            ? [
+                { id: 'dhak', name: 'Dhak Crest', lat: 30.544, lon: 79.545, tether: 55 },
+                { id: 'tapovan', name: 'Tapovan Spur', lat: 30.522, lon: 79.585, tether: 65 },
+                { id: 'subhai', name: 'Subhai Ridge', lat: 30.557, lon: 79.584, tether: 50 },
+              ]
+            : [
+                { id: 'bhadrachalam', name: 'Bhadrachalam Knoll', lat: 17.69, lon: 80.925, tether: 80 },
+                { id: 'kothagudem', name: 'Kothagudem Bank', lat: 17.65, lon: 80.854, tether: 70 },
+                { id: 'kunavaram', name: 'Kunavaram High Bank', lat: 17.696, lon: 80.858, tether: 75 },
+              ];
+        }
+
+        for (const r of dry_ridges) {
+          const u = (r.lon - minLon) / (maxLon - minLon);
+          const v = (maxLat - r.lat) / (maxLat - minLat);
+          r.elevation_m = Math.round(evalPoint(u, v).elevation_m);
+        }
+
+        let rescue_channels;
+        if (isCustom) {
+          const boatPath = [];
+          const ambPath = [];
+          for (let i = 0; i < 6; i++) {
+            const v = 0.08 + (i / 5) * 0.84;
+            let bestU = 0.5;
+            let maxD = -1;
+            let ambU = 0.35;
+            let bestAmbScore = 999;
+            for (let k = 0; k <= 30; k++) {
+              const u = k / 30;
+              const pt = evalPoint(u, v);
+              if (pt.flood_depth_m > maxD) {
+                maxD = pt.flood_depth_m;
+                bestU = u;
+              }
+              const ambScore = Math.abs(pt.flood_depth_m - 0.16);
+              if (pt.flood_depth_m >= 0.02 && pt.flood_depth_m <= 0.35 && ambScore < bestAmbScore) {
+                bestAmbScore = ambScore;
+                ambU = u;
+              }
+            }
+            boatPath.push([lerp(maxLat, minLat, v), lerp(minLon, maxLon, bestU)]);
+            ambPath.push([lerp(maxLat, minLat, v), lerp(minLon, maxLon, ambU)]);
+          }
+          rescue_channels = [
+            { type: 'boat', label: 'NDRF Boat Channel', path: boatPath },
+            { type: 'ambulance', label: 'Ambulance Corridor', path: ambPath },
+          ];
+        } else {
+          rescue_channels = isChamoli
+            ? [
+                {
+                  type: 'boat',
+                  label: 'NDRF Boat Channel',
+                  path: [
+                    [30.562, 79.566],
+                    [30.55, 79.574],
+                    [30.536, 79.566],
+                    [30.522, 79.557],
+                    [30.508, 79.565],
+                  ],
+                },
+                {
+                  type: 'ambulance',
+                  label: 'Ambulance Corridor',
+                  path: [
+                    [30.56, 79.558],
+                    [30.547, 79.567],
+                    [30.534, 79.558],
+                    [30.519, 79.55],
+                  ],
+                },
+              ]
+            : [
+                {
+                  type: 'boat',
+                  label: 'NDRF Boat Channel',
+                  path: [
+                    [17.705, 80.906],
+                    [17.684, 80.892],
+                    [17.665, 80.875],
+                    [17.638, 80.888],
+                  ],
+                },
+                {
+                  type: 'ambulance',
+                  label: 'Ambulance Corridor',
+                  path: [
+                    [17.702, 80.878],
+                    [17.68, 80.87],
+                    [17.658, 80.858],
+                    [17.638, 80.869],
+                  ],
+                },
+              ];
+        }
+
+        const dopGridCells = [];
+        const N = 16;
+        for (let r = 0; r < N; r++) {
+          const v = r / (N - 1);
+          for (let c = 0; c < N; c++) {
+            const u = c / (N - 1);
+            dopGridCells.push(evalPoint(u, v));
+          }
+        }
+
+        return {
+          id,
+          name: isCustom ? customConfig.name : id,
+          isCanyon: isChamoli,
+          minLat,
+          maxLat,
+          minLon,
+          maxLon,
+          minElev,
+          maxElev,
+          heightScale,
+          evalPoint,
+          dry_ridges,
+          rescue_channels,
+          dopGridCells,
+          dopN: N,
+        };
+      }
+
+      /**
+       * Builds a live 3D/2D field evaluator directly from user-uploaded SAR/DEM JSON grid data.
+       */
+      function createFieldFromUploadedJson(id, json) {
+        const cells = Array.isArray(json.grid) ? json.grid : [];
+        if (cells.length < 4) {
+          throw new Error('JSON must contain a "grid" array with at least 4 coordinate cells.');
+        }
+
+        let minLat = Infinity, maxLat = -Infinity, minLon = Infinity, maxLon = -Infinity;
+        let minElev = Infinity, maxElev = -Infinity;
+        for (const c of cells) {
+          if (!Number.isFinite(c.lat) || !Number.isFinite(c.lon)) continue;
+          if (c.lat < minLat) minLat = c.lat;
+          if (c.lat > maxLat) maxLat = c.lat;
+          if (c.lon < minLon) minLon = c.lon;
+          if (c.lon > maxLon) maxLon = c.lon;
+          const el = Number(c.elevation_m) || 0;
+          if (el < minElev) minElev = el;
+          if (el > maxElev) maxElev = el;
+        }
+        if (maxLat <= minLat) maxLat = minLat + 0.04;
+        if (maxLon <= minLon) maxLon = minLon + 0.04;
+        const elevRange = Math.max(10, maxElev - minElev);
+        const isCanyon = json.terrain_type === 'mountain_canyon' || elevRange > 350;
+        const heightScale = isCanyon ? 6.5 : 2.6;
+
+        const G = 16;
+        const matrix = [];
+        for (let r = 0; r < G; r++) {
+          const v = r / (G - 1);
+          const lat = lerp(maxLat, minLat, v);
+          const row = [];
+          for (let c = 0; c < G; c++) {
+            const u = c / (G - 1);
+            const lon = lerp(minLon, maxLon, u);
+            let wSum = 0, eSum = 0, dSum = 0, mSum = 0;
+            for (let k = 0; k < cells.length; k++) {
+              const p = cells[k];
+              const dist2 = (p.lat - lat) ** 2 + (p.lon - lon) ** 2 + 1e-8;
+              const w = 1 / dist2;
+              wSum += w;
+              eSum += w * (Number(p.elevation_m) || minElev);
+              dSum += w * (Number(p.flood_depth_m) || 0);
+              mSum += w * (Number(p.horizon_mask_deg) || (isCanyon ? 30 : 18));
+            }
+            row.push({
+              elev: eSum / wSum,
+              depth: dSum / wSum,
+              mask: mSum / wSum,
+            });
+          }
+          matrix.push(row);
+        }
+
+        function evalPoint(u, v) {
+          const cu = clamp(u, 0, 1);
+          const cv = clamp(v, 0, 1);
+          const fx = cu * (G - 1);
+          const fy = cv * (G - 1);
+          const x0 = Math.floor(fx);
+          const y0 = Math.floor(fy);
+          const x1 = Math.min(G - 1, x0 + 1);
+          const y1 = Math.min(G - 1, y0 + 1);
+          const tx = fx - x0;
+          const ty = fy - y0;
+
+          const c00 = matrix[y0][x0], c10 = matrix[y0][x1];
+          const c01 = matrix[y1][x0], c11 = matrix[y1][x1];
+          const elev = lerp(lerp(c00.elev, c10.elev, tx), lerp(c01.elev, c11.elev, tx), ty);
+          let depth = lerp(lerp(c00.depth, c10.depth, tx), lerp(c01.depth, c11.depth, tx), ty);
+          const mask = lerp(lerp(c00.mask, c10.mask, tx), lerp(c01.mask, c11.mask, tx), ty);
+          if (depth < 0.025) depth = 0;
+          const normElev = clamp((elev - minElev) / elevRange, 0, 1);
+
+          return {
+            lat: lerp(maxLat, minLat, cv),
+            lon: lerp(minLon, maxLon, cu),
+            u: cu,
+            v: cv,
+            elevation_m: elev,
+            flood_depth_m: depth,
+            passable_type: depth < 0.03 ? 'dry' : depth <= 0.35 ? 'ambulance_passable' : 'boat_only',
+            horizon_mask_deg: mask,
+            normElev,
+            worldY: normElev * heightScale,
+          };
+        }
+
+        let dry_ridges = Array.isArray(json.dry_ridges) && json.dry_ridges.length
+          ? json.dry_ridges.map((r, idx) => ({
+              id: r.id || `ridge_${idx}`,
+              name: r.name || `Dry Ridge ${idx + 1}`,
+              lat: Number(r.lat),
+              lon: Number(r.lon),
+              elevation_m: Math.round(Number(r.elevation_m) || maxElev),
+              tether: Number(r.recommended_tether_height_m) || 60,
+            }))
+          : [];
+
+        if (!dry_ridges.length) {
+          const dryPts = cells
+            .filter((c) => (Number(c.flood_depth_m) || 0) <= 0.02)
+            .sort((a, b) => (Number(b.elevation_m) || 0) - (Number(a.elevation_m) || 0));
+          for (const pt of dryPts) {
+            if (dry_ridges.length >= 3) break;
+            const farEnough = dry_ridges.every(
+              (r) => Math.hypot(r.lat - pt.lat, r.lon - pt.lon) > (maxLat - minLat) * 0.25
+            );
+            if (farEnough) {
+              dry_ridges.push({
+                id: `auto_ridge_${dry_ridges.length + 1}`,
+                name: `SAR Dry Ridge #${dry_ridges.length + 1}`,
+                lat: pt.lat,
+                lon: pt.lon,
+                elevation_m: Math.round(Number(pt.elevation_m) || maxElev),
+                tether: 60,
+              });
+            }
+          }
+          if (!dry_ridges.length) {
+            dry_ridges.push({
+              id: 'auto_ridge_1',
+              name: 'SAR High Point #1',
+              lat: maxLat - 0.005,
+              lon: minLon + 0.005,
+              elevation_m: Math.round(maxElev),
+              tether: 60,
+            });
+          }
+        }
+
+        const rescue_channels = Array.isArray(json.rescue_channels) && json.rescue_channels.length
+          ? json.rescue_channels.map((ch) => ({
+              type: ch.channel_type === 'ambulance' ? 'ambulance' : 'boat',
+              label: ch.name || 'Rescue Channel',
+              path: ch.path || [],
+            }))
+          : [];
+
+        const dopGridCells = [];
+        for (let r = 0; r < G; r++) {
+          const v = r / (G - 1);
+          for (let c = 0; c < G; c++) {
+            const u = c / (G - 1);
+            dopGridCells.push(evalPoint(u, v));
+          }
+        }
+
+        return {
+          id,
+          name: json.name || 'Imported Radar Dataset',
+          isCanyon,
+          minLat,
+          maxLat,
+          minLon,
+          maxLon,
+          minElev,
+          maxElev,
+          heightScale,
+          evalPoint,
+          dry_ridges,
+          rescue_channels,
+          dopGridCells,
+          dopN: G,
+        };
+      }
+
+      /* --------------------------------------------------------------------- */
+      /* 2. REAL 4x4 MATRIX DOP SOLVER                                         */
+      /* --------------------------------------------------------------------- */
+      function invert4x4(m) {
+        const a = m.map((row, i) => [
+          row[0], row[1], row[2], row[3],
+          i === 0 ? 1 : 0, i === 1 ? 1 : 0, i === 2 ? 1 : 0, i === 3 ? 1 : 0,
+        ]);
+        for (let i = 0; i < 4; i++) {
+          let pivot = i;
+          for (let r = i + 1; r < 4; r++) {
+            if (Math.abs(a[r][i]) > Math.abs(a[pivot][i])) pivot = r;
+          }
+          if (Math.abs(a[pivot][i]) < 1e-7) return null;
+          const tmp = a[i];
+          a[i] = a[pivot];
+          a[pivot] = tmp;
+          const div = a[i][i];
+          for (let c = 0; c < 8; c++) a[i][c] /= div;
+          for (let r = 0; r < 4; r++) {
+            if (r === i) continue;
+            const factor = a[r][i];
+            for (let c = 0; c < 8; c++) a[r][c] -= factor * a[i][c];
+          }
+        }
+        return a.map((row) => row.slice(4));
+      }
+
+      function computeCellDop(cell, activeSats, mode, beacon, tetherHeightM, uereM) {
+        const rows = [];
+        for (let i = 0; i < activeSats.length; i++) {
+          const sat = activeSats[i];
+          if (sat.el < cell.horizon_mask_deg) continue;
+          const az = (sat.az * Math.PI) / 180;
+          const el = (sat.el * Math.PI) / 180;
+          rows.push([Math.cos(el) * Math.sin(az), Math.cos(el) * Math.cos(az), Math.sin(el), 1]);
+        }
+
+        if (mode === 'pseudolite' && beacon) {
+          const dE = (beacon.lon - cell.lon) * 96000;
+          const dN = (beacon.lat - cell.lat) * 111000;
+          const dU = beacon.elevation_m + tetherHeightM - cell.elevation_m;
+          const dist = Math.sqrt(dE * dE + dN * dN + dU * dU) + 1e-4;
+          const elDeg = (Math.asin(clamp(dU / dist, -1, 1)) * 180) / Math.PI;
+          if (elDeg > -6) {
+            rows.push([dE / dist, dN / dist, Math.max(0.18, dU / dist), 1]);
+          }
+        }
+
+        if (mode === 'barometer') {
+          rows.push([0, 0, 1, 0]);
+        }
+
+        if (rows.length < 4) {
+          return { status: 'NO_FIX', gdop: 99, pdop: 99, hdop: 99, vdop: 99, error_m: 36 };
+        }
+
+        const gtg = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+        for (let k = 0; k < rows.length; k++) {
+          const r = rows[k];
+          for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) gtg[i][j] += r[i] * r[j];
+          }
+        }
+
+        const inv = invert4x4(gtg);
+        if (!inv) return { status: 'NO_FIX', gdop: 99, pdop: 99, hdop: 99, vdop: 99, error_m: 36 };
+
+        const hdop = Math.sqrt(Math.max(0.1, inv[0][0] + inv[1][1]));
+        const vdop = Math.sqrt(Math.max(0.1, inv[2][2]));
+        const pdop = Math.sqrt(Math.max(0.1, inv[0][0] + inv[1][1] + inv[2][2]));
+        const gdop = Math.sqrt(Math.max(0.1, inv[0][0] + inv[1][1] + inv[2][2] + inv[3][3]));
+        const error_m = Math.min(38, pdop * uereM * (mode === 'barometer' ? 1.18 : 0.72));
+        const status = error_m < 5.0 ? 'SUB_5M' : error_m <= 15.0 ? 'DEGRADED' : 'NO_FIX';
+        return { status, gdop, pdop, hdop, vdop, error_m };
+      }
+
+      /* --------------------------------------------------------------------- */
+      /* 3. HIGH-DETAIL 512x512 SHADED-RELIEF SATELLITE TEXTURE + CACHING      */
+      /* --------------------------------------------------------------------- */
+      const TEX_SIZE = 512;
+      const baseTextureCache = {};
+
+      function buildBaseTerrainCache(field) {
+        if (baseTextureCache[field.id]) return baseTextureCache[field.id];
+
+        const count = TEX_SIZE * TEX_SIZE;
+        const elevArr = new Float32Array(count);
+        const depthArr = new Float32Array(count);
+        const baseRgb = new Uint8ClampedArray(count * 3);
+
+        for (let py = 0; py < TEX_SIZE; py++) {
+          const v = py / (TEX_SIZE - 1);
+          for (let px = 0; px < TEX_SIZE; px++) {
+            const u = px / (TEX_SIZE - 1);
+            const s = field.evalPoint(u, v);
+            const idx = py * TEX_SIZE + px;
+            elevArr[idx] = s.elevation_m;
+            depthArr[idx] = s.flood_depth_m;
+          }
+        }
+
+        const sunX = -0.62;
+        const sunY = -0.48;
+        const sunZ = 0.62;
+        const zFactor = field.isCanyon ? 0.022 : 0.085;
+        const elevRange = field.maxElev - field.minElev;
+
+        for (let py = 0; py < TEX_SIZE; py++) {
+          const yUp = py > 0 ? py - 1 : 0;
+          const yDn = py < TEX_SIZE - 1 ? py + 1 : TEX_SIZE - 1;
+          for (let px = 0; px < TEX_SIZE; px++) {
+            const xLt = px > 0 ? px - 1 : 0;
+            const xRt = px < TEX_SIZE - 1 ? px + 1 : TEX_SIZE - 1;
+
+            const idx = py * TEX_SIZE + px;
+            const e = elevArr[idx];
+            const d = depthArr[idx];
+            const normE = clamp((e - field.minElev) / elevRange, 0, 1);
+
+            const dzdx = (elevArr[py * TEX_SIZE + xRt] - elevArr[py * TEX_SIZE + xLt]) * zFactor;
+            const dzdy = (elevArr[yDn * TEX_SIZE + px] - elevArr[yUp * TEX_SIZE + px]) * zFactor;
+            const invLen = 1 / Math.sqrt(dzdx * dzdx + dzdy * dzdy + 1);
+            const nx = -dzdx * invLen;
+            const ny = -dzdy * invLen;
+            const nz = invLen;
+
+            const slope = clamp(1 - nz, 0, 1);
+            const dot = clamp(nx * sunX + ny * sunY + nz * sunZ, 0, 1);
+            const shade = 0.56 + dot * 0.62;
+
+            const u = px / TEX_SIZE;
+            const v = py / TEX_SIZE;
+            const micro = (vNoise(u * 68, v * 68) - 0.5) * 16;
+
+            let r, g, b;
+            if (field.isCanyon) {
+              if (normE < 0.25) {
+                const t = normE / 0.25;
+                r = lerp(52, 62, t);
+                g = lerp(78, 88, t);
+                b = lerp(46, 52, t);
+              } else if (normE < 0.56) {
+                const t = (normE - 0.25) / 0.31;
+                r = lerp(62, 118, t);
+                g = lerp(88, 112, t);
+                b = lerp(52, 84, t);
+              } else if (normE < 0.8) {
+                const t = (normE - 0.56) / 0.24;
+                r = lerp(118, 138, t);
+                g = lerp(112, 130, t);
+                b = lerp(84, 116, t);
+              } else {
+                const t = (normE - 0.8) / 0.2;
+                r = lerp(138, 224, t);
+                g = lerp(130, 228, t);
+                b = lerp(116, 232, t);
+              }
+              const rockMix = clamp((slope - 0.14) * 2.8, 0, 0.78);
+              r = lerp(r, 112, rockMix);
+              g = lerp(g, 110, rockMix);
+              b = lerp(b, 106, rockMix);
+            } else {
+              if (normE < 0.45) {
+                const t = normE / 0.45;
+                r = lerp(56, 86, t);
+                g = lerp(86, 102, t);
+                b = lerp(48, 60, t);
+              } else {
+                const t = (normE - 0.45) / 0.55;
+                r = lerp(86, 136, t);
+                g = lerp(102, 124, t);
+                b = lerp(60, 92, t);
+              }
+            }
+
+            r = r * shade + micro;
+            g = g * shade + micro;
+            b = b * shade + micro;
+
+            const interval = field.isCanyon ? 100 : 12;
+            if (d < 0.03 && (e % interval) / interval < 0.028) {
+              r *= 0.82;
+              g *= 0.82;
+              b *= 0.82;
+            }
+
+            if (d >= 0.03) {
+              let wr, wg, wb;
+              if (d < 0.35) {
+                const t = d / 0.35;
+                wr = lerp(88, 46, t);
+                wg = lerp(182, 134, t);
+                wb = lerp(196, 174, t);
+              } else if (d < 1.3) {
+                const t = (d - 0.35) / 0.95;
+                wr = lerp(46, 22, t);
+                wg = lerp(134, 78, t);
+                wb = lerp(174, 132, t);
+              } else {
+                const t = clamp((d - 1.3) / 1.9, 0, 1);
+                wr = lerp(22, 10, t);
+                wg = lerp(78, 36, t);
+                wb = lerp(132, 76, t);
+              }
+              const wAlpha = clamp(0.62 + d * 0.16, 0.62, 0.96);
+              r = lerp(r, wr, wAlpha);
+              g = lerp(g, wg, wAlpha);
+              b = lerp(b, wb, wAlpha);
+
+              if (d < 0.09) {
+                r = lerp(r, 185, 0.32);
+                g = lerp(g, 225, 0.32);
+                b = lerp(b, 232, 0.32);
+              }
+            }
+
+            const p3 = idx * 3;
+            baseRgb[p3] = clamp(r, 0, 255);
+            baseRgb[p3 + 1] = clamp(g, 0, 255);
+            baseRgb[p3 + 2] = clamp(b, 0, 255);
+          }
+        }
+
+        const cached = { baseRgb, depthArr, elevArr };
+        baseTextureCache[field.id] = cached;
+        return cached;
+      }
+
+      function renderCompositeCanvas(field, dopMap, overlayMode) {
+        const cached = buildBaseTerrainCache(field);
+        const canvas = document.createElement('canvas');
+        canvas.width = TEX_SIZE;
+        canvas.height = TEX_SIZE;
+        const ctx = canvas.getContext('2d');
+        const img = ctx.createImageData(TEX_SIZE, TEX_SIZE);
+        const out = img.data;
+        const src = cached.baseRgb;
+        const depths = cached.depthArr;
+        const N = field.dopN;
+
+        for (let py = 0; py < TEX_SIZE; py++) {
+          const fy = (py / (TEX_SIZE - 1)) * (N - 1);
+          const y0 = Math.floor(fy);
+          const y1 = y0 < N - 1 ? y0 + 1 : N - 1;
+          const ty = fy - y0;
+
+          for (let px = 0; px < TEX_SIZE; px++) {
+            const idx = py * TEX_SIZE + px;
+            const p3 = idx * 3;
+            const p4 = idx * 4;
+            let r = src[p3];
+            let g = src[p3 + 1];
+            let b = src[p3 + 2];
+
+            if (overlayMode === 'rescue') {
+              const d = depths[idx];
+              if (d >= 0.03 && d <= 0.35) {
+                r = r * 0.62 + 34 * 0.38;
+                g = g * 0.62 + 197 * 0.38;
+                b = b * 0.62 + 94 * 0.38;
+              }
+            } else if (overlayMode === 'dop') {
+              const fx = (px / (TEX_SIZE - 1)) * (N - 1);
+              const x0 = Math.floor(fx);
+              const x1 = x0 < N - 1 ? x0 + 1 : N - 1;
+              const tx = fx - x0;
+
+              const e00 = dopMap[y0 * N + x0].error_m;
+              const e10 = dopMap[y0 * N + x1].error_m;
+              const e01 = dopMap[y1 * N + x0].error_m;
+              const e11 = dopMap[y1 * N + x1].error_m;
+              const err = lerp(lerp(e00, e10, tx), lerp(e01, e11, tx), ty);
+
+              let hr, hg, hb;
+              if (err < 5.0) {
+                hr = 34; hg = 185; hb = 98;
+              } else if (err <= 15.0) {
+                hr = 240; hg = 165; hb = 35;
+              } else {
+                hr = 220; hg = 56; hb = 56;
+              }
+              r = r * 0.55 + hr * 0.45;
+              g = g * 0.55 + hg * 0.45;
+              b = b * 0.55 + hb * 0.45;
+            }
+
+            out[p4] = r;
+            out[p4 + 1] = g;
+            out[p4 + 2] = b;
+            out[p4 + 3] = 255;
+          }
+        }
+
+        ctx.putImageData(img, 0, 0);
+        return canvas;
+      }
+
+      /* --------------------------------------------------------------------- */
+      /* 4. APPLICATION STATE                                                  */
+      /* --------------------------------------------------------------------- */
+      const customScenarios = {};
+
+      const state = {
+        scenarioId: 'chamoli',
+        field: null,
+        mode: 'baseline',
+        overlay: 'rescue',
+        view: '3d',
+        camPreset: 'topdown',
+        showSatRays: false,
+        drawerOpen: false,
+        tetherHeightM: 55,
+        uereM: 3.0,
+        activePrns: new Set(['IRNSS-1B', 'IRNSS-1C', 'IRNSS-1E']),
+        beacon: null,
+        bestRidgeId: null,
+        dopMap: [],
+      };
+
+      /* --------------------------------------------------------------------- */
+      /* 5. THREE.JS 3D TERRAIN, WATER, DRONE & INTERACTION ENGINE             */
+      /* --------------------------------------------------------------------- */
+      const WORLD_SIZE = 32;
+      const MESH_SEGMENTS = 112;
+
+      const threeCtx = {
+        supported: true,
+        mode: 'webgl',
+        scene: null,
+        camera: null,
+        renderer: null,
+        terrainMesh: null,
+        waterMesh: null,
+        cursorRing: null,
+        dynamicGroup: null,
+        ridgeHitMeshes: [],
+        labelAnchors: [],
+        softCanvas: null,
+        softTexCanvas: null,
+        softCells: null,
+        theta: 0.0,
+        phi: 0.46,
+        radius: 34,
+        lookAt: { x: 0, y: 0.8, z: 0 },
+        targetTheta: 0.0,
+        targetPhi: 0.46,
+        targetRadius: 34,
+        targetLookAt: { x: 0, y: 0.8, z: 0 },
+        isDragging: false,
+        dragMoved: false,
+        lastX: 0,
+        lastY: 0,
+      };
+
+      function latLonToWorld(lat, lon) {
+        const f = state.field;
+        const u = clamp((lon - f.minLon) / (f.maxLon - f.minLon || 1), 0, 1);
+        const v = clamp((f.maxLat - lat) / (f.maxLat - f.minLat || 1), 0, 1);
+        const s = f.evalPoint(u, v);
+        return {
+          x: (u - 0.5) * WORLD_SIZE,
+          y: s.worldY,
+          z: (v - 0.5) * WORLD_SIZE,
+          u,
+          v,
+          sample: s,
+        };
+      }
+
+      function sampleDopAt(u, v) {
+        const N = state.field.dopN;
+        if (!state.dopMap.length) {
+          return { status: 'NO_FIX', error_m: 36, gdop: 99 };
+        }
+        const r = clamp(Math.round(v * (N - 1)), 0, N - 1);
+        const c = clamp(Math.round(u * (N - 1)), 0, N - 1);
+        return state.dopMap[r * N + c] || { status: 'NO_FIX', error_m: 36, gdop: 99 };
+      }
+
+      function showTooltip(info, x, y, stageW, stageH) {
+        const tt = document.getElementById('hover-tooltip');
+        if (!tt) return;
+        const depth = info.flood_depth_m || 0;
+        document.getElementById('tt-depth').textContent = depth.toFixed(2);
+        document.getElementById('tt-elev').textContent = `${Math.round(info.elevation_m)} m elev`;
+
+        const passEl = document.getElementById('tt-passable');
+        const barEl = document.getElementById('tt-depth-bar');
+        if (info.passable_type === 'dry') {
+          passEl.textContent = 'Dry Ground';
+          passEl.className = 'rounded px-1.5 py-0.5 text-[10px] font-semibold bg-white/10 text-neutral-200';
+          barEl.className = 'h-full rounded-full bg-neutral-500 transition-all duration-75';
+        } else if (info.passable_type === 'ambulance_passable') {
+          passEl.textContent = 'Ambulance OK';
+          passEl.className = 'rounded px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-500/20 text-emerald-300';
+          barEl.className = 'h-full rounded-full bg-emerald-400 transition-all duration-75';
+        } else {
+          passEl.textContent = 'Boat Only';
+          passEl.className = 'rounded px-1.5 py-0.5 text-[10px] font-semibold bg-sky-500/20 text-sky-300';
+          barEl.className = 'h-full rounded-full bg-sky-400 transition-all duration-75';
+        }
+        barEl.style.width = `${clamp((depth / 3.2) * 100, depth > 0.03 ? 8 : 0, 100)}%`;
+
+        const fixEl = document.getElementById('tt-fix');
+        const dop = info.dop || { status: 'NO_FIX', error_m: 36 };
+        if (dop.status === 'SUB_5M') {
+          fixEl.textContent = `±${dop.error_m.toFixed(1)} m`;
+          fixEl.className = 'font-mono font-semibold text-emerald-400';
+        } else if (dop.status === 'DEGRADED') {
+          fixEl.textContent = `±${dop.error_m.toFixed(1)} m`;
+          fixEl.className = 'font-mono font-semibold text-amber-300';
+        } else {
+          fixEl.textContent = 'NO FIX';
+          fixEl.className = 'font-mono font-semibold text-rose-400';
+        }
+
+        document.getElementById('tt-note').textContent = `${info.lat.toFixed(3)}°N, ${info.lon.toFixed(3)}°E`;
+
+        const left = x > stageW - 244 ? Math.max(8, x - 236) : x + 16;
+        const top = y > stageH - 148 ? Math.max(8, y - 138) : y + 16;
+        tt.style.transform = `translate3d(${Math.round(left)}px, ${Math.round(top)}px, 0)`;
+        tt.classList.remove('hidden');
+      }
+
+      function hideTooltip() {
+        const tt = document.getElementById('hover-tooltip');
+        if (tt) tt.classList.add('hidden');
+      }
+
+      function update3DLabels() {
+        const host = document.getElementById('labels-3d');
+        if (!host) return;
+        const w = host.clientWidth || 1;
+        const h = host.clientHeight || 1;
+
+        if (threeCtx.mode === 'webgl' && threeCtx.camera && threeCtx.renderer) {
+          const proj = new THREE.Vector3();
+          for (const item of threeCtx.labelAnchors) {
+            proj.copy(item.worldPos).project(threeCtx.camera);
+            const visible = proj.z >= -1 && proj.z <= 1;
+            item.el.style.display = visible ? 'block' : 'none';
+            if (visible) {
+              const sx = (proj.x * 0.5 + 0.5) * w;
+              const sy = (-proj.y * 0.5 + 0.5) * h;
+              item.el.style.transform = `translate(-50%, -100%) translate3d(${Math.round(sx)}px, ${Math.round(sy)}px, 0)`;
+            }
+          }
+        } else if (threeCtx.mode === 'canvas3d') {
+          for (const item of threeCtx.labelAnchors) {
+            const p = projectSoft3D(item.worldPos.x, item.worldPos.y, item.worldPos.z, w, h);
+            item.el.style.display = p ? 'block' : 'none';
+            if (p) {
+              item.el.style.transform = `translate(-50%, -100%) translate3d(${Math.round(p.x)}px, ${Math.round(p.y)}px, 0)`;
+            }
+          }
+        }
+      }
+
+      function projectSoft3D(wx, wy, wz, w, h) {
+        const sinPhi = Math.sin(threeCtx.phi);
+        const cx = threeCtx.lookAt.x + threeCtx.radius * sinPhi * Math.sin(threeCtx.theta);
+        const cy = threeCtx.lookAt.y + threeCtx.radius * Math.cos(threeCtx.phi);
+        const cz = threeCtx.lookAt.z + threeCtx.radius * sinPhi * Math.cos(threeCtx.theta);
+
+        let fx = threeCtx.lookAt.x - cx;
+        let fy = threeCtx.lookAt.y - cy;
+        let fz = threeCtx.lookAt.z - cz;
+        const fLen = Math.hypot(fx, fy, fz) || 1;
+        fx /= fLen; fy /= fLen; fz /= fLen;
+
+        let rx = -fz;
+        let ry = 0;
+        let rz = fx;
+        const rLen = Math.hypot(rx, rz) || 1;
+        rx /= rLen; rz /= rLen;
+
+        const ux = ry * fz - rz * fy;
+        const uy = rz * fx - rx * fz;
+        const uz = rx * fy - ry * fx;
+
+        const dx = wx - cx;
+        const dy = wy - cy;
+        const dz = wz - cz;
+
+        const camZ = dx * fx + dy * fy + dz * fz;
+        if (camZ < 0.5) return null;
+        const camX = dx * rx + dy * ry + dz * rz;
+        const camY = dx * ux + dy * uy + dz * uz;
+
+        const fovScale = (h * 0.5) / Math.tan((20 * Math.PI) / 180);
+        return {
+          x: w * 0.5 + (camX / camZ) * fovScale,
+          y: h * 0.5 - (camY / camZ) * fovScale,
+          z: camZ,
+        };
+      }
+
+      function renderSoft3DFrame() {
+        const canvas = threeCtx.softCanvas;
+        if (!canvas || !state.field || !threeCtx.softCells) return;
+        const w = canvas.width;
+        const h = canvas.height;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#0A0E14';
+        ctx.fillRect(0, 0, w, h);
+
+        const G = threeCtx.softCells.G;
+        const pts = threeCtx.softCells.pts;
+        const colors = threeCtx.softCells.colors;
+
+        const proj = new Array((G + 1) * (G + 1));
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i];
+          proj[i] = projectSoft3D(p.x, p.y, p.z, w, h);
+        }
+
+        const sinT = Math.sin(threeCtx.theta);
+        const cosT = Math.cos(threeCtx.theta);
+        const rStart = cosT >= 0 ? 0 : G - 1;
+        const rEnd = cosT >= 0 ? G : -1;
+        const rStep = cosT >= 0 ? 1 : -1;
+        const cStart = sinT >= 0 ? 0 : G - 1;
+        const cEnd = sinT >= 0 ? G : -1;
+        const cStep = sinT >= 0 ? 1 : -1;
+
+        for (let r = rStart; r !== rEnd; r += rStep) {
+          for (let c = cStart; c !== cEnd; c += cStep) {
+            const p00 = proj[r * (G + 1) + c];
+            const p10 = proj[r * (G + 1) + c + 1];
+            const p11 = proj[(r + 1) * (G + 1) + c + 1];
+            const p01 = proj[(r + 1) * (G + 1) + c];
+            if (!p00 || !p10 || !p11 || !p01) continue;
+
+            ctx.fillStyle = colors[r * G + c];
+            ctx.beginPath();
+            ctx.moveTo(p00.x, p00.y);
+            ctx.lineTo(p10.x, p10.y);
+            ctx.lineTo(p11.x, p11.y);
+            ctx.lineTo(p01.x, p01.y);
+            ctx.closePath();
+            ctx.fill();
+          }
+        }
+
+        if (state.overlay === 'rescue') {
+          for (const ch of state.field.rescue_channels) {
+            if (!ch.path || ch.path.length < 2) continue;
+            ctx.beginPath();
+            let started = false;
+            for (const [lat, lon] of ch.path) {
+              const wp = latLonToWorld(lat, lon);
+              const sp = projectSoft3D(wp.x, wp.y + 0.3, wp.z, w, h);
+              if (!sp) continue;
+              if (!started) { ctx.moveTo(sp.x, sp.y); started = true; }
+              else ctx.lineTo(sp.x, sp.y);
+            }
+            ctx.strokeStyle = ch.type === 'ambulance' ? '#22C55E' : '#38BDF8';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+          }
+        }
+
+        for (const ridge of state.field.dry_ridges) {
+          const wp = latLonToWorld(ridge.lat, ridge.lon);
+          const sp = projectSoft3D(wp.x, wp.y + 0.14, wp.z, w, h);
+          if (!sp) continue;
+          const isDeployed = state.mode === 'pseudolite' && state.beacon && state.beacon.id === ridge.id;
+          ctx.beginPath();
+          ctx.arc(sp.x, sp.y, isDeployed ? 7 : 5, 0, Math.PI * 2);
+          ctx.fillStyle = isDeployed ? '#22C55E' : '#F8FAFC';
+          ctx.fill();
+          ctx.strokeStyle = '#0A0E14';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          if (isDeployed) {
+            const tetherH = clamp((state.tetherHeightM / 150) * 3.8 + 0.85, 0.85, 4.65);
+            const dp = projectSoft3D(wp.x, wp.y + tetherH, wp.z, w, h);
+            if (dp) {
+              ctx.beginPath();
+              ctx.moveTo(sp.x, sp.y);
+              ctx.lineTo(dp.x, dp.y);
+              ctx.strokeStyle = 'rgba(248,250,252,0.85)';
+              ctx.lineWidth = 2;
+              ctx.stroke();
+
+              ctx.beginPath();
+              ctx.arc(dp.x, dp.y, 6, 0, Math.PI * 2);
+              ctx.fillStyle = '#22C55E';
+              ctx.fill();
+              ctx.strokeStyle = '#FFFFFF';
+              ctx.lineWidth = 2;
+              ctx.stroke();
+            }
+          }
+        }
+
+        if (state.showSatRays) {
+          const centerS = state.field.evalPoint(0.5, 0.5);
+          const tSp = projectSoft3D(0, centerS.worldY + 0.25, 0, w, h);
+          if (tSp) {
+            const domeR = 22;
+            for (const sat of NAVIC_SATS) {
+              if (!state.activePrns.has(sat.prn)) continue;
+              const az = (sat.az * Math.PI) / 180;
+              const el = (sat.el * Math.PI) / 180;
+              const sx = Math.sin(az) * Math.cos(el) * domeR;
+              const sy = Math.sin(el) * domeR + 4;
+              const sz = -Math.cos(az) * Math.cos(el) * domeR;
+              const blocked = sat.el < centerS.horizon_mask_deg;
+              const satSp = projectSoft3D(sx, sy, sz, w, h);
+              if (!satSp) continue;
+              const endX = blocked ? lerp(satSp.x, tSp.x, 0.6) : tSp.x;
+              const endY = blocked ? lerp(satSp.y, tSp.y, 0.6) : tSp.y;
+              ctx.beginPath();
+              ctx.moveTo(satSp.x, satSp.y);
+              ctx.lineTo(endX, endY);
+              ctx.strokeStyle = blocked ? 'rgba(239,68,68,0.65)' : 'rgba(34,197,94,0.5)';
+              ctx.lineWidth = 1.6;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function initSoft3DFallback(mount) {
+        threeCtx.supported = true;
+        threeCtx.mode = 'canvas3d';
+        mount.innerHTML = '';
+        const canvas = document.createElement('canvas');
+        canvas.className = 'block h-full w-full cursor-crosshair';
+        mount.appendChild(canvas);
+        threeCtx.softCanvas = canvas;
+
+        const resize = () => {
+          const w = Math.max(320, mount.clientWidth || 800);
+          const h = Math.max(320, mount.clientHeight || 560);
+          if (canvas.width !== w || canvas.height !== h) {
+            canvas.width = w;
+            canvas.height = h;
+          }
+        };
+        resize();
+        if (typeof ResizeObserver !== 'undefined') {
+          new ResizeObserver(resize).observe(mount);
+        } else {
+          window.addEventListener('resize', resize);
+        }
+
+        canvas.addEventListener('pointerdown', (e) => {
+          threeCtx.isDragging = true;
+          threeCtx.dragMoved = false;
+          threeCtx.lastX = e.clientX;
+          threeCtx.lastY = e.clientY;
+          canvas.setPointerCapture?.(e.pointerId);
+        });
+        canvas.addEventListener('pointermove', (e) => {
+          const rect = canvas.getBoundingClientRect();
+          if (threeCtx.isDragging) {
+            const dx = e.clientX - threeCtx.lastX;
+            const dy = e.clientY - threeCtx.lastY;
+            if (Math.abs(dx) + Math.abs(dy) > 2) threeCtx.dragMoved = true;
+            threeCtx.targetTheta -= dx * 0.0075;
+            threeCtx.targetPhi = clamp(threeCtx.targetPhi - dy * 0.0065, 0.16, 1.32);
+            threeCtx.lastX = e.clientX;
+            threeCtx.lastY = e.clientY;
+            hideTooltip();
+            return;
+          }
+          if (!state.field || !threeCtx.softCells) return;
+          const mx = e.clientX - rect.left;
+          const my = e.clientY - rect.top;
+          let bestDist = 420;
+          let bestPt = null;
+          const pts = threeCtx.softCells.pts;
+          const step = 2;
+          const G = threeCtx.softCells.G;
+          for (let r = 0; r <= G; r += step) {
+            for (let c = 0; c <= G; c += step) {
+              const p = pts[r * (G + 1) + c];
+              const sp = projectSoft3D(p.x, p.y, p.z, canvas.width, canvas.height);
+              if (!sp) continue;
+              const d2 = (sp.x - mx) ** 2 + (sp.y - my) ** 2;
+              if (d2 < bestDist) {
+                bestDist = d2;
+                bestPt = p;
+              }
+            }
+          }
+          if (bestPt) {
+            const s = state.field.evalPoint(bestPt.u, bestPt.v);
+            const dop = sampleDopAt(bestPt.u, bestPt.v);
+            showTooltip({ ...s, dop }, mx, my, rect.width, rect.height);
+          } else {
+            hideTooltip();
+          }
+        });
+        const stopDrag = () => { threeCtx.isDragging = false; };
+        canvas.addEventListener('pointerup', stopDrag);
+        canvas.addEventListener('pointercancel', stopDrag);
+        canvas.addEventListener('pointerleave', () => { stopDrag(); hideTooltip(); });
+        canvas.addEventListener(
+          'wheel',
+          (e) => {
+            e.preventDefault();
+            threeCtx.targetRadius = clamp(threeCtx.targetRadius + e.deltaY * 0.025, 11, 56);
+          },
+          { passive: false }
+        );
+
+        let softAnimId;
+        function animateSoft() {
+          softAnimId = requestAnimationFrame(animateSoft);
+          if (threeCtx.mode !== 'canvas3d') return;
+
+          threeCtx.theta = lerp(threeCtx.theta, threeCtx.targetTheta, 0.12);
+          threeCtx.phi = lerp(threeCtx.phi, threeCtx.targetPhi, 0.12);
+          threeCtx.radius = lerp(threeCtx.radius, threeCtx.targetRadius, 0.12);
+          threeCtx.lookAt.x = lerp(threeCtx.lookAt.x, threeCtx.targetLookAt.x, 0.12);
+          threeCtx.lookAt.y = lerp(threeCtx.lookAt.y, threeCtx.targetLookAt.y, 0.12);
+          threeCtx.lookAt.z = lerp(threeCtx.lookAt.z, threeCtx.targetLookAt.z, 0.12);
+
+          renderSoft3DFrame();
+          update3DLabels();
+        }
+        animateSoft();
+
+        return () => {
+          cancelAnimationFrame(softAnimId);
+        };
+      }
+
+      function canCreateWebGLContext() {
+        try {
+          const probe = document.createElement('canvas');
+          const opts = { failIfMajorPerformanceCaveat: false };
+          return Boolean(
+            probe.getContext('webgl2', opts) ||
+              probe.getContext('webgl', opts) ||
+              probe.getContext('experimental-webgl', opts)
+          );
+        } catch {
+          return false;
+        }
+      }
+
+      function initThree() {
+        const mount = document.getElementById('three-mount');
+        if (!mount) return;
+        if (typeof THREE === 'undefined' || !canCreateWebGLContext()) {
+          initSoft3DFallback(mount);
+          return;
+        }
+
+        try {
+          const width = Math.max(320, mount.clientWidth || 900);
+          const height = Math.max(320, mount.clientHeight || 580);
+
+          const scene = new THREE.Scene();
+          scene.background = new THREE.Color('#0A0E14');
+          scene.fog = new THREE.FogExp2('#0A0E14', 0.0075);
+
+          const camera = new THREE.PerspectiveCamera(40, width / height, 0.2, 220);
+
+          let renderer = null;
+          try {
+            renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'default' });
+          } catch {
+            renderer = null;
+          }
+          if (!renderer || !renderer.getContext()) {
+            initSoft3DFallback(mount);
+            return;
+          }
+
+          renderer.setSize(width, height);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+          renderer.shadowMap.enabled = true;
+          renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+          renderer.toneMapping = THREE.ACESFilmicToneMapping;
+          renderer.toneMappingExposure = 1.08;
+
+          mount.innerHTML = '';
+          mount.appendChild(renderer.domElement);
+
+          renderer.domElement.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            initSoft3DFallback(mount);
+            if (threeCtx.softTexCanvas) rebuild3DScene(threeCtx.softTexCanvas);
+          });
+
+          const hemi = new THREE.HemisphereLight('#dce8f5', '#202833', 0.85);
+          scene.add(hemi);
+
+          const sun = new THREE.DirectionalLight('#fff5e4', 1.35);
+          sun.position.set(-22, 34, -16);
+          sun.castShadow = true;
+          sun.shadow.mapSize.set(1024, 1024);
+          sun.shadow.camera.near = 5;
+          sun.shadow.camera.far = 90;
+          const d = 22;
+          sun.shadow.camera.left = -d;
+          sun.shadow.camera.right = d;
+          sun.shadow.camera.top = d;
+          sun.shadow.camera.bottom = -d;
+          sun.shadow.bias = -0.0005;
+          scene.add(sun);
+
+          const rim = new THREE.DirectionalLight('#7da7d1', 0.35);
+          rim.position.set(22, 14, 20);
+          scene.add(rim);
+
+          const plinth = new THREE.Mesh(
+            new THREE.BoxGeometry(WORLD_SIZE + 0.5, 0.8, WORLD_SIZE + 0.5),
+            new THREE.MeshStandardMaterial({ color: '#121820', roughness: 0.95 })
+          );
+          plinth.position.y = -0.45;
+          scene.add(plinth);
+
+          const ringGeo = new THREE.RingGeometry(0.28, 0.42, 32);
+          ringGeo.rotateX(-Math.PI / 2);
+          const cursorRing = new THREE.Mesh(
+            ringGeo,
+            new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.9, depthTest: false })
+          );
+          cursorRing.visible = false;
+          cursorRing.renderOrder = 25;
+          scene.add(cursorRing);
+
+          const dynamicGroup = new THREE.Group();
+          scene.add(dynamicGroup);
+
+          threeCtx.supported = true;
+          threeCtx.mode = 'webgl';
+          threeCtx.scene = scene;
+          threeCtx.camera = camera;
+          threeCtx.renderer = renderer;
+          threeCtx.cursorRing = cursorRing;
+          threeCtx.dynamicGroup = dynamicGroup;
+          threeCtx.lookAt = new THREE.Vector3(0, 0.8, 0);
+          threeCtx.targetLookAt = new THREE.Vector3(0, 0.8, 0);
+
+          const raycaster = new THREE.Raycaster();
+          const pointer = new THREE.Vector2();
+          const dom = renderer.domElement;
+
+          dom.addEventListener('pointerdown', (e) => {
+            threeCtx.isDragging = true;
+            threeCtx.dragMoved = false;
+            threeCtx.lastX = e.clientX;
+            threeCtx.lastY = e.clientY;
+            dom.setPointerCapture?.(e.pointerId);
+          });
+
+          dom.addEventListener('pointermove', (e) => {
+            const rect = dom.getBoundingClientRect();
+            if (threeCtx.isDragging) {
+              const dx = e.clientX - threeCtx.lastX;
+              const dy = e.clientY - threeCtx.lastY;
+              if (Math.abs(dx) + Math.abs(dy) > 2) threeCtx.dragMoved = true;
+              threeCtx.targetTheta -= dx * 0.0075;
+              threeCtx.targetPhi = clamp(threeCtx.targetPhi - dy * 0.0065, 0.16, 1.38);
+              threeCtx.lastX = e.clientX;
+              threeCtx.lastY = e.clientY;
+              hideTooltip();
+              return;
+            }
+
+            if (!threeCtx.terrainMesh || !state.field) return;
+            pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+            raycaster.setFromCamera(pointer, camera);
+
+            if (threeCtx.ridgeHitMeshes.length) {
+              const rHits = raycaster.intersectObjects(threeCtx.ridgeHitMeshes, false);
+              if (rHits.length > 0) {
+                dom.style.cursor = 'pointer';
+                threeCtx.cursorRing.visible = false;
+                hideTooltip();
+                return;
+              }
+            }
+
+            dom.style.cursor = 'crosshair';
+            const hits = raycaster.intersectObject(threeCtx.terrainMesh, false);
+            if (hits.length > 0) {
+              const pt = hits[0].point;
+              const u = clamp(pt.x / WORLD_SIZE + 0.5, 0, 1);
+              const v = clamp(pt.z / WORLD_SIZE + 0.5, 0, 1);
+              const s = state.field.evalPoint(u, v);
+              const dop = sampleDopAt(u, v);
+              threeCtx.cursorRing.position.set(pt.x, pt.y + 0.14, pt.z);
+              threeCtx.cursorRing.visible = true;
+              showTooltip({ ...s, dop }, e.clientX - rect.left, e.clientY - rect.top, rect.width, rect.height);
+            } else {
+              threeCtx.cursorRing.visible = false;
+              hideTooltip();
+            }
+          });
+
+          const endDrag = (e) => {
+            if (!threeCtx.isDragging) return;
+            threeCtx.isDragging = false;
+            if (!threeCtx.dragMoved && threeCtx.ridgeHitMeshes.length) {
+              const rect = dom.getBoundingClientRect();
+              pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+              pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+              raycaster.setFromCamera(pointer, camera);
+              const rHits = raycaster.intersectObjects(threeCtx.ridgeHitMeshes, false);
+              if (rHits.length > 0 && rHits[0].object.userData?.ridge) {
+                selectRidge(rHits[0].object.userData.ridge);
+              }
+            }
+          };
+          dom.addEventListener('pointerup', endDrag);
+          dom.addEventListener('pointercancel', () => { threeCtx.isDragging = false; });
+          dom.addEventListener('pointerleave', () => {
+            threeCtx.isDragging = false;
+            threeCtx.cursorRing.visible = false;
+            hideTooltip();
+          });
+
+          dom.addEventListener(
+            'wheel',
+            (e) => {
+              e.preventDefault();
+              threeCtx.targetRadius = clamp(threeCtx.targetRadius + e.deltaY * 0.025, 11, 56);
+            },
+            { passive: false }
+          );
+
+          const syncSize = () => {
+            const w = mount.clientWidth;
+            const h = mount.clientHeight;
+            if (w > 0 && h > 0) {
+              camera.aspect = w / h;
+              camera.updateProjectionMatrix();
+              renderer.setSize(w, h);
+            }
+          };
+          if (typeof ResizeObserver !== 'undefined') {
+            new ResizeObserver(syncSize).observe(mount);
+          }
+          window.addEventListener('resize', syncSize);
+
+          const clock = new THREE.Clock();
+          function animate() {
+            requestAnimationFrame(animate);
+            if (threeCtx.mode !== 'webgl') return;
+            const t = clock.getElapsedTime();
+
+            threeCtx.theta = lerp(threeCtx.theta, threeCtx.targetTheta, 0.12);
+            threeCtx.phi = lerp(threeCtx.phi, threeCtx.targetPhi, 0.12);
+            threeCtx.radius = lerp(threeCtx.radius, threeCtx.targetRadius, 0.12);
+            threeCtx.lookAt.lerp(threeCtx.targetLookAt, 0.12);
+
+            const sinPhi = Math.sin(threeCtx.phi);
+            camera.position.set(
+              threeCtx.lookAt.x + threeCtx.radius * sinPhi * Math.sin(threeCtx.theta),
+              threeCtx.lookAt.y + threeCtx.radius * Math.cos(threeCtx.phi),
+              threeCtx.lookAt.z + threeCtx.radius * sinPhi * Math.cos(threeCtx.theta)
+            );
+            camera.lookAt(threeCtx.lookAt);
+
+            if (threeCtx.waterMesh && threeCtx.waterMesh.material) {
+              threeCtx.waterMesh.material.opacity = 0.5 + Math.sin(t * 1.5) * 0.04;
+            }
+
+            renderer.render(scene, camera);
+            update3DLabels();
+          }
+          animate();
+        } catch (err) {
+          console.warn('WebGL unavailable, using built-in 3D canvas engine:', err);
+          initSoft3DFallback(mount);
+        }
+      }
+
+      function rebuild3DScene(texCanvas) {
+        if (!state.field) return;
+        threeCtx.softTexCanvas = texCanvas;
+        const field = state.field;
+        const labelHost = document.getElementById('labels-3d');
+
+        if (threeCtx.mode === 'canvas3d') {
+          const G = 42;
+          const pts = [];
+          for (let r = 0; r <= G; r++) {
+            const v = r / G;
+            for (let c = 0; c <= G; c++) {
+              const u = c / G;
+              const s = field.evalPoint(u, v);
+              pts.push({
+                x: (u - 0.5) * WORLD_SIZE,
+                y: s.worldY,
+                z: (v - 0.5) * WORLD_SIZE,
+                u,
+                v,
+              });
+            }
+          }
+          const tCtx = texCanvas.getContext('2d');
+          const tData = tCtx.getImageData(0, 0, TEX_SIZE, TEX_SIZE).data;
+          const colors = new Array(G * G);
+          for (let r = 0; r < G; r++) {
+            const py = clamp(Math.floor(((r + 0.5) / G) * (TEX_SIZE - 1)), 0, TEX_SIZE - 1);
+            for (let c = 0; c < G; c++) {
+              const px = clamp(Math.floor(((c + 0.5) / G) * (TEX_SIZE - 1)), 0, TEX_SIZE - 1);
+              const idx = (py * TEX_SIZE + px) * 4;
+              colors[r * G + c] = `rgb(${tData[idx]},${tData[idx + 1]},${tData[idx + 2]})`;
+            }
+          }
+          threeCtx.softCells = { G, pts, colors };
+          threeCtx.labelAnchors = [];
+          if (labelHost) {
+            labelHost.innerHTML = '';
+            for (const ridge of field.dry_ridges) {
+              const p = latLonToWorld(ridge.lat, ridge.lon);
+              const isDeployed = state.mode === 'pseudolite' && state.beacon && state.beacon.id === ridge.id;
+              const isBest = state.bestRidgeId === ridge.id;
+              const btn = document.createElement('button');
+              btn.type = 'button';
+              btn.className = `pointer-events-auto absolute left-0 top-0 whitespace-nowrap rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold shadow-lg transition-colors ${
+                isDeployed
+                  ? 'border-emerald-400 bg-[#0B1712]/95 text-emerald-300'
+                  : isBest
+                  ? 'border-amber-400/70 bg-[#121820]/92 text-amber-200 hover:border-amber-300'
+                  : 'border-white/30 bg-[#121820]/90 text-white hover:border-white'
+              }`;
+              btn.textContent = isDeployed ? `● ${ridge.name} (${state.tetherHeightM}m)` : isBest ? `★ ${ridge.name}` : ridge.name;
+              btn.onclick = () => selectRidge(ridge);
+              labelHost.appendChild(btn);
+              threeCtx.labelAnchors.push({
+                el: btn,
+                worldPos: { x: p.x, y: p.y + (isDeployed ? clamp((state.tetherHeightM / 150) * 3.8 + 1.35, 1.3, 5.2) : 0.9), z: p.z },
+              });
+            }
+          }
+          renderSoft3DFrame();
+          update3DLabels();
+          return;
+        }
+
+        if (!threeCtx.scene) return;
+        const scene = threeCtx.scene;
+
+        if (threeCtx.terrainMesh) {
+          scene.remove(threeCtx.terrainMesh);
+          threeCtx.terrainMesh.geometry.dispose();
+          threeCtx.terrainMesh.material.map?.dispose();
+          threeCtx.terrainMesh.material.dispose();
+        }
+        if (threeCtx.waterMesh) {
+          scene.remove(threeCtx.waterMesh);
+          threeCtx.waterMesh.geometry.dispose();
+          threeCtx.waterMesh.material.dispose();
+        }
+        while (threeCtx.dynamicGroup.children.length > 0) {
+          const ch = threeCtx.dynamicGroup.children[0];
+          threeCtx.dynamicGroup.remove(ch);
+          ch.traverse?.((obj) => {
+            obj.geometry?.dispose?.();
+            if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
+            else obj.material?.dispose?.();
+          });
+        }
+        threeCtx.ridgeHitMeshes = [];
+        threeCtx.labelAnchors = [];
+        if (labelHost) labelHost.innerHTML = '';
+
+        const tGeo = new THREE.PlaneGeometry(WORLD_SIZE, WORLD_SIZE, MESH_SEGMENTS, MESH_SEGMENTS);
+        tGeo.rotateX(-Math.PI / 2);
+        const pos = tGeo.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+          const x = pos.getX(i);
+          const z = pos.getZ(i);
+          const u = clamp(x / WORLD_SIZE + 0.5, 0, 1);
+          const v = clamp(z / WORLD_SIZE + 0.5, 0, 1);
+          pos.setY(i, field.evalPoint(u, v).worldY);
+        }
+        tGeo.computeVertexNormals();
+        tGeo.computeBoundingSphere();
+
+        const tex = new THREE.CanvasTexture(texCanvas);
+        tex.minFilter = THREE.LinearFilter;
+        tex.generateMipmaps = false;
+        tex.anisotropy = Math.min(4, threeCtx.renderer.capabilities.getMaxAnisotropy());
+        tex.needsUpdate = true;
+
+        const tMesh = new THREE.Mesh(
+          tGeo,
+          new THREE.MeshStandardMaterial({ map: tex, roughness: 0.86, metalness: 0.03 })
+        );
+        tMesh.receiveShadow = true;
+        tMesh.castShadow = true;
+        tMesh.frustumCulled = false;
+        scene.add(tMesh);
+        threeCtx.terrainMesh = tMesh;
+
+        const wGeo = new THREE.PlaneGeometry(WORLD_SIZE, WORLD_SIZE, 64, 64);
+        wGeo.rotateX(-Math.PI / 2);
+        const wPos = wGeo.attributes.position;
+        for (let i = 0; i < wPos.count; i++) {
+          const x = wPos.getX(i);
+          const z = wPos.getZ(i);
+          const u = clamp(x / WORLD_SIZE + 0.5, 0, 1);
+          const v = clamp(z / WORLD_SIZE + 0.5, 0, 1);
+          const s = field.evalPoint(u, v);
+          wPos.setY(i, s.flood_depth_m > 0.04 ? s.worldY + 0.08 + Math.min(s.flood_depth_m * 0.07, 0.28) : s.worldY - 0.35);
+        }
+        wGeo.computeVertexNormals();
+
+        const wMesh = new THREE.Mesh(
+          wGeo,
+          new THREE.MeshStandardMaterial({
+            color: '#1b588f',
+            roughness: 0.16,
+            metalness: 0.15,
+            transparent: true,
+            opacity: 0.52,
+          })
+        );
+        scene.add(wMesh);
+        threeCtx.waterMesh = wMesh;
+
+        if (state.overlay === 'rescue') {
+          for (const ch of field.rescue_channels) {
+            if (!ch.path || ch.path.length < 2) continue;
+            const pts = ch.path.map(([lat, lon]) => {
+              const p = latLonToWorld(lat, lon);
+              return new THREE.Vector3(p.x, p.y + 0.28, p.z);
+            });
+            const curve = new THREE.CatmullRomCurve3(pts);
+            const isAmb = ch.type === 'ambulance';
+            const tube = new THREE.Mesh(
+              new THREE.TubeGeometry(curve, 48, 0.13, 8, false),
+              new THREE.MeshStandardMaterial({
+                color: isAmb ? '#22C55E' : '#38BDF8',
+                emissive: isAmb ? '#14532D' : '#0C4A6E',
+                emissiveIntensity: 0.35,
+                roughness: 0.4,
+              })
+            );
+            threeCtx.dynamicGroup.add(tube);
+          }
+        }
+
+        for (const ridge of field.dry_ridges) {
+          const p = latLonToWorld(ridge.lat, ridge.lon);
+          const isDeployed = state.mode === 'pseudolite' && state.beacon && state.beacon.id === ridge.id;
+          const isBest = state.bestRidgeId === ridge.id;
+
+          const padGroup = new THREE.Group();
+          padGroup.position.set(p.x, p.y + 0.08, p.z);
+
+          const disk = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.42, 0.5, 0.12, 24),
+            new THREE.MeshStandardMaterial({ color: isDeployed ? '#22C55E' : '#F8FAFC', roughness: 0.4 })
+          );
+          padGroup.add(disk);
+
+          const haloGeo = new THREE.RingGeometry(0.58, 0.72, 28);
+          haloGeo.rotateX(-Math.PI / 2);
+          const halo = new THREE.Mesh(
+            haloGeo,
+            new THREE.MeshBasicMaterial({
+              color: isDeployed ? '#22C55E' : isBest ? '#F5A623' : '#FFFFFF',
+              transparent: true,
+              opacity: 0.8,
+              side: THREE.DoubleSide,
+            })
+          );
+          halo.position.y = 0.07;
+          padGroup.add(halo);
+
+          const hit = new THREE.Mesh(
+            new THREE.SphereGeometry(1.0, 10, 10),
+            new THREE.MeshBasicMaterial({ visible: false })
+          );
+          hit.position.y = 0.45;
+          hit.userData = { ridge };
+          padGroup.add(hit);
+          threeCtx.ridgeHitMeshes.push(hit);
+          threeCtx.dynamicGroup.add(padGroup);
+
+          if (labelHost) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = `pointer-events-auto absolute left-0 top-0 whitespace-nowrap rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold shadow-lg transition-colors ${
+              isDeployed
+                ? 'border-emerald-400 bg-[#0B1712]/95 text-emerald-300'
+                : isBest
+                ? 'border-amber-400/70 bg-[#121820]/92 text-amber-200 hover:border-amber-300'
+                : 'border-white/30 bg-[#121820]/90 text-white hover:border-white'
+            }`;
+            btn.textContent = isDeployed ? `● ${ridge.name} (${state.tetherHeightM}m)` : isBest ? `★ ${ridge.name}` : ridge.name;
+            btn.onclick = () => selectRidge(ridge);
+            labelHost.appendChild(btn);
+            threeCtx.labelAnchors.push({
+              el: btn,
+              worldPos: new THREE.Vector3(p.x, p.y + (isDeployed ? clamp((state.tetherHeightM / 150) * 3.8 + 1.35, 1.3, 5.2) : 0.9), p.z),
+            });
+          }
+        }
+
+        if (state.mode === 'pseudolite' && state.beacon) {
+          const p = latLonToWorld(state.beacon.lat, state.beacon.lon);
+          const tetherH = clamp((state.tetherHeightM / 150) * 3.8 + 0.85, 0.85, 4.65);
+
+          const cableGeo = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(p.x, p.y + 0.14, p.z),
+            new THREE.Vector3(p.x, p.y + tetherH, p.z),
+          ]);
+          threeCtx.dynamicGroup.add(
+            new THREE.Line(cableGeo, new THREE.LineBasicMaterial({ color: '#F8FAFC', transparent: true, opacity: 0.85 }))
+          );
+
+          const drone = new THREE.Group();
+          drone.position.set(p.x, p.y + tetherH, p.z);
+          const bodyMat = new THREE.MeshStandardMaterial({ color: '#FFFFFF', roughness: 0.35, metalness: 0.3 });
+          drone.add(new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.14, 0.46), bodyMat));
+          const arm1 = new THREE.Mesh(new THREE.BoxGeometry(1.18, 0.05, 0.08), bodyMat);
+          arm1.rotation.y = Math.PI / 4;
+          const arm2 = new THREE.Mesh(new THREE.BoxGeometry(1.18, 0.05, 0.08), bodyMat);
+          arm2.rotation.y = -Math.PI / 4;
+          drone.add(arm1, arm2);
+
+          const beaconLed = new THREE.Mesh(
+            new THREE.SphereGeometry(0.11, 10, 10),
+            new THREE.MeshBasicMaterial({ color: '#22C55E' })
+          );
+          beaconLed.position.y = 0.11;
+          drone.add(beaconLed);
+          threeCtx.dynamicGroup.add(drone);
+
+          const covGeo = new THREE.RingGeometry(4.8, 5.0, 48);
+          covGeo.rotateX(-Math.PI / 2);
+          const covRing = new THREE.Mesh(
+            covGeo,
+            new THREE.MeshBasicMaterial({ color: '#22C55E', transparent: true, opacity: 0.35, side: THREE.DoubleSide })
+          );
+          covRing.position.set(p.x, p.y + 0.2, p.z);
+          threeCtx.dynamicGroup.add(covRing);
+        }
+
+        if (state.showSatRays) {
+          const centerS = field.evalPoint(0.5, 0.5);
+          const targetPt = new THREE.Vector3(0, centerS.worldY + 0.25, 0);
+          const domeR = 22;
+          for (const sat of NAVIC_SATS) {
+            if (!state.activePrns.has(sat.prn)) continue;
+            const az = (sat.az * Math.PI) / 180;
+            const el = (sat.el * Math.PI) / 180;
+            const satPos = new THREE.Vector3(
+              Math.sin(az) * Math.cos(el) * domeR,
+              Math.sin(el) * domeR + 4,
+              -Math.cos(az) * Math.cos(el) * domeR
+            );
+            const blocked = sat.el < centerS.horizon_mask_deg;
+            const endPt = blocked ? new THREE.Vector3().lerpVectors(satPos, targetPt, 0.6) : targetPt;
+            const rayGeo = new THREE.BufferGeometry().setFromPoints([satPos, endPt]);
+            threeCtx.dynamicGroup.add(
+              new THREE.Line(
+                rayGeo,
+                new THREE.LineBasicMaterial({
+                  color: blocked ? '#EF4444' : '#22C55E',
+                  transparent: true,
+                  opacity: blocked ? 0.65 : 0.45,
+                })
+              )
+            );
+            const satOrb = new THREE.Mesh(
+              new THREE.SphereGeometry(0.28, 12, 12),
+              new THREE.MeshBasicMaterial({ color: blocked ? '#EF4444' : '#F8FAFC' })
+            );
+            satOrb.position.copy(satPos);
+            threeCtx.dynamicGroup.add(satOrb);
+          }
+        }
+      }
+
+      /* --------------------------------------------------------------------- */
+      /* 6. 2D ORTHOPHOTO CANVAS & 24-HOUR DIURNAL ERROR CHART                 */
+      /* --------------------------------------------------------------------- */
+      function rebuild2DCanvas(texCanvas) {
+        const c2d = document.getElementById('canvas-2d');
+        if (!c2d || !state.field) return;
+        const ctx = c2d.getContext('2d');
+        const W = c2d.width;
+        const H = c2d.height;
+        ctx.clearRect(0, 0, W, H);
+        ctx.drawImage(texCanvas, 0, 0, W, H);
+
+        const f = state.field;
+        if (state.overlay === 'rescue') {
+          for (const ch of f.rescue_channels) {
+            if (!ch.path || ch.path.length < 2) continue;
+            ctx.beginPath();
+            ch.path.forEach(([lat, lon], idx) => {
+              const px = ((lon - f.minLon) / (f.maxLon - f.minLon || 1)) * W;
+              const py = ((f.maxLat - lat) / (f.maxLat - f.minLat || 1)) * H;
+              if (idx === 0) ctx.moveTo(px, py);
+              else ctx.lineTo(px, py);
+            });
+            ctx.strokeStyle = ch.type === 'ambulance' ? '#22C55E' : '#38BDF8';
+            ctx.lineWidth = 4.5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+          }
+        }
+
+        const ridgeHost = document.getElementById('map2d-ridges');
+        if (!ridgeHost) return;
+        ridgeHost.innerHTML = '';
+        for (const ridge of f.dry_ridges) {
+          const left = ((ridge.lon - f.minLon) / (f.maxLon - f.minLon || 1)) * 100;
+          const top = ((f.maxLat - ridge.lat) / (f.maxLat - f.minLat || 1)) * 100;
+          const isDeployed = state.mode === 'pseudolite' && state.beacon && state.beacon.id === ridge.id;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.style.left = `${left}%`;
+          btn.style.top = `${top}%`;
+          btn.className = `pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold shadow-md transition-transform hover:scale-105 ${
+            isDeployed
+              ? 'border-emerald-400 bg-[#0B1712] text-emerald-300'
+              : 'border-white/40 bg-[#121820]/90 text-white'
+          }`;
+          btn.textContent = isDeployed ? `● ${ridge.name}` : ridge.name;
+          btn.onclick = () => selectRidge(ridge);
+          ridgeHost.appendChild(btn);
+        }
+      }
+
+      function render24hChart() {
+        const svg = document.getElementById('chart-24h');
+        if (!svg) return;
+        const w = 260;
+        const h = 92;
+        const padL = 8;
+        const padR = 8;
+        const padT = 8;
+        const padB = 14;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+
+        const basePts = [];
+        const clampPts = [];
+        const dronePts = [];
+        const uScale = state.uereM / 3.0;
+        const satFactor = state.activePrns.size <= 3 ? 1.0 : 0.42;
+
+        for (let hr = 0; hr < 24; hr++) {
+          const x = padL + (hr / 23) * plotW;
+          const wave = Math.sin((hr / 24) * Math.PI * 2) * 0.18 + Math.cos((hr / 12) * Math.PI) * 0.08;
+          const eBase = clamp((24 * satFactor + wave * 12) * uScale, 4, 34);
+          const eClamp = clamp((8.8 + wave * 3.5) * uScale, 4, 18);
+          const eDrone = clamp((3.1 + wave * 1.1) * uScale, 1.8, 8);
+
+          const toY = (val) => padT + plotH - clamp(val / 36, 0, 1) * plotH;
+          basePts.push(`${x.toFixed(1)},${toY(eBase).toFixed(1)}`);
+          clampPts.push(`${x.toFixed(1)},${toY(eClamp).toFixed(1)}`);
+          dronePts.push(`${x.toFixed(1)},${toY(eDrone).toFixed(1)}`);
+        }
+
+        svg.innerHTML = `
+          <line x1="${padL}" y1="${padT + plotH * 0.5}" x2="${w - padR}" y2="${padT + plotH * 0.5}" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3 3" />
+          <line x1="${padL}" y1="${padT + plotH}" x2="${w - padR}" y2="${padT + plotH}" stroke="rgba(255,255,255,0.12)" />
+          <polyline fill="none" stroke="#FB7185" stroke-width="1.6" points="${basePts.join(' ')}" />
+          <polyline fill="none" stroke="#FBBF24" stroke-width="1.5" points="${clampPts.join(' ')}" />
+          <polyline fill="none" stroke="#34D399" stroke-width="2" points="${dronePts.join(' ')}" />
+          <text x="${padL}" y="${h - 2}" fill="#7A8491" font-family="IBM Plex Mono" font-size="8">00h</text>
+          <text x="${w / 2 - 8}" y="${h - 2}" fill="#7A8491" font-family="IBM Plex Mono" font-size="8">12h</text>
+          <text x="${w - padR - 14}" y="${h - 2}" fill="#7A8491" font-family="IBM Plex Mono" font-size="8">23h</text>
+        `;
+      }
+
+      /* --------------------------------------------------------------------- */
+      /* 7. LIVE SIMULATION UPDATE & UI SYNCHRONIZATION                        */
+      /* --------------------------------------------------------------------- */
+      function updateSimulation() {
+        const activeSats = NAVIC_SATS.filter((s) => state.activePrns.has(s.prn));
+        state.dopMap = state.field.dopGridCells.map((cell) =>
+          computeCellDop(cell, activeSats, state.mode, state.beacon, state.tetherHeightM, state.uereM)
+        );
+
+        function summarizeDop(list) {
+          let sub5 = 0, deg = 0, noFix = 0;
+          let gSum = 0, pSum = 0, hSum = 0, vSum = 0, eSum = 0, valid = 0;
+          for (const d of list) {
+            if (d.status === 'SUB_5M') sub5++;
+            else if (d.status === 'DEGRADED') deg++;
+            else noFix++;
+            if (d.gdop < 90) {
+              gSum += d.gdop; pSum += d.pdop; hSum += d.hdop; vSum += d.vdop; eSum += d.error_m;
+              valid++;
+            }
+          }
+          const total = list.length || 1;
+          const pSub5 = Math.round((sub5 / total) * 100);
+          const pDeg = Math.round((deg / total) * 100);
+          const pNo = Math.max(0, 100 - pSub5 - pDeg);
+          return {
+            pSub5,
+            pDeg,
+            pNo,
+            avgErr: valid ? eSum / valid : null,
+            meanAllErr: list.reduce((acc, d) => acc + d.error_m, 0) / total,
+            gdop: valid ? gSum / valid : null,
+            pdop: valid ? pSum / valid : null,
+            hdop: valid ? hSum / valid : null,
+            vdop: valid ? vSum / valid : null,
+          };
+        }
+
+        const currentStats = summarizeDop(state.dopMap);
+        const { pSub5, pDeg, pNo, avgErr } = currentStats;
+
+        const baseList = state.field.dopGridCells.map((cell) =>
+          computeCellDop(cell, activeSats, 'baseline', null, state.tetherHeightM, state.uereM)
+        );
+        const baseStats = summarizeDop(baseList);
+
+        const rankedRidges = state.field.dry_ridges
+          .map((ridge) => {
+            const list = state.field.dopGridCells.map((cell) =>
+              computeCellDop(cell, activeSats, 'pseudolite', ridge, state.tetherHeightM, state.uereM)
+            );
+            const stats = summarizeDop(list);
+            return { ridge, stats };
+          })
+          .sort((a, b) => a.stats.meanAllErr - b.stats.meanAllErr);
+
+        const bestEntry = rankedRidges[0];
+        state.bestRidgeId = bestEntry ? bestEntry.ridge.id : null;
+
+        const texCanvas = renderCompositeCanvas(state.field, state.dopMap, state.overlay);
+        rebuild3DScene(texCanvas);
+        rebuild2DCanvas(texCanvas);
+
+        const dot = document.getElementById('status-dot');
+        const lbl = document.getElementById('status-label');
+        const err = document.getElementById('status-error');
+        if (pSub5 >= 60 && avgErr !== null) {
+          dot.className = 'h-2 w-2 rounded-full bg-emerald-400';
+          lbl.textContent = 'Sub-5m Fix';
+          err.textContent = `±${avgErr.toFixed(1)}m`;
+        } else if (pSub5 + pDeg >= 45 && avgErr !== null) {
+          dot.className = 'h-2 w-2 rounded-full bg-amber-400';
+          lbl.textContent = 'Degraded';
+          err.textContent = `±${avgErr.toFixed(1)}m`;
+        } else {
+          dot.className = 'h-2 w-2 rounded-full bg-rose-500';
+          lbl.textContent = 'No Fix';
+          err.textContent = '>15m';
+        }
+
+        document.getElementById('ridge-count-label').textContent = String(rankedRidges.length);
+        document.getElementById('best-ridge-name').textContent = bestEntry ? bestEntry.ridge.name : '—';
+
+        const rankedHost = document.getElementById('ranked-ridges-container');
+        rankedHost.innerHTML = '';
+        rankedRidges.forEach((entry, idx) => {
+          const isBest = idx === 0;
+          const isActive = state.mode === 'pseudolite' && state.beacon && state.beacon.id === entry.ridge.id;
+          const row = document.createElement('div');
+          row.className = `flex flex-wrap items-center justify-between gap-2 rounded-lg border px-3 py-2.5 transition-colors ${
+            isActive
+              ? 'border-emerald-400/60 bg-emerald-500/10'
+              : isBest
+              ? 'border-white/25 bg-[#161E29]'
+              : 'border-white/10 bg-[#121820]'
+          }`;
+          const errStr = entry.stats.avgErr !== null ? `±${entry.stats.avgErr.toFixed(1)}m` : 'NO FIX';
+          row.innerHTML = `
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="font-mono text-[11px] font-semibold ${isBest ? 'text-amber-300' : 'text-neutral-500'}">#${idx + 1}</span>
+                <span class="truncate text-[13px] font-semibold text-white">${entry.ridge.name}</span>
+                ${isBest ? '<span class="rounded bg-amber-400/15 px-1.5 py-0.5 font-mono text-[9.5px] font-semibold uppercase text-amber-300">Recommended</span>' : ''}
+              </div>
+              <div class="mt-0.5 font-mono text-[11px] text-neutral-400">
+                0.00m water · ${entry.ridge.elevation_m}m elev · Est. fix <span class="text-emerald-300">${errStr}</span> (${entry.stats.pSub5}% sub-5m)
+              </div>
+            </div>
+            <button type="button" class="shrink-0 rounded-md px-3 py-1.5 text-[11px] font-semibold transition-colors ${
+              isActive
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/40'
+                : 'bg-white text-[#0B0F14] hover:bg-neutral-200'
+            }">
+              ${isActive ? 'Deployed' : 'Deploy Here'}
+            </button>
+          `;
+          row.querySelector('button').onclick = () => {
+            selectRidge(entry.ridge);
+            applyCameraPreset('drone');
+          };
+          rankedHost.appendChild(row);
+        });
+
+        const bestStats = bestEntry ? bestEntry.stats : currentStats;
+        const improvementPct = Math.max(
+          0,
+          Math.round(((baseStats.meanAllErr - bestStats.meanAllErr) / Math.max(1, baseStats.meanAllErr)) * 100)
+        );
+        document.getElementById('impact-improvement-badge').textContent =
+          improvementPct > 0 ? `-${improvementPct}% Error with Drone` : 'Optimal Geometry';
+
+        document.getElementById('before-error').textContent =
+          baseStats.avgErr !== null && baseStats.pNo < 65 ? `±${baseStats.avgErr.toFixed(1)} m` : 'NO FIX';
+        document.getElementById('before-cov').textContent = `Sub-5m coverage: ${baseStats.pSub5}%`;
+
+        document.getElementById('after-error').textContent =
+          bestStats.avgErr !== null && bestStats.pNo < 65 ? `±${bestStats.avgErr.toFixed(1)} m` : 'NO FIX';
+        document.getElementById('after-cov').textContent = `Sub-5m coverage: ${bestStats.pSub5}%`;
+
+        const headlineEl = document.getElementById('impact-headline');
+        const storyEl = document.getElementById('impact-story');
+        const stepHintEl = document.getElementById('impact-step-hint');
+        const toggleSolBtn = document.getElementById('btn-toggle-solution');
+
+        if (state.mode === 'baseline') {
+          headlineEl.textContent = 'Step 1 · Baseline (Satellites Only — Degraded)';
+          storyEl.textContent =
+            baseStats.pNo > 40
+              ? `With ${activeSats.length} active NavIC satellites and canyon masking, the receiver drops into blackout (${baseStats.pNo}% No Fix). Deploy a drone on ${bestEntry ? bestEntry.ridge.name : 'the best dry ridge'} to add a 4th ranging vector.`
+              : `Viewing unaugmented NavIC with ${activeSats.length} satellites. Click "Simulate 3-Sat Canyon Outage" or deploy the drone to see the geometry boost.`;
+          toggleSolBtn.textContent = `Deploy on ${bestEntry ? bestEntry.ridge.name : 'Best Ridge'}`;
+          stepHintEl.textContent = `Active Sats: ${activeSats.length} · Mode 01 Baseline`;
+        } else if (state.mode === 'pseudolite') {
+          headlineEl.textContent = `Step 2 · Drone Active on ${state.beacon ? state.beacon.name : 'Dry Ridge'}`;
+          storyEl.textContent = `The tethered drone at ${state.tetherHeightM}m altitude supplies the missing 4th matrix row, raising sub-5m corridor coverage from ${baseStats.pSub5}% to ${pSub5}% so rescue boats and ambulances navigate safely.`;
+          toggleSolBtn.textContent = 'Compare Without Drone';
+          stepHintEl.textContent = `Active Sats: ${activeSats.length} + 1 Drone · Mode 02 Restored`;
+        } else {
+          headlineEl.textContent = 'Step 3 · Barometric / DEM Altitude Clamp Failsafe';
+          storyEl.textContent = `Where sheer cliffs block even the drone beacon, receiver barometric pressure + DEM elevation clamps the vertical axis to maintain a usable 2D fix (${pSub5 + pDeg}% usable).`;
+          toggleSolBtn.textContent = `Switch to Best Drone (${bestEntry ? bestEntry.ridge.name : 'Ridge'})`;
+          stepHintEl.textContent = `Active Sats: ${activeSats.length} + DEM Clamp · Mode 03 Failsafe`;
+        }
+
+        document.getElementById('drawer-mode-desc').textContent =
+          state.mode === 'baseline'
+            ? 'Mode 01 · Unaugmented NavIC'
+            : state.mode === 'pseudolite'
+            ? 'Mode 02 · Dry-Ridge Drone Pseudolite'
+            : 'Mode 03 · Barometric / DEM Failsafe';
+
+        document.getElementById('drawer-avg-err').textContent =
+          avgErr !== null && pNo < 65 ? `±${avgErr.toFixed(1)} m` : 'NO FIX';
+        document.getElementById('bar-sub5').style.width = `${pSub5}%`;
+        document.getElementById('bar-deg').style.width = `${pDeg}%`;
+        document.getElementById('bar-nofix').style.width = `${pNo}%`;
+        document.getElementById('pct-sub5').textContent = `Sub-5m ${pSub5}%`;
+        document.getElementById('pct-deg').textContent = `5-15m ${pDeg}%`;
+        document.getElementById('pct-nofix').textContent = `No Fix ${pNo}%`;
+
+        document.getElementById('val-gdop').textContent = currentStats.gdop !== null ? currentStats.gdop.toFixed(2) : '—';
+        document.getElementById('val-pdop').textContent = currentStats.pdop !== null ? currentStats.pdop.toFixed(2) : '—';
+        document.getElementById('val-hdop').textContent = currentStats.hdop !== null ? currentStats.hdop.toFixed(2) : '—';
+        document.getElementById('val-vdop').textContent = currentStats.vdop !== null ? currentStats.vdop.toFixed(2) : '—';
+
+        const rList = document.getElementById('ridge-list');
+        rList.innerHTML = '';
+        for (const ridge of state.field.dry_ridges) {
+          const isSel = state.beacon && state.beacon.id === ridge.id;
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = `flex w-full items-center justify-between rounded-md border px-2.5 py-1.5 text-left text-[11.5px] transition-colors ${
+            isSel
+              ? 'border-white/30 bg-[#232D3A] text-white'
+              : 'border-white/10 bg-[#171F2A] text-neutral-300 hover:border-white/20 hover:text-white'
+          }`;
+          b.innerHTML = `<span class="truncate font-medium">${ridge.name}</span><span class="font-mono text-[10.5px] text-neutral-400">${ridge.elevation_m} m</span>`;
+          b.onclick = () => selectRidge(ridge);
+          rList.appendChild(b);
+        }
+
+        render24hChart();
+        syncButtonStyles();
+      }
+
+      function renderSatelliteChips() {
+        const container = document.getElementById('sat-chips');
+        container.innerHTML = '';
+        for (const sat of NAVIC_SATS) {
+          const on = state.activePrns.has(sat.prn);
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `flex items-center gap-1.5 rounded border px-2 py-1 text-[11px] font-mono transition-colors ${
+            on
+              ? 'border-white/15 bg-[#1B232E] text-white hover:border-white/35'
+              : 'border-white/5 bg-[#0C1016] text-neutral-500 line-through hover:text-neutral-300'
+          }`;
+          btn.innerHTML = `<span class="h-1.5 w-1.5 rounded-full ${on ? 'bg-emerald-400' : 'bg-neutral-600'}"></span>${sat.short} <span class="text-[10px] text-neutral-400">${Math.round(sat.el)}°</span>`;
+          btn.onclick = () => {
+            if (state.activePrns.has(sat.prn)) state.activePrns.delete(sat.prn);
+            else state.activePrns.add(sat.prn);
+            renderSatelliteChips();
+            updateSimulation();
+          };
+          container.appendChild(btn);
+        }
+      }
+
+      function syncButtonStyles() {
+        document.querySelectorAll('.mode-btn').forEach((b) => {
+          const active = b.dataset.mode === state.mode;
+          b.className = `mode-btn rounded px-3 py-1.5 text-[11.5px] font-medium transition-colors ${
+            active ? 'bg-[#232D3A] text-white' : 'text-neutral-400 hover:text-white'
+          }`;
+        });
+        document.querySelectorAll('.overlay-btn').forEach((b) => {
+          const active = b.dataset.overlay === state.overlay;
+          b.className = `overlay-btn rounded px-2.5 py-1 text-[11.5px] font-medium transition-colors ${
+            active ? 'bg-[#232D3A] text-white' : 'text-neutral-400 hover:text-white'
+          }`;
+        });
+        document.querySelectorAll('.cam-btn').forEach((b) => {
+          const active = b.dataset.cam === state.camPreset;
+          b.className = `cam-btn rounded px-2.5 py-1 text-[11px] font-medium transition-colors ${
+            active ? 'bg-[#232D3A] text-white' : 'text-neutral-400 hover:text-white'
+          }`;
+        });
+        document.querySelectorAll('.view-btn').forEach((b) => {
+          const active = b.dataset.view === state.view;
+          b.className = `view-btn rounded px-2.5 py-1 text-[11px] font-medium transition-colors ${
+            active ? 'bg-[#232D3A] text-white' : 'text-neutral-400 hover:text-white'
+          }`;
+        });
+
+        const raysBtn = document.getElementById('btn-sat-rays');
+        raysBtn.className = `rounded px-2 py-1 text-[11px] font-medium transition-colors ${
+          state.showSatRays ? 'bg-[#232D3A] text-emerald-300' : 'text-neutral-400 hover:text-white'
+        }`;
+
+        document.getElementById('legend-rescue').classList.toggle('hidden', state.overlay === 'dop');
+        document.getElementById('legend-dop').classList.toggle('hidden', state.overlay !== 'dop');
+
+        const is3D = state.view === '3d' && threeCtx.supported;
+        document.getElementById('three-mount').classList.toggle('hidden', !is3D);
+        document.getElementById('labels-3d').classList.toggle('hidden', !is3D);
+        document.getElementById('map2d-mount').classList.toggle('hidden', is3D);
+        document.getElementById('map2d-mount').classList.toggle('flex', !is3D);
+        document.getElementById('camera-controls').classList.toggle('hidden', !is3D);
+      }
+
+      function applyCameraPreset(preset) {
+        state.camPreset = preset;
+        const setTarget = (x, y, z) => {
+          if (threeCtx.targetLookAt && typeof threeCtx.targetLookAt.set === 'function') {
+            threeCtx.targetLookAt.set(x, y, z);
+          } else {
+            threeCtx.targetLookAt = { x, y, z };
+          }
+        };
+        if (preset === 'topdown') {
+          threeCtx.targetTheta = 0.0;
+          threeCtx.targetPhi = 0.46;
+          threeCtx.targetRadius = 34;
+          setTarget(0, 0.8, 0);
+        } else if (preset === 'relief') {
+          threeCtx.targetTheta = 0.68;
+          threeCtx.targetPhi = 1.02;
+          threeCtx.targetRadius = 32;
+          setTarget(0, 1.4, 0);
+        } else if (preset === 'drone' && state.beacon) {
+          const p = latLonToWorld(state.beacon.lat, state.beacon.lon);
+          threeCtx.targetTheta = 0.52;
+          threeCtx.targetPhi = 0.88;
+          threeCtx.targetRadius = 15;
+          setTarget(p.x, p.y + 1.1, p.z);
+        }
+        syncButtonStyles();
+      }
+
+      function selectRidge(ridge) {
+        if (!ridge) return;
+        state.beacon = ridge;
+        state.mode = 'pseudolite';
+        updateSimulation();
+      }
+
+      function loadScenario(id) {
+        state.scenarioId = id;
+        state.field = customScenarios[id] || createFieldEvaluator(id);
+        state.beacon = state.field.dry_ridges[0];
+        state.tetherHeightM = state.beacon.tether || 55;
+        document.getElementById('slider-tether').value = state.tetherHeightM;
+        document.getElementById('lbl-tether').textContent = `${state.tetherHeightM} m`;
+        updateSimulation();
+      }
+
+      /* --------------------------------------------------------------------- */
+      /* 8. INTERACTIVE MATRIX RANK PROOF WIDGET                               */
+      /* --------------------------------------------------------------------- */
+      function wireMatrixProof() {
+        const btn3 = document.getElementById('rank-btn-3');
+        const btn4 = document.getElementById('rank-btn-4');
+        const badge = document.getElementById('rank-badge');
+        const row4 = document.getElementById('rank-row-4');
+        if (!btn3 || !btn4 || !badge || !row4) return;
+
+        function setRank(rank) {
+          if (rank === 3) {
+            btn3.className = 'rounded-md bg-[#0B0F14] px-3.5 py-2 text-[11.5px] font-semibold text-white transition-colors';
+            btn4.className = 'rounded-md border border-neutral-300 bg-white px-3.5 py-2 text-[11.5px] font-semibold text-[#525B66] transition-colors';
+            badge.className = 'rounded bg-rose-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-rose-700';
+            badge.textContent = 'RANK 3 · SINGULAR · NO FIX';
+            row4.className = 'flex items-center justify-between rounded border border-dashed border-rose-300 bg-rose-50/70 px-3 py-1.5 opacity-60 transition-all';
+            row4.innerHTML = '<span class="font-semibold text-rose-700">Row 4 · MISSING (MASKED)</span><span class="font-semibold text-rose-700">[ — , — , — , — ]</span>';
+          } else {
+            btn4.className = 'rounded-md bg-[#0B0F14] px-3.5 py-2 text-[11.5px] font-semibold text-white transition-colors';
+            btn3.className = 'rounded-md border border-neutral-300 bg-white px-3.5 py-2 text-[11.5px] font-semibold text-[#525B66] transition-colors';
+            badge.className = 'rounded bg-emerald-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-emerald-700';
+            badge.textContent = 'RANK 4 · INVERTIBLE · ±3.2 m';
+            row4.className = 'flex items-center justify-between rounded border border-emerald-200 bg-emerald-50/70 px-3 py-1.5 transition-all';
+            row4.innerHTML = '<span class="font-semibold text-emerald-800">Row 4 · DRONE RELAY</span><span class="font-semibold text-emerald-900">[ +0.71, +0.64, +0.29, 1 ]</span>';
+          }
+        }
+
+        btn3.addEventListener('click', () => setRank(3));
+        btn4.addEventListener('click', () => setRank(4));
+      }
+
+      /* --------------------------------------------------------------------- */
+      /* 9. CUSTOM SAR / DEM RADAR DATA IMPORT MODAL                           */
+      /* --------------------------------------------------------------------- */
+      function wireImportModal() {
+        const modal = document.getElementById('import-modal');
+        const btnOpen = document.getElementById('btn-open-import');
+        const btnClose = document.getElementById('btn-close-import');
+        const btnCancelBuilder = document.getElementById('btn-cancel-builder');
+        const btnCancelJson = document.getElementById('btn-cancel-json');
+        const formBuilder = document.getElementById('form-custom-region');
+        const panelJson = document.getElementById('panel-custom-json');
+        const surgeSlider = document.getElementById('inp-region-surge');
+        const surgeLbl = document.getElementById('lbl-region-surge');
+        const jsonFileInp = document.getElementById('inp-json-file');
+        const jsonTextInp = document.getElementById('inp-json-text');
+        const jsonErr = document.getElementById('json-error-msg');
+        const btnSample = document.getElementById('btn-load-sample-json');
+        const btnApplyJson = document.getElementById('btn-apply-json');
+        const scenarioSelect = document.getElementById('scenario-select');
+        if (!modal || !btnOpen) return;
+
+        function openModal() {
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+          if (jsonErr) jsonErr.classList.add('hidden');
+        }
+        function closeModal() {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
+
+        btnOpen.addEventListener('click', openModal);
+        btnClose?.addEventListener('click', closeModal);
+        btnCancelBuilder?.addEventListener('click', closeModal);
+        btnCancelJson?.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal();
+        });
+
+        document.querySelectorAll('.import-tab-btn').forEach((tab) => {
+          tab.addEventListener('click', () => {
+            const isBuilder = tab.dataset.importTab === 'builder';
+            formBuilder.classList.toggle('hidden', !isBuilder);
+            panelJson.classList.toggle('hidden', isBuilder);
+            document.querySelectorAll('.import-tab-btn').forEach((t) => {
+              const active = t === tab;
+              t.className = active
+                ? 'import-tab-btn border-b-2 border-white px-4 py-2 text-[12px] font-semibold text-white'
+                : 'import-tab-btn border-b-2 border-transparent px-4 py-2 text-[12px] font-medium text-neutral-400 hover:text-white';
+            });
+          });
+        });
+
+        surgeSlider?.addEventListener('input', (e) => {
+          if (surgeLbl) surgeLbl.textContent = `${Number(e.target.value).toFixed(1)} m`;
+        });
+
+        function registerAndLoadCustomField(field, label) {
+          customScenarios[field.id] = field;
+          if (scenarioSelect) {
+            const opt = document.createElement('option');
+            opt.value = field.id;
+            opt.textContent = label;
+            scenarioSelect.appendChild(opt);
+            scenarioSelect.value = field.id;
+          }
+          closeModal();
+          loadScenario(field.id);
+        }
+
+        formBuilder?.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = (document.getElementById('inp-region-name')?.value || 'Custom Flood Zone').trim();
+          const lat = parseFloat(document.getElementById('inp-region-lat')?.value) || 26.577;
+          const lon = parseFloat(document.getElementById('inp-region-lon')?.value) || 93.171;
+          const terrain_type = document.getElementById('inp-region-terrain')?.value || 'river_floodplain';
+          const surge_m = parseFloat(surgeSlider?.value) || 3.0;
+          const newId = `custom_${Date.now()}`;
+          const field = createFieldEvaluator(newId, { name, lat, lon, terrain_type, surge_m });
+          registerAndLoadCustomField(field, `${name} (Custom SAR)`);
+        });
+
+        btnSample?.addEventListener('click', () => {
+          const sampleGrid = [];
+          for (let r = 0; r < 6; r++) {
+            for (let c = 0; c < 6; c++) {
+              const lat = 11.58 - r * 0.01;
+              const lon = 76.09 + c * 0.01;
+              const dist = Math.abs(c - 2.5);
+              sampleGrid.push({
+                lat: Number(lat.toFixed(4)),
+                lon: Number(lon.toFixed(4)),
+                elevation_m: Math.round(920 + dist * 240),
+                flood_depth_m: dist < 0.8 ? 2.4 : dist < 1.6 ? 0.25 : 0.0,
+                horizon_mask_deg: dist < 1.5 ? 34 : 14,
+              });
+            }
+          }
+          if (jsonTextInp) {
+            jsonTextInp.value = JSON.stringify(
+              {
+                name: 'Wayanad Gorge — EOS-04 SAR Sample',
+                terrain_type: 'mountain_canyon',
+                grid: sampleGrid,
+              },
+              null,
+              2
+            );
+          }
+          if (jsonErr) jsonErr.classList.add('hidden');
+        });
+
+        jsonFileInp?.addEventListener('change', (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            if (jsonTextInp) jsonTextInp.value = String(reader.result || '');
+            if (jsonErr) jsonErr.classList.add('hidden');
+          };
+          reader.readAsText(file);
+        });
+
+        btnApplyJson?.addEventListener('click', () => {
+          try {
+            const parsed = JSON.parse(jsonTextInp?.value || '');
+            const newId = `json_${Date.now()}`;
+            const field = createFieldFromUploadedJson(newId, parsed);
+            registerAndLoadCustomField(field, `${field.name} (SAR JSON)`);
+          } catch (err) {
+            if (jsonErr) {
+              jsonErr.textContent = `Invalid Radar JSON: ${err.message}`;
+              jsonErr.classList.remove('hidden');
+            }
+          }
+        });
+      }
+
+      /* --------------------------------------------------------------------- */
+      /* 10. INITIALIZE SAFELY (WORKS WHETHER LOAD ALREADY FIRED OR NOT)       */
+      /* --------------------------------------------------------------------- */
+      function bootApp() {
+        if (window.__navicBooted) return;
+        window.__navicBooted = true;
+        initThree();
+        wireMatrixProof();
+        wireImportModal();
+        renderSatelliteChips();
+        loadScenario('chamoli');
+
+        document.getElementById('scenario-select').addEventListener('change', (e) => loadScenario(e.target.value));
+        document.querySelectorAll('.mode-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.mode = btn.dataset.mode;
+            updateSimulation();
+          });
+        });
+        document.querySelectorAll('.overlay-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.overlay = btn.dataset.overlay;
+            updateSimulation();
+          });
+        });
+        document.querySelectorAll('.cam-btn').forEach((btn) => {
+          btn.addEventListener('click', () => applyCameraPreset(btn.dataset.cam));
+        });
+        document.querySelectorAll('.view-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.view = btn.dataset.view;
+            syncButtonStyles();
+          });
+        });
+        document.getElementById('btn-sat-rays').addEventListener('click', () => {
+          state.showSatRays = !state.showSatRays;
+          updateSimulation();
+        });
+        document.getElementById('btn-auto-deploy').addEventListener('click', () => {
+          const best = state.field.dry_ridges.find((r) => r.id === state.bestRidgeId) || state.field.dry_ridges[0];
+          state.beacon = best;
+          state.mode = 'pseudolite';
+          updateSimulation();
+          applyCameraPreset('drone');
+        });
+        document.getElementById('btn-toggle-solution').addEventListener('click', () => {
+          if (state.mode === 'pseudolite') {
+            state.mode = 'baseline';
+            updateSimulation();
+            applyCameraPreset('topdown');
+          } else {
+            const best = state.field.dry_ridges.find((r) => r.id === state.bestRidgeId) || state.field.dry_ridges[0];
+            state.beacon = best;
+            state.mode = 'pseudolite';
+            updateSimulation();
+            applyCameraPreset('drone');
+          }
+        });
+
+        const drawer = document.getElementById('telemetry-drawer');
+        document.getElementById('btn-toggle-drawer').addEventListener('click', () => {
+          state.drawerOpen = !state.drawerOpen;
+          drawer.classList.toggle('hidden', !state.drawerOpen);
+          drawer.classList.toggle('flex', state.drawerOpen);
+        });
+        document.getElementById('btn-close-drawer').addEventListener('click', () => {
+          state.drawerOpen = false;
+          drawer.classList.add('hidden');
+          drawer.classList.remove('flex');
+        });
+
+        document.getElementById('slider-tether').addEventListener('input', (e) => {
+          state.tetherHeightM = Number(e.target.value);
+          document.getElementById('lbl-tether').textContent = `${state.tetherHeightM} m`;
+          updateSimulation();
+        });
+        document.getElementById('slider-uere').addEventListener('input', (e) => {
+          state.uereM = Number(e.target.value);
+          document.getElementById('lbl-uere').textContent = `${state.uereM.toFixed(1)} m`;
+          updateSimulation();
+        });
+        document.getElementById('btn-outage').addEventListener('click', () => {
+          state.activePrns = new Set(['IRNSS-1B', 'IRNSS-1C', 'IRNSS-1E']);
+          renderSatelliteChips();
+          updateSimulation();
+        });
+        document.getElementById('btn-restore-sats').addEventListener('click', () => {
+          state.activePrns = new Set(NAVIC_SATS.map((s) => s.prn));
+          renderSatelliteChips();
+          updateSimulation();
+        });
+
+        const c2d = document.getElementById('canvas-2d');
+        c2d.addEventListener('mousemove', (e) => {
+          if (!state.field) return;
+          const rect = c2d.getBoundingClientRect();
+          const u = clamp((e.clientX - rect.left) / rect.width, 0, 1);
+          const v = clamp((e.clientY - rect.top) / rect.height, 0, 1);
+          const s = state.field.evalPoint(u, v);
+          const dop = sampleDopAt(u, v);
+          const stageRect = document.getElementById('map2d-mount').getBoundingClientRect();
+          showTooltip({ ...s, dop }, e.clientX - stageRect.left, e.clientY - stageRect.top, stageRect.width, stageRect.height);
+        });
+        c2d.addEventListener('mouseleave', hideTooltip);
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        bootApp();
+      } else {
+        window.addEventListener('DOMContentLoaded', bootApp);
+      }
+    })();
+  </script>
+</body>
 </html>
