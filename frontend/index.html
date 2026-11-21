@@ -363,8 +363,10 @@
                 aria-label="Select flood scenario"
                 class="h-7.5 cursor-pointer rounded border border-white/20 bg-[#121822] px-2.5 pr-6 font-mono text-[11px] font-semibold text-white outline-none transition-colors hover:border-white/40"
               >
-                <option value="chamoli">Chamoli Gorge — Rishi Ganga Flash Flood</option>
-                <option value="godavari">Godavari Basin — Bhadrachalam Floodplain</option>
+                <option value="chamoli">Chamoli Gorge — Rishi Ganga Flash Flood (Uttarakhand · 30.5°N)</option>
+                <option value="godavari">Godavari Basin — Bhadrachalam Floodplain (Telangana · 17.7°N)</option>
+                <option value="wayanad">Wayanad Gorge — Western Ghats Landslide Flood (Kerala · 11.5°N)</option>
+                <option value="kaziranga">Kaziranga Basin — Brahmaputra Monsoon Flood (Assam · 26.6°N)</option>
               </select>
 
               <button
@@ -830,6 +832,60 @@
           <p class="text-[12.5px] leading-relaxed text-neutral-300">
             Enter coordinates and SAR flood surge parameters from any disaster zone to generate a live 3D water-depth map, rescue corridors, and ranked dry ridges.
           </p>
+
+          <!-- 1-Click Live Test Location Presets for Demonstrations -->
+          <div class="rounded-lg border border-white/10 bg-[#080B10] p-2.5">
+            <div class="flex items-center justify-between text-[10px] font-mono text-neutral-400 mb-2">
+              <span class="uppercase tracking-wider">1-Click Live Test Coordinates:</span>
+              <span class="text-neutral-500">Auto-populates lat/lon &amp; DEM profile</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 font-mono text-[9.5px]">
+              <button
+                type="button"
+                data-preset-name="Kedarnath — Mandakini Glacier Gorge"
+                data-preset-lat="30.735"
+                data-preset-lon="79.067"
+                data-preset-terrain="mountain_canyon"
+                data-preset-surge="3.8"
+                class="location-preset-btn rounded border border-white/15 bg-white/5 px-2 py-1 text-neutral-200 transition-colors hover:border-amber-400/50 hover:bg-amber-500/10 hover:text-white"
+              >
+                [01] Kedarnath Gorge (30.7°N)
+              </button>
+              <button
+                type="button"
+                data-preset-name="Munnar — Western Ghats Tea Valley"
+                data-preset-lat="10.089"
+                data-preset-lon="77.060"
+                data-preset-terrain="mountain_canyon"
+                data-preset-surge="2.6"
+                class="location-preset-btn rounded border border-white/15 bg-white/5 px-2 py-1 text-neutral-200 transition-colors hover:border-amber-400/50 hover:bg-amber-500/10 hover:text-white"
+              >
+                [02] Munnar Hills (10.1°N)
+              </button>
+              <button
+                type="button"
+                data-preset-name="Patna — Ganga River Basin Inundation"
+                data-preset-lat="25.612"
+                data-preset-lon="85.144"
+                data-preset-terrain="river_floodplain"
+                data-preset-surge="3.4"
+                class="location-preset-btn rounded border border-white/15 bg-white/5 px-2 py-1 text-neutral-200 transition-colors hover:border-amber-400/50 hover:bg-amber-500/10 hover:text-white"
+              >
+                [03] Patna Ganga Basin (25.6°N)
+              </button>
+              <button
+                type="button"
+                data-preset-name="Narmada — Sardar Sarovar Gorge Surge"
+                data-preset-lat="21.832"
+                data-preset-lon="73.748"
+                data-preset-terrain="mountain_canyon"
+                data-preset-surge="2.8"
+                class="location-preset-btn rounded border border-white/15 bg-white/5 px-2 py-1 text-neutral-200 transition-colors hover:border-amber-400/50 hover:bg-amber-500/10 hover:text-white"
+              >
+                [04] Narmada Canyon (21.8°N)
+              </button>
+            </div>
+          </div>
 
           <div class="grid gap-3 sm:grid-cols-2">
             <div class="sm:col-span-2">
@@ -1501,15 +1557,56 @@
         return v;
       }
 
-      const NAVIC_SATS = [
-        { prn: 'IRNSS-1A', short: '1A', az: 41.9, el: 42.1 },
-        { prn: 'IRNSS-1B', short: '1B', az: 118.4, el: 48.2 },
-        { prn: 'IRNSS-1C', short: '1C', az: 196.6, el: 53.1 },
-        { prn: 'IRNSS-1E', short: '1E', az: 264.2, el: 61.2 },
-        { prn: 'IRNSS-1G', short: '1G', az: 318.6, el: 27.2 },
-        { prn: 'IRNSS-1I', short: '1I', az: 78.5, el: 34.1 },
-        { prn: 'NVS-01', short: 'NVS', az: 224.6, el: 24.2 },
+      const NAVIC_ORBIT_CONFIG = [
+        { prn: 'IRNSS-1A', short: '1A', subLon: 55.0, incDeg: 29.0, raanDeg: 135.0 },
+        { prn: 'IRNSS-1B', short: '1B', subLon: 55.0, incDeg: 29.0, raanDeg: 315.0 },
+        { prn: 'IRNSS-1C', short: '1C', subLon: 83.0, incDeg: 0.0, raanDeg: 0.0 },
+        { prn: 'IRNSS-1E', short: '1E', subLon: 111.75, incDeg: 29.0, raanDeg: 135.0 },
+        { prn: 'IRNSS-1G', short: '1G', subLon: 129.5, incDeg: 0.0, raanDeg: 0.0 },
+        { prn: 'IRNSS-1I', short: '1I', subLon: 55.0, incDeg: 29.0, raanDeg: 45.0 },
+        { prn: 'NVS-01', short: 'NVS', subLon: 111.75, incDeg: 29.0, raanDeg: 225.0 },
       ];
+
+      function computeNavicPositions(obsLat, obsLon) {
+        const rad = Math.PI / 180;
+        const phi = obsLat * rad;
+        const R_E = 6378.137;
+        const R_S = 42164.0;
+
+        return NAVIC_ORBIT_CONFIG.map((cfg) => {
+          const deltaLon = (cfg.subLon - obsLon) * rad;
+          const subLat = (cfg.incDeg !== 0 ? Math.sin(cfg.raanDeg * rad) * cfg.incDeg : 0) * rad;
+
+          const ox = R_E * Math.cos(phi);
+          const oz = R_E * Math.sin(phi);
+
+          const sx = R_S * Math.cos(subLat) * Math.cos(deltaLon);
+          const sy = R_S * Math.cos(subLat) * Math.sin(deltaLon);
+          const sz = R_S * Math.sin(subLat);
+
+          const dx = sx - ox;
+          const dy = sy;
+          const dz = sz - oz;
+
+          const east = dy;
+          const north = -Math.sin(phi) * dx + Math.cos(phi) * dz;
+          const up = Math.cos(phi) * dx + Math.sin(phi) * dz;
+
+          const horizDist = Math.hypot(east, north);
+          let az = (Math.atan2(east, north) * 180) / Math.PI;
+          if (az < 0) az += 360;
+          const el = (Math.atan2(up, Math.max(0.001, horizDist)) * 180) / Math.PI;
+
+          return {
+            prn: cfg.prn,
+            short: cfg.short,
+            az: Math.round(az * 10) / 10,
+            el: Math.round(Math.max(8.0, el) * 10) / 10,
+          };
+        });
+      }
+
+      let NAVIC_SATS = computeNavicPositions(30.535, 79.565);
 
       /**
        * Continuous analytical terrain & flood field for crisp high-resolution detail
@@ -1517,20 +1614,76 @@
        */
       function createFieldEvaluator(id, customConfig) {
         const isCustom = Boolean(customConfig);
-        const isChamoli = isCustom ? customConfig.terrain_type === 'mountain_canyon' : id === 'chamoli';
-        const centerLat = isCustom ? customConfig.lat : isChamoli ? 30.535 : 17.67;
-        const centerLon = isCustom ? customConfig.lon : isChamoli ? 79.565 : 80.89;
-        const spanLat = isChamoli ? 0.03 : 0.04;
-        const spanLon = isChamoli ? 0.03 : 0.05;
+        const scenarioType = isCustom
+          ? customConfig.terrain_type
+          : id === 'chamoli' || id === 'wayanad'
+          ? 'mountain_canyon'
+          : 'river_floodplain';
+        const isCanyon = scenarioType === 'mountain_canyon';
+
+        let centerLat, centerLon, spanLat, spanLon, minElev, maxElev, heightScale, surgeScale, seedShift, scenarioName;
+        if (isCustom) {
+          centerLat = customConfig.lat;
+          centerLon = customConfig.lon;
+          spanLat = isCanyon ? 0.03 : 0.04;
+          spanLon = isCanyon ? 0.03 : 0.05;
+          minElev = isCanyon ? 850 : 50;
+          maxElev = isCanyon ? 2400 : 180;
+          heightScale = isCanyon ? 6.2 : 2.3;
+          surgeScale = (customConfig.surge_m || 3.0) / 3.0;
+          seedShift = ((Math.abs(centerLat * 13 + centerLon * 7) % 10) + 1);
+          scenarioName = customConfig.name || 'Custom Disaster Zone';
+        } else if (id === 'wayanad') {
+          centerLat = 11.532;
+          centerLon = 76.134;
+          spanLat = 0.035;
+          spanLon = 0.035;
+          minElev = 720;
+          maxElev = 1980;
+          heightScale = 5.8;
+          surgeScale = 1.15;
+          seedShift = 4.2;
+          scenarioName = 'Wayanad Western Ghats';
+        } else if (id === 'kaziranga') {
+          centerLat = 26.577;
+          centerLon = 93.171;
+          spanLat = 0.04;
+          spanLon = 0.05;
+          minElev = 45;
+          maxElev = 142;
+          heightScale = 2.2;
+          surgeScale = 1.25;
+          seedShift = 6.7;
+          scenarioName = 'Kaziranga Brahmaputra';
+        } else if (id === 'chamoli') {
+          centerLat = 30.535;
+          centerLon = 79.565;
+          spanLat = 0.03;
+          spanLon = 0.03;
+          minElev = 1840;
+          maxElev = 3240;
+          heightScale = 6.8;
+          surgeScale = 1.0;
+          seedShift = 0;
+          scenarioName = 'Chamoli Gorge';
+        } else {
+          // godavari
+          centerLat = 17.67;
+          centerLon = 80.89;
+          spanLat = 0.04;
+          spanLon = 0.05;
+          minElev = 48;
+          maxElev = 182;
+          heightScale = 2.3;
+          surgeScale = 1.0;
+          seedShift = 0;
+          scenarioName = 'Godavari Basin';
+        }
+
         const minLat = centerLat - spanLat;
         const maxLat = centerLat + spanLat;
         const minLon = centerLon - spanLon;
         const maxLon = centerLon + spanLon;
-        const minElev = isChamoli ? 1840 : 48;
-        const maxElev = isChamoli ? 3240 : 182;
-        const heightScale = isChamoli ? 6.8 : 2.3;
-        const surgeScale = isCustom ? (customConfig.surge_m || 3.0) / 3.0 : 1.0;
-        const seedShift = isCustom ? ((Math.abs(centerLat * 13 + centerLon * 7) % 10) + 1) : 0;
 
         function evalPoint(u, v) {
           const cu = clamp(u, 0, 1);
@@ -1540,7 +1693,7 @@
           let depth = 0;
           let horizonMask = 12;
 
-          if (isChamoli) {
+          if (isCanyon) {
             const mainRiverU = 0.5 + 0.13 * Math.sin(cv * Math.PI * 2.1 + seedShift) + 0.04 * Math.cos(cv * Math.PI * 4.3);
             const dMain = Math.abs(cu - mainRiverU);
 
@@ -1554,9 +1707,9 @@
             const wallFactor = clamp((dValley - 0.06) / 0.25, 0, 1);
 
             elev =
-              1845 +
-              wallProfile * 1020 +
-              wallFactor * (ridgeDetail * 410 + (microGully - 0.5) * 95);
+              minElev + 5 +
+              wallProfile * (maxElev - minElev - 300) +
+              wallFactor * (ridgeDetail * 280 + (microGully - 0.5) * 85);
 
             const bankNoise = (fbm(cu * 16 + seedShift, cv * 16) - 0.5) * 0.022;
             const effDist = dMain + bankNoise;
@@ -1570,7 +1723,7 @@
             if (cv > 0.38 && dTrib < 0.07) {
               depth = Math.max(depth, 0.95 * (1 - dTrib / 0.07) * surgeScale);
             }
-            horizonMask = dMain < 0.16 ? 36 : dMain < 0.28 ? 25 : 14;
+            horizonMask = dMain < 0.16 ? 38 : dMain < 0.28 ? 26 : 14;
           } else {
             const riverU = 0.48 + 0.17 * Math.cos(cv * Math.PI * 1.55 + seedShift) + 0.04 * Math.sin(cv * Math.PI * 3.4);
             const dRiver = Math.abs(cu - riverU);
@@ -1579,9 +1732,9 @@
             const ridges = ridgedFbm(cu * 5.0 + 1.1 + seedShift, cv * 5.0 + 3.2);
 
             elev =
-              50 +
-              Math.pow(clamp(dRiver / 0.5, 0, 1), 1.2) * 86 +
-              clamp((dRiver - 0.12) / 0.3, 0, 1) * (ridges * 44 + relief * 18);
+              minElev + 2 +
+              Math.pow(clamp(dRiver / 0.5, 0, 1), 1.2) * (maxElev - minElev - 40) +
+              clamp((dRiver - 0.12) / 0.3, 0, 1) * (ridges * 28 + relief * 14);
 
             const edgeN = (fbm(cu * 14 + seedShift, cv * 14) - 0.5) * 0.03;
             const effD = dRiver + edgeN;
@@ -1595,7 +1748,7 @@
             if (oxbowDist < 0.14) {
               depth = Math.max(depth, 1.3 * (1 - oxbowDist / 0.14) * surgeScale);
             }
-            horizonMask = dRiver < 0.24 ? 29 : 12;
+            horizonMask = dRiver < 0.24 ? 26 : 10;
           }
 
           if (depth < 0.025) depth = 0;
@@ -1623,18 +1776,30 @@
             { id: 'spur_e', name: 'East Elevated Spur', lat: centerLat - spanLat * 0.35, lon: centerLon + spanLon * 0.68, tether: 65 },
             { id: 'knoll_n', name: 'North Dry Knoll', lat: centerLat + spanLat * 0.62, lon: centerLon + spanLon * 0.58, tether: 55 },
           ];
+        } else if (id === 'wayanad') {
+          dry_ridges = [
+            { id: 'vellarimala', name: 'Vellarimala Crest', lat: 11.515, lon: 76.115, tether: 60 },
+            { id: 'chooralmala', name: 'Chooralmala Spur', lat: 11.545, lon: 76.155, tether: 65 },
+            { id: 'meppadi', name: 'Meppadi Knoll', lat: 11.558, lon: 76.125, tether: 55 },
+          ];
+        } else if (id === 'kaziranga') {
+          dry_ridges = [
+            { id: 'mikir', name: 'Mikir Foothills Spur', lat: 26.552, lon: 93.145, tether: 75 },
+            { id: 'bagori', name: 'Bagori Highlands Mound', lat: 26.585, lon: 93.195, tether: 70 },
+            { id: 'kohora', name: 'Kohora Highway Bund', lat: 26.598, lon: 93.138, tether: 60 },
+          ];
+        } else if (id === 'chamoli') {
+          dry_ridges = [
+            { id: 'dhak', name: 'Dhak Crest', lat: 30.544, lon: 79.545, tether: 55 },
+            { id: 'tapovan', name: 'Tapovan Spur', lat: 30.522, lon: 79.585, tether: 65 },
+            { id: 'subhai', name: 'Subhai Ridge', lat: 30.557, lon: 79.584, tether: 50 },
+          ];
         } else {
-          dry_ridges = isChamoli
-            ? [
-                { id: 'dhak', name: 'Dhak Crest', lat: 30.544, lon: 79.545, tether: 55 },
-                { id: 'tapovan', name: 'Tapovan Spur', lat: 30.522, lon: 79.585, tether: 65 },
-                { id: 'subhai', name: 'Subhai Ridge', lat: 30.557, lon: 79.584, tether: 50 },
-              ]
-            : [
-                { id: 'bhadrachalam', name: 'Bhadrachalam Knoll', lat: 17.69, lon: 80.925, tether: 80 },
-                { id: 'kothagudem', name: 'Kothagudem Bank', lat: 17.65, lon: 80.854, tether: 70 },
-                { id: 'kunavaram', name: 'Kunavaram High Bank', lat: 17.696, lon: 80.858, tether: 75 },
-              ];
+          dry_ridges = [
+            { id: 'bhadrachalam', name: 'Bhadrachalam Knoll', lat: 17.69, lon: 80.925, tether: 80 },
+            { id: 'kothagudem', name: 'Kothagudem Bank', lat: 17.65, lon: 80.854, tether: 70 },
+            { id: 'kunavaram', name: 'Kunavaram High Bank', lat: 17.696, lon: 80.858, tether: 75 },
+          ];
         }
 
         for (const r of dry_ridges) {
@@ -1673,53 +1838,96 @@
             { type: 'boat', label: 'NDRF Boat Channel', path: boatPath },
             { type: 'ambulance', label: 'Ambulance Corridor', path: ambPath },
           ];
+        } else if (id === 'wayanad') {
+          rescue_channels = [
+            {
+              type: 'boat',
+              label: 'Chaliyar River Boat Fairway',
+              path: [
+                [11.565, 76.155],
+                [11.545, 76.142],
+                [11.525, 76.135],
+                [11.505, 76.125],
+              ],
+            },
+            {
+              type: 'ambulance',
+              label: 'Meppadi Evacuation Road',
+              path: [
+                [11.550, 76.126],
+                [11.535, 76.122],
+                [11.520, 76.118],
+              ],
+            },
+          ];
+        } else if (id === 'kaziranga') {
+          rescue_channels = [
+            {
+              type: 'boat',
+              label: 'Brahmaputra Deepwater Channel',
+              path: [
+                [26.588, 93.205],
+                [26.575, 93.165],
+                [26.565, 93.130],
+              ],
+            },
+            {
+              type: 'ambulance',
+              label: 'NH-715 Highway Corridor',
+              path: [
+                [26.568, 93.185],
+                [26.562, 93.160],
+                [26.558, 93.135],
+              ],
+            },
+          ];
+        } else if (id === 'chamoli') {
+          rescue_channels = [
+            {
+              type: 'boat',
+              label: 'NDRF Boat Channel',
+              path: [
+                [30.562, 79.566],
+                [30.55, 79.574],
+                [30.536, 79.566],
+                [30.522, 79.557],
+                [30.508, 79.565],
+              ],
+            },
+            {
+              type: 'ambulance',
+              label: 'Ambulance Corridor',
+              path: [
+                [30.56, 79.558],
+                [30.547, 79.567],
+                [30.534, 79.558],
+                [30.519, 79.55],
+              ],
+            },
+          ];
         } else {
-          rescue_channels = isChamoli
-            ? [
-                {
-                  type: 'boat',
-                  label: 'NDRF Boat Channel',
-                  path: [
-                    [30.562, 79.566],
-                    [30.55, 79.574],
-                    [30.536, 79.566],
-                    [30.522, 79.557],
-                    [30.508, 79.565],
-                  ],
-                },
-                {
-                  type: 'ambulance',
-                  label: 'Ambulance Corridor',
-                  path: [
-                    [30.56, 79.558],
-                    [30.547, 79.567],
-                    [30.534, 79.558],
-                    [30.519, 79.55],
-                  ],
-                },
-              ]
-            : [
-                {
-                  type: 'boat',
-                  label: 'NDRF Boat Channel',
-                  path: [
-                    [17.705, 80.906],
-                    [17.684, 80.892],
-                    [17.665, 80.875],
-                    [17.638, 80.888],
-                  ],
-                },
-                {
-                  type: 'ambulance',
-                  label: 'Ambulance Corridor',
-                  path: [
-                    [17.702, 80.878],
-                    [17.68, 80.87],
-                    [17.658, 80.858],
-                    [17.638, 80.869],
-                  ],
-                },
-              ];
+          rescue_channels = [
+            {
+              type: 'boat',
+              label: 'NDRF Boat Channel',
+              path: [
+                [17.705, 80.906],
+                [17.684, 80.892],
+                [17.665, 80.875],
+                [17.638, 80.888],
+              ],
+            },
+            {
+              type: 'ambulance',
+              label: 'Ambulance Corridor',
+              path: [
+                [17.702, 80.878],
+                [17.68, 80.87],
+                [17.658, 80.858],
+                [17.638, 80.869],
+              ],
+            },
+          ];
         }
 
         const dopGridCells = [];
@@ -1734,8 +1942,8 @@
 
         return {
           id,
-          name: isCustom ? customConfig.name : id,
-          isCanyon: isChamoli,
+          name: isCustom ? customConfig.name : scenarioName,
+          isCanyon,
           minLat,
           maxLat,
           minLon,
@@ -3632,6 +3840,15 @@
       function loadScenario(id) {
         state.scenarioId = id;
         state.field = customScenarios[id] || createFieldEvaluator(id);
+
+        // Dynamically compute real NavIC satellite positions for this observer location!
+        const centerLat = (state.field.minLat + state.field.maxLat) / 2;
+        const centerLon = (state.field.minLon + state.field.maxLon) / 2;
+        NAVIC_SATS.length = 0;
+        NAVIC_SATS.push(...computeNavicPositions(centerLat, centerLon));
+        state.activePrns = new Set(NAVIC_SATS.map((s) => s.prn));
+        renderSatelliteChips();
+
         state.beacon = state.field.dry_ridges[0];
         state.tetherHeightM = state.beacon.tether || 55;
         document.getElementById('slider-tether').value = state.tetherHeightM;
@@ -3726,6 +3943,23 @@
 
         surgeSlider?.addEventListener('input', (e) => {
           if (surgeLbl) surgeLbl.textContent = `${Number(e.target.value).toFixed(1)} m`;
+        });
+
+        document.querySelectorAll('.location-preset-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const nameInp = document.getElementById('inp-region-name');
+            const latInp = document.getElementById('inp-region-lat');
+            const lonInp = document.getElementById('inp-region-lon');
+            const terrainInp = document.getElementById('inp-region-terrain');
+            if (nameInp && btn.dataset.presetName) nameInp.value = btn.dataset.presetName;
+            if (latInp && btn.dataset.presetLat) latInp.value = btn.dataset.presetLat;
+            if (lonInp && btn.dataset.presetLon) lonInp.value = btn.dataset.presetLon;
+            if (terrainInp && btn.dataset.presetTerrain) terrainInp.value = btn.dataset.presetTerrain;
+            if (surgeSlider && btn.dataset.presetSurge) {
+              surgeSlider.value = btn.dataset.presetSurge;
+              if (surgeLbl) surgeLbl.textContent = `${Number(btn.dataset.presetSurge).toFixed(1)} m`;
+            }
+          });
         });
 
         function registerAndLoadCustomField(field, label) {
