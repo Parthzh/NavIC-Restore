@@ -286,9 +286,9 @@ For hackathon judges and evaluators, use the **1-Click Flight Recorder Storyboar
 
 ---
 
-## 10. License & Project Attribution
-
-This project is open-source software licensed under the [MIT License](LICENSE).
+## 10. Intellectual Property & Attribution
 
 - **Core Engineering Team**: Parth, Yashaswi, Jayant, Vedant
 - **Developed for**: ASTRA 2026 — Space & Disaster Resilience Track
+- **Open-Source License**: Software implementation and simulator models are released under the [MIT License](LICENSE).
+- **Intellectual Property Notice**: The underlying cyber-physical architecture coupling spaceborne synthetic aperture radar (SAR) inundation bathymetry with closed-loop autonomous aerial pseudolite geometry optimization is currently being prepared for provisional patent filing under Indian Patent Office (IPO) classification categories `G01S 19/07` (GNSS Augmentation Systems) and `B64U 10/10` (Unmanned Aerial Relay Architectures).

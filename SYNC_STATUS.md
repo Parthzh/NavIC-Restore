@@ -9,6 +9,7 @@ This file tracks active lanes, recent pushes, and shared contracts across all 4 
 - **Lane 4 (Interactive Web UI & Demo Polish):** Vedant (Completed & Merged)
 
 ## Coordination Log
+- 2026-11-22 06:42 IST | Intellectual Property & Patent Notice | Updated README Section 10 to include formal intellectual property attribution noting the pending provisional patent filing under Indian Patent Office (IPO) categories G01S 19/07 & B64U 10/10 while retaining the open-source MIT software license.
 - 2026-11-22 05:20 IST | Production Vercel Deployment Live | Successfully deployed production web app to Vercel at https://nav-ic-restore-six.vercel.app/. Verified live 3D terrain rendering, satellite look-angle solver, SAR dry crest analysis, and research paper archival dossiers.
 - 2026-11-22 05:11 IST | Project Deployment & Architectural Documentation | Authored comprehensive publication-grade README.md with end-to-end execution flow diagrams, tech stack pie chart, peer-reviewed scientific dossiers, and mathematical proofs. Configured automated GitHub Pages CI/CD workflow (.github/workflows/deploy.yml), relative asset bundling in Vite, and 1-click configs for Vercel and Netlify.
 - 2026-11-22 05:04 IST | Terrain Evaluator & Live 3D Pipeline Fix | Resolved undeclared variable reference (`isCanyon: isChamoli`) in `createFieldEvaluator` that caused a fatal runtime ReferenceError on initialization. Verified clean 3D terrain generation, ridge extraction, and telemetry updates across all preloaded and custom disaster zones.
